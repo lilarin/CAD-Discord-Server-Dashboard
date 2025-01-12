@@ -1,5 +1,6 @@
 from typing import List
 
+import disnake
 from fastapi import APIRouter, HTTPException
 
 from backend.middlewares.uniform_response import uniform_response_middleware
@@ -19,5 +20,7 @@ async def get_users():
         ]
         users.sort(key=lambda user: user.name)
         return users
-    except Exception as error:
-        raise HTTPException(status_code=500, detail=str(error))
+    except disnake.errors.HTTPException as exception:
+        raise HTTPException(status_code=exception.status, detail=str(exception.text))
+    except Exception as exception:
+        raise HTTPException(status_code=500, detail=str(exception))
