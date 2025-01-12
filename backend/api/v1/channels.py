@@ -1,5 +1,3 @@
-from typing import List
-
 import disnake.errors
 from fastapi import APIRouter, HTTPException
 
@@ -27,40 +25,31 @@ async def fetch_category_channels(category_id: int):
         raise
 
 
-@router.get("/channels/{category_id}", response_model=List[Channel])
+@router.get("/channels/{category_id}", response_model=list[Channel])
 @uniform_response_middleware
 async def get_channels_by_category_id(category_id: int):
     try:
+        channel = await fetch_channel(category_id)
+        if channel.type != disnake.ChannelType.category:
+            raise ValueError("Incorrect channel type")
+
         return await fetch_category_channels(category_id)
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
+    except ValueError as exception:
+        raise HTTPException(status_code=400, detail=str(exception))
     except Exception as exception:
         raise HTTPException(status_code=500, detail=str(exception))
 
 
-@router.get("/channels", response_model=List[BaseChannel])
-@uniform_response_middleware
-async def get_channels():
-    try:
-        channels = [
-            BaseChannel(
-                id=str(channel.id),
-                position=channel.position,
-            )
-            for channel in await fetch_channels()
-        ]
-        return channels
-    except disnake.errors.HTTPException as exception:
-        raise HTTPException(status_code=exception.status, detail=str(exception.text))
-    except Exception as exception:
-        raise HTTPException(status_code=500, detail=str(exception))
-
-
-@router.patch("/channels/{channel_id}/position/{position_id}", response_model=List[Channel])
+@router.patch("/channels/{channel_id}/position/{position_id}", response_model=list[Channel])
 @uniform_response_middleware
 async def reorder_channel_position(channel_id: int, position_id: int):
     try:
         target_channel = await fetch_channel(channel_id)
+        if target_channel.type not in [disnake.ChannelType.text, disnake.ChannelType.voice]:
+            raise ValueError("Incorrect channel type")
+
         category_id = target_channel.category_id
 
         channels = [
@@ -86,5 +75,7 @@ async def reorder_channel_position(channel_id: int, position_id: int):
         return await fetch_category_channels(category_id)
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
+    except ValueError as exception:
+        raise HTTPException(status_code=400, detail=str(exception))
     except Exception as exception:
         raise HTTPException(status_code=500, detail=str(exception))
