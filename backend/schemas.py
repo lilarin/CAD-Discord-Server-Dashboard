@@ -13,3 +13,8 @@ class Channel(BaseChannel):
 class User(BaseModel):
     id: str
     name: str
+
+
+class Role(BaseModel):
+    id: str
+    name: str
