@@ -1,6 +1,4 @@
 import disnake
-from typing import List
-
 import aiohttp
 
 from backend.common.variables import variables
@@ -8,7 +6,7 @@ from backend.config import config
 from backend.schemas import BaseChannel
 
 
-async def update_channel_order(payload: List[BaseChannel]):
+async def update_channel_order(payload: list[BaseChannel]):
     try:
         url = f"https://discord.com/api/v10/guilds/{variables.GUILD_ID}/channels"
         headers = {
