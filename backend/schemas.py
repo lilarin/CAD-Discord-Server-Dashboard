@@ -1,14 +1,13 @@
 from pydantic import BaseModel
 
 
-class Channel(BaseModel):
+class BaseChannel(BaseModel):
     id: str
-    name: str
     position: int
 
 
-class Category(Channel):
-    pass
+class Channel(BaseChannel):
+    name: str
 
 
 class User(BaseModel):
