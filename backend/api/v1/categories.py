@@ -1,5 +1,3 @@
-from typing import List
-
 import disnake
 from fastapi import APIRouter, HTTPException
 
@@ -11,7 +9,7 @@ from backend.services.requests import update_channel_order
 router = APIRouter()
 
 
-@router.get("/categories", response_model=List[Channel])
+@router.get("/categories", response_model=list[Channel])
 @uniform_response_middleware
 async def get_categories():
     try:
@@ -31,11 +29,14 @@ async def get_categories():
         raise HTTPException(status_code=500, detail=str(exception))
 
 
-@router.patch("/categories/{category_id}/position/{position_id}", response_model=List[Channel])
+@router.patch("/categories/{category_id}/position/{position_id}", response_model=list[Channel])
 @uniform_response_middleware
-async def reorder_channel_position(category_id: int, position_id: int):
+async def reorder_category_position(category_id: int, position_id: int):
     try:
         target_channel = await fetch_channel(category_id)
+
+        if target_channel.type != disnake.ChannelType.category:
+            raise ValueError("Incorrect channel type")
 
         channels = [
             channel for channel in await fetch_channels()
@@ -56,7 +57,6 @@ async def reorder_channel_position(category_id: int, position_id: int):
 
         await update_channel_order(payload)
 
-
         channels = [
             Channel(
                 id=str(channel.id),
@@ -69,5 +69,7 @@ async def reorder_channel_position(category_id: int, position_id: int):
         return channels
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
+    except ValueError as exception:
+        raise HTTPException(status_code=400, detail=str(exception))
     except Exception as exception:
         raise HTTPException(status_code=500, detail=str(exception))
