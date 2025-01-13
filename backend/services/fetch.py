@@ -1,6 +1,7 @@
 from disnake import Role, Member, VoiceChannel, TextChannel, CategoryChannel, Guild
 
 from backend.common.variables import variables
+from backend.schemas import Channel
 from backend.services.bot import bot
 
 
@@ -16,7 +17,27 @@ async def fetch_channels() -> list[VoiceChannel | TextChannel | CategoryChannel]
     return channels
 
 
-async def fetch_channel(channel_id) -> VoiceChannel | TextChannel | CategoryChannel:
+async def fetch_channels_by_type(
+        channel_type: VoiceChannel | TextChannel | CategoryChannel
+) -> list[VoiceChannel | TextChannel | CategoryChannel]:
+    guild = await fetch_guild()
+    channels_sequence = [
+        channel for channel in await guild.fetch_channels()
+        if channel.type == channel_type
+    ]
+    channels = list(channels_sequence)
+    channels.sort(key=lambda c: (c.position, c.id))
+    return channels
+
+
+async def fetch_channels_by_category(category: CategoryChannel) -> list[TextChannel | VoiceChannel]:
+    return [
+        channel for channel in await fetch_channels()
+        if channel.category_id == category.id
+    ]
+
+
+async def fetch_channel(channel_id: int) -> VoiceChannel | TextChannel | CategoryChannel:
     guild = await fetch_guild()
     channel = await guild.fetch_channel(channel_id)
     return channel
@@ -42,3 +63,27 @@ async def fetch_role(role_id: int) -> Role:
 async def fetch_guild_default_role() -> Role:
     guild = await fetch_guild()
     return guild.default_role
+
+
+async def fetch_formatted_categories() -> list[Channel]:
+    return [
+        Channel(
+            id=str(channel.id),
+            name=channel.name,
+            position=channel.position,
+        )
+        for channel in await fetch_channels()
+        if channel.type == CategoryChannel
+    ]
+
+
+async def fetch_formatted_channels_by_category(category: CategoryChannel) -> list[Channel]:
+    return [
+        Channel(
+            id=str(channel.id),
+            name=channel.name,
+            position=channel.position,
+        )
+        for channel in await fetch_channels()
+        if channel.category_id == category.id
+    ]
