@@ -1,10 +1,12 @@
 import disnake
+from disnake import CategoryChannel
 from fastapi import APIRouter, HTTPException
 
 from backend.middlewares.uniform_response import uniform_response_middleware
 from backend.schemas import Channel, BaseChannel
-from backend.services.fetch import fetch_channels, fetch_channel
+from backend.services.fetch import fetch_channels, fetch_channel, fetch_formatted_categories, fetch_channels_by_type
 from backend.services.requests import update_channel_order
+from backend.services.utils import create_template_category, delete_target_category
 
 router = APIRouter()
 
@@ -20,7 +22,7 @@ async def get_categories():
                 position=channel.position,
             )
             for channel in await fetch_channels()
-            if channel.type == disnake.ChannelType.category
+            if channel.type == CategoryChannel
         ]
         return categories
     except disnake.errors.HTTPException as exception:
@@ -33,19 +35,15 @@ async def get_categories():
 @uniform_response_middleware
 async def reorder_category_position(category_id: int, position_id: int):
     try:
-        target_channel = await fetch_channel(category_id)
-
-        if target_channel.type != disnake.ChannelType.category:
+        channel = await fetch_channel(category_id)
+        if channel.type != CategoryChannel:
             raise ValueError("Incorrect channel type")
 
-        channels = [
-            channel for channel in await fetch_channels()
-            if channel.type == target_channel.type
-        ]
+        channels = await fetch_channels_by_type(channel.type)
         channels.sort(key=lambda c: (c.position, c.id))
 
-        channels.remove(target_channel)
-        channels.insert(position_id, target_channel)
+        channels.remove(channel)
+        channels.insert(position_id, channel)
 
         payload = [
             BaseChannel(
@@ -57,16 +55,38 @@ async def reorder_category_position(category_id: int, position_id: int):
 
         await update_channel_order(payload)
 
-        channels = [
-            Channel(
-                id=str(channel.id),
-                name=channel.name,
-                position=channel.position,
-            )
-            for channel in await fetch_channels()
-            if channel.type == disnake.ChannelType.category
-        ]
-        return channels
+        return await fetch_formatted_categories()
+    except disnake.errors.HTTPException as exception:
+        raise HTTPException(status_code=exception.status, detail=str(exception.text))
+    except ValueError as exception:
+        raise HTTPException(status_code=400, detail=str(exception))
+    except Exception as exception:
+        raise HTTPException(status_code=500, detail=str(exception))
+
+
+@router.post("/categories/{name}", response_model=list[Channel])
+@uniform_response_middleware
+async def create_category(name: str):
+    try:
+        await create_template_category(name)
+        return await fetch_formatted_categories()
+    except disnake.errors.HTTPException as exception:
+        raise HTTPException(status_code=exception.status, detail=str(exception.text))
+    except ValueError as exception:
+        raise HTTPException(status_code=400, detail=str(exception))
+    except Exception as exception:
+        raise HTTPException(status_code=500, detail=str(exception))
+
+
+@router.delete("/categories/{category_id}", response_model=list[Channel])
+@uniform_response_middleware
+async def delete_category(category_id: int):
+    try:
+        channel = await fetch_channel(category_id)
+        if channel.type != CategoryChannel:
+            raise ValueError("Incorrect channel type")
+
+        await delete_target_category(channel)
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
     except ValueError as exception:
