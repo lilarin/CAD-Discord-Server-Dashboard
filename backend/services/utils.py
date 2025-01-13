@@ -1,9 +1,13 @@
-import disnake
-from disnake import CategoryChannel, VoiceChannel, TextChannel
+from disnake import CategoryChannel, VoiceChannel, TextChannel, PermissionOverwrite
 
 from backend.common.variables import variables
-from backend.services.fetch import fetch_guild, fetch_guild_default_role, fetch_role, fetch_channel, fetch_channels, \
+from backend.services.fetch import (
+    fetch_guild,
+    fetch_guild_default_role,
+    fetch_role,
+    fetch_channel,
     fetch_channels_by_category
+)
 
 
 async def create_template_category(category_name) -> CategoryChannel:
@@ -13,9 +17,9 @@ async def create_template_category(category_name) -> CategoryChannel:
     administrator_role = await fetch_role(variables.ADMINISTRATOR_ROLE_ID)
 
     default_overwrites = {
-        everyone_role: disnake.PermissionOverwrite(view_channel=False),
-        teacher_role: disnake.PermissionOverwrite(view_channel=True),
-        administrator_role: disnake.PermissionOverwrite(view_channel=True)
+        everyone_role: PermissionOverwrite(view_channel=False),
+        teacher_role: PermissionOverwrite(view_channel=True),
+        administrator_role: PermissionOverwrite(view_channel=True)
     }
 
     category = await guild.create_category(name=category_name, overwrites=default_overwrites)
