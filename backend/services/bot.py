@@ -3,9 +3,9 @@ import disnake
 
 from backend.common.variables import variables
 from backend.config import config
-from backend.services.modals import RegisterModal, USER_REGISTER_DATA
+from backend.services.modals import RegisterModal, USER_REGISTER_DATA, init_register_buttons, init_group_confirm_button, \
+    init_group_select
 from backend.services.responses import send_ephemeral_response
-from backend.services.utils import init_group_confirm_button, init_group_select, init_register_buttons
 
 bot = commands.InteractionBot(intents=disnake.Intents.all())
 
