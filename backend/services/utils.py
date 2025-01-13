@@ -1,49 +1,44 @@
 import disnake
+from disnake import CategoryChannel, VoiceChannel, TextChannel
+
+from backend.common.variables import variables
+from backend.services.fetch import fetch_guild, fetch_guild_default_role, fetch_role, fetch_channel, fetch_channels, \
+    fetch_channels_by_category
 
 
-async def init_register_buttons() -> disnake.ui.ActionRow:
-    register = disnake.ui.Button(
-        style=disnake.ButtonStyle.primary,
-        label="📑 Зареєструватись",
-        custom_id="register_button",
-    )
-    inactive = disnake.ui.Button(
-        style=disnake.ButtonStyle.grey,
-        label="👨‍🎓 Щоб пройти ідентифікацію на сервері",
-        custom_id="inactive_button",
-        disabled=True,
-    )
-    return disnake.ui.ActionRow(register, inactive)
+async def create_template_category(category_name) -> CategoryChannel:
+    guild = await fetch_guild()
+    everyone_role = await fetch_guild_default_role()
+    teacher_role = await fetch_role(variables.TEACHER_ROLE_ID)
+    administrator_role = await fetch_role(variables.ADMINISTRATOR_ROLE_ID)
+
+    default_overwrites = {
+        everyone_role: disnake.PermissionOverwrite(view_channel=False),
+        teacher_role: disnake.PermissionOverwrite(view_channel=True),
+        administrator_role: disnake.PermissionOverwrite(view_channel=True)
+    }
+
+    category = await guild.create_category(name=category_name, overwrites=default_overwrites)
+    return category
 
 
-async def init_name_confirm_button() -> disnake.ui.ActionRow:
-    name_confirm = disnake.ui.Button(
-        style=disnake.ButtonStyle.primary,
-        label="✔️ Так, продовжити далі",
-        custom_id="name_confirm_button",
-    )
-    return disnake.ui.ActionRow(name_confirm)
+async def rename_target_channel(
+        channel: VoiceChannel | TextChannel | CategoryChannel, name: str
+) -> VoiceChannel | TextChannel | CategoryChannel:
+    return await channel.edit(name=name)
 
 
-async def init_group_select(roles) -> disnake.ui.ActionRow:
-    options = [
-        disnake.SelectOption(
-            label=role.name,
-            value=str(role.id)
-        ) for role in roles if not role.is_default() and "-" in role.name
-    ]
-    role_select = disnake.ui.Select(
-        placeholder="...",
-        options=options,
-        custom_id="role_select_option"
-    )
-    return disnake.ui.ActionRow(role_select)
+async def delete_target_channel(channel: VoiceChannel | TextChannel) -> None:
+    await channel.delete()
 
 
-async def init_group_confirm_button() -> disnake.ui.ActionRow:
-    group_confirm = disnake.ui.Button(
-        style=disnake.ButtonStyle.green,
-        label="✔️ Так, завершити реєстрацію",
-        custom_id="group_confirm_button",
-    )
-    return disnake.ui.ActionRow(group_confirm)
+async def delete_target_category(category) -> None:
+    for channel in await fetch_channels_by_category(category):
+        await channel.delete()
+    await category.delete()
+
+
+async def sync_permissions_with_category(channel_id: id) -> VoiceChannel | TextChannel:
+    channel = await fetch_channel(channel_id)
+    await channel.edit(sync_permissions=True)
+    return channel
