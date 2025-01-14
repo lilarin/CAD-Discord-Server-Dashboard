@@ -63,27 +63,3 @@ async def fetch_role(role_id: int) -> Role:
 async def fetch_guild_default_role() -> Role:
     guild = await fetch_guild()
     return guild.default_role
-
-
-async def fetch_formatted_categories() -> list[Channel]:
-    return [
-        Channel(
-            id=str(channel.id),
-            name=channel.name,
-            position=channel.position,
-        )
-        for channel in await fetch_channels()
-        if channel.type == CategoryChannel
-    ]
-
-
-async def fetch_formatted_channels_by_category(category: CategoryChannel) -> list[Channel]:
-    return [
-        Channel(
-            id=str(channel.id),
-            name=channel.name,
-            position=channel.position,
-        )
-        for channel in await fetch_channels()
-        if channel.category_id == category.id
-    ]
