@@ -1,10 +1,10 @@
 import disnake
-from disnake import CategoryChannel
 from fastapi import APIRouter, HTTPException
 
 from backend.middlewares.uniform_response import uniform_response_middleware
-from backend.schemas import Channel, BaseChannel
-from backend.services.fetch import fetch_channels, fetch_channel, fetch_formatted_categories, fetch_channels_by_type
+from backend.schemas import Channel
+from backend.services.fetch import fetch_channels, fetch_channel, fetch_channels_by_type
+from backend.services.format import format_categories_response, format_base_channel_response, format_channel_response
 from backend.services.requests import update_channel_order
 from backend.services.utils import create_template_category, delete_target_category
 
@@ -16,13 +16,9 @@ router = APIRouter()
 async def get_categories():
     try:
         categories = [
-            Channel(
-                id=str(channel.id),
-                name=channel.name,
-                position=channel.position,
-            )
+            await format_channel_response(channel)
             for channel in await fetch_channels()
-            if channel.type == CategoryChannel
+            if channel.type == disnake.ChannelType.category
         ]
         return categories
     except disnake.errors.HTTPException as exception:
@@ -36,7 +32,7 @@ async def get_categories():
 async def reorder_category_position(category_id: int, position_id: int):
     try:
         channel = await fetch_channel(category_id)
-        if channel.type != CategoryChannel:
+        if channel.type != disnake.ChannelType.category:
             raise ValueError("Incorrect channel type")
 
         channels = await fetch_channels_by_type(channel.type)
@@ -46,16 +42,13 @@ async def reorder_category_position(category_id: int, position_id: int):
         channels.insert(position_id, channel)
 
         payload = [
-            BaseChannel(
-                id=str(channel.id),
-                position=index
-            )
-            for index, channel in enumerate(channels)
+            await format_base_channel_response(channel, ch_index)
+            for ch_index, channel in enumerate(channels)
         ]
 
         await update_channel_order(payload)
 
-        return await fetch_formatted_categories()
+        return await format_categories_response()
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
     except ValueError as exception:
@@ -69,7 +62,7 @@ async def reorder_category_position(category_id: int, position_id: int):
 async def create_category(name: str):
     try:
         await create_template_category(name)
-        return await fetch_formatted_categories()
+        return await format_categories_response()
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
     except ValueError as exception:
@@ -83,7 +76,7 @@ async def create_category(name: str):
 async def delete_category(category_id: int):
     try:
         channel = await fetch_channel(category_id)
-        if channel.type != CategoryChannel:
+        if channel.type != disnake.ChannelType.category:
             raise ValueError("Incorrect channel type")
 
         await delete_target_category(channel)
