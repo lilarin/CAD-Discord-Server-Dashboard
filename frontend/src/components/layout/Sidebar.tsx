@@ -9,7 +9,7 @@ import ArchivationIcon from "@/assets/icons/archivation.svg";
 import LogsIcon from "@/assets/icons/logs.svg";
 
 const navigation = [
-  { name: "Дисципліни", href: "/disciplines", icon: DisciplinesIcon },
+  { name: "Категорії", href: "/disciplines", icon: DisciplinesIcon },
   { name: "Групи", href: "/groups", icon: GroupsIcon },
   { name: "Користувачі", href: "/users", icon: UsersIconIcon },
   { name: "Заходи", href: "/events", icon: EventsIcon },
