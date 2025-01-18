@@ -1,7 +1,8 @@
+import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Header } from "./components/layout/Header";
 import { Sidebar } from "./components/layout/Sidebar";
-import Disciplines from "./pages/Disciplines";
+import Categories from "./pages/Categories.tsx";
 import Groups from "./pages/Groups";
 import Users from "./pages/Users";
 import Events from "./pages/Events";
@@ -18,7 +19,7 @@ const App = () => {
           <main className="flex-1 bg-[#36393F]">
             <Routes>
               <Route path="/" element={<Navigate to="/disciplines" replace />} />
-              <Route path="/disciplines" element={<Disciplines />} />
+              <Route path="/disciplines" element={<Categories />} />
               <Route path="/groups" element={<Groups />} />
               <Route path="/users" element={<Users />} />
               <Route path="/events" element={<Events />} />
