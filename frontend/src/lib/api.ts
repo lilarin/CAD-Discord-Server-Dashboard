@@ -31,12 +31,13 @@ export class ClientError extends Error {
 }
 
 export interface Category {
-  id: string;
+  id: number;
   name: string;
 }
 
 export interface Channel {
-  id: string;
+  id: number;
+  position: number;
   name: string;
   type: string
 }
@@ -64,7 +65,7 @@ export async function getCategories(): Promise<Category[]> {
   }
 }
 
-export async function getChannels(categoryId: string): Promise<Channel[]> {
+export async function getChannels(categoryId: number): Promise<Channel[]> {
   try {
     const response = await api.get<ApiResponse<Channel[]>>(`/api/v1/channels/${categoryId}`);
     return response.data.data;
@@ -81,7 +82,7 @@ export async function getChannels(categoryId: string): Promise<Channel[]> {
   }
 }
 
-export async function deleteCategory(categoryId: string): Promise<Category[]> {
+export async function deleteCategory(categoryId: number): Promise<Category[]> {
   try {
     const response = await api.delete<ApiResponse<Category[]>>(`/api/v1/categories/${categoryId}`);
     return response.data.data;
@@ -99,15 +100,15 @@ export async function deleteCategory(categoryId: string): Promise<Category[]> {
 }
 
 
-export async function deleteChannel(categoryId: string): Promise<Channel[]> {
+export async function deleteChannel(channelId: number): Promise<Channel[]> {
   try {
-    const response = await api.delete<ApiResponse<Channel[]>>(`/api/v1/channels/${categoryId}`);
+    const response = await api.delete<ApiResponse<Channel[]>>(`/api/v1/channels/${channelId}`);
     return response.data.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const axiosError = error as AxiosError;
       const statusCode = axiosError.response?.status || 500;
-      throw new ApiError(`Something went wrong deleting category ${categoryId}`, statusCode);
+      throw new ApiError(`Something went wrong deleting channel ${channelId}`, statusCode);
     } else if (error instanceof Error) {
       throw new ClientError(error.message);
     } else {
@@ -116,7 +117,7 @@ export async function deleteChannel(categoryId: string): Promise<Channel[]> {
   }
 }
 
-export async function updateCategoryPosition(categoryId: string, newPosition: number): Promise<Category[]> {
+export async function updateCategoryPosition(categoryId: number, newPosition: number): Promise<Category[]> {
   try {
     const response = await api.patch<ApiResponse<Category[]>>(
       `/api/v1/categories/${categoryId}/position/${newPosition}`
@@ -127,6 +128,25 @@ export async function updateCategoryPosition(categoryId: string, newPosition: nu
       const axiosError = error as AxiosError;
       const statusCode = axiosError.response?.status || 500;
       throw new ApiError(`Something went wrong updating category position for ${categoryId}`, statusCode);
+    } else if (error instanceof Error) {
+      throw new ClientError(error.message);
+    } else {
+      throw new ClientError(`Something went wrong: ${String(error)}`);
+    }
+  }
+}
+
+export async function updateChannelPosition(channelId: number, newPosition: number): Promise<Channel[]> {
+  try {
+    const response = await api.patch<ApiResponse<Channel[]>>(
+      `/api/v1/channels/${channelId}/position/${newPosition}`
+    );
+    return response.data.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      const statusCode = axiosError.response?.status || 500;
+      throw new ApiError(`Something went wrong updating channel position for ${channelId}`, statusCode);
     } else if (error instanceof Error) {
       throw new ClientError(error.message);
     } else {
