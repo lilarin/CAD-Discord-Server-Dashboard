@@ -115,3 +115,22 @@ export async function deleteChannel(categoryId: string): Promise<Channel[]> {
     }
   }
 }
+
+export async function updateCategoryPosition(categoryId: string, newPosition: number): Promise<Category[]> {
+  try {
+    const response = await api.patch<ApiResponse<Category[]>>(
+      `/api/v1/categories/${categoryId}/position/${newPosition}`
+    );
+    return response.data.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      const statusCode = axiosError.response?.status || 500;
+      throw new ApiError(`Something went wrong updating category position for ${categoryId}`, statusCode);
+    } else if (error instanceof Error) {
+      throw new ClientError(error.message);
+    } else {
+      throw new ClientError(`Something went wrong: ${String(error)}`);
+    }
+  }
+}
