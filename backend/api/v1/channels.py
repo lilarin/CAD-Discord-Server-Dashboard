@@ -5,11 +5,18 @@ from backend.middlewares.schemas import ResponseWrapper
 from backend.middlewares.uniform_response import uniform_response_middleware
 from backend.schemas import Channel
 from backend.services.fetch import fetch_channel, fetch_channels_by_type
-from backend.services.format import format_channels_by_category_response, format_channel_response, \
+from backend.services.format import (
+    format_channels_by_category_response,
+    format_channel_response,
     format_base_channel_response
+)
 from backend.services.requests import update_channel_order
-from backend.services.utils import delete_target_channel, create_voice_target_channel, rename_target_channel, \
+from backend.services.utils import (
+    delete_target_channel,
+    create_voice_target_channel,
+    rename_target_channel,
     create_text_target_channel
+)
 
 router = APIRouter()
 
@@ -23,6 +30,27 @@ async def get_channels_by_category_id(category_id: int):
             raise ValueError("Incorrect channel type")
 
         return await format_channels_by_category_response(channel)
+    except disnake.errors.HTTPException as exception:
+        raise HTTPException(status_code=exception.status, detail=str(exception.text))
+    except ValueError as exception:
+        raise HTTPException(status_code=400, detail=str(exception))
+    except Exception as exception:
+        raise HTTPException(status_code=500, detail=str(exception))
+
+
+@router.patch("/channels/{channel_id}/rename/{name}", response_model=Channel)
+@uniform_response_middleware
+async def rename_channel(channel_id: int, name: str):
+    try:
+        channel = await fetch_channel(channel_id)
+        if channel.type not in [disnake.ChannelType.text, disnake.ChannelType.voice, disnake.ChannelType.category]:
+            raise ValueError("Incorrect channel type")
+
+        if channel.name.lower() == name.lower():
+            raise ValueError("Name cannot be the same")
+
+        channel = await rename_target_channel(channel, name)
+        return await format_channel_response(channel)
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
     except ValueError as exception:
@@ -116,19 +144,45 @@ async def delete_channel(channel_id: int):
         raise HTTPException(status_code=500, detail=str(exception))
 
 
-@router.patch("/channels/{channel_id}/rename/{name}", response_model=Channel)
+@router.get("/channels/{channel_id}", response_model=list[Channel], deprecated=True)
 @uniform_response_middleware
-async def rename_channel(channel_id: int, name: str):
+async def get_channel_permissions(channel_id: int):
+    try:
+        pass
+    except disnake.errors.HTTPException as exception:
+        raise HTTPException(status_code=exception.status, detail=str(exception.text))
+    except ValueError as exception:
+        raise HTTPException(status_code=400, detail=str(exception))
+    except Exception as exception:
+        raise HTTPException(status_code=500, detail=str(exception))
+
+
+@router.patch("/channels/{channel_id}", response_model=list[Channel], deprecated=True)
+@uniform_response_middleware
+async def edit_channel_permissions(channel_id: int):
     try:
         channel = await fetch_channel(channel_id)
-        if channel.type not in [disnake.ChannelType.text, disnake.ChannelType.voice, disnake.ChannelType.category]:
+        if channel.type not in [disnake.ChannelType.text, disnake.ChannelType.voice]:
             raise ValueError("Incorrect channel type")
 
-        if channel.name.lower() == name.lower():
-            raise ValueError("Name cannot be the same")
+        pass
+    except disnake.errors.HTTPException as exception:
+        raise HTTPException(status_code=exception.status, detail=str(exception.text))
+    except ValueError as exception:
+        raise HTTPException(status_code=400, detail=str(exception))
+    except Exception as exception:
+        raise HTTPException(status_code=500, detail=str(exception))
 
-        channel = await rename_target_channel(channel, name)
-        return await format_channel_response(channel)
+
+@router.patch("/channels/{channel_id}/sync", response_model=list[Channel], deprecated=True)
+@uniform_response_middleware
+async def sync_channel_permissions(channel_id: int):
+    try:
+        channel = await fetch_channel(channel_id)
+        if channel.type not in [disnake.ChannelType.text, disnake.ChannelType.voice]:
+            raise ValueError("Incorrect channel type")
+
+        return
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
     except ValueError as exception:
