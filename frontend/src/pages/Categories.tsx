@@ -21,6 +21,7 @@ export default function Categories() {
   const [hoveredCategoryId, setHoveredCategoryId] = useState<string | null>(null);
   const [hoveredChannelId, setHoveredChannelId] = useState<string | null>(null);
   const [hoveredOverChannel, setHoveredOverChannel] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -82,6 +83,14 @@ export default function Categories() {
     }
   }, [openCategoryId]);
 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredCategories = categories.filter(category =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="p-6 flex justify-left">
       {isLoading && (
@@ -89,8 +98,22 @@ export default function Categories() {
       )}
       <div className="w-1/2">
         {error && <div className="text-red-500">Помилка завантаження категорій: {error}</div>}
+
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="Пошук за назвою категорії..."
+            className="w-full p-2 rounded bg-[#202225] text-white focus:outline-none"
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+        </div>
+
         <div className="mt-4 space-y-2">
-          {categories.map((category) => (
+          {filteredCategories.length === 0 && !isLoading && !error && (
+              <div className="flex items-center justify-left text-gray-400">Категорій немає</div>
+          )}
+          {filteredCategories.map((category) => (
             <div key={category.id}>
               <div
                 className="w-full text-left p-2 bg-[#2F3136] hover:bg-[#292b2f] rounded flex items-center justify-between cursor-pointer"
@@ -180,7 +203,13 @@ export default function Categories() {
               )}
             </div>
           ))}
-          {!isLoading && !error && (
+          {!isLoading && !error && filteredCategories.length > 0 && (
+              <div
+                  className="w-full flex items-center justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer">
+                <img src={PlusIcon} alt="Створити категорію" className="w-5 h-5"/>
+              </div>
+          )}
+          {!isLoading && !error && filteredCategories.length === 0 && (
               <div
                   className="w-full flex items-center justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer">
                 <img src={PlusIcon} alt="Створити категорію" className="w-5 h-5"/>
