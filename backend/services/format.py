@@ -1,18 +1,19 @@
+import disnake
 from disnake import CategoryChannel, VoiceChannel, TextChannel
 
-from backend.schemas import Channel, BaseChannel
+from backend.schemas import Channel, BaseChannel, Category
 from backend.services.fetch import fetch_channels
 
 
-async def format_categories_response() -> list[Channel]:
+async def format_categories_response() -> list[Category]:
     return [
-        Channel(
+        Category(
             id=str(channel.id),
             name=channel.name,
             position=channel.position,
         )
         for channel in await fetch_channels()
-        if channel.type == CategoryChannel
+        if channel.type == disnake.ChannelType.category
     ]
 
 
@@ -22,6 +23,7 @@ async def format_channels_by_category_response(category: CategoryChannel) -> lis
             id=str(channel.id),
             name=channel.name,
             position=channel.position,
+            type=channel.type.name,
         )
         for channel in await fetch_channels()
         if channel.category_id == category.id
