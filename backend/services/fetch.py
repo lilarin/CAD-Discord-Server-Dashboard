@@ -1,7 +1,6 @@
 from disnake import Role, Member, VoiceChannel, TextChannel, CategoryChannel, Guild
 
 from backend.common.variables import variables
-from backend.schemas import Channel
 from backend.services.bot import bot
 
 
@@ -47,6 +46,7 @@ async def fetch_users() -> list[Member]:
     guild = await fetch_guild()
     members = await guild.fetch_members().flatten()
     return members
+
 
 async def fetch_roles() -> list[Role]:
     guild = await fetch_guild()
