@@ -26,12 +26,12 @@ async def create_template_category(category_name) -> CategoryChannel:
     return category
 
 
-async def create_text_target_channel(category: CategoryChannel, name: str) ->  TextChannel :
+async def create_text_target_channel(category: CategoryChannel, name: str) -> TextChannel:
     guild = await fetch_guild()
     return await guild.create_text_channel(name=name, category=category)
 
 
-async def create_voice_target_channel(category: CategoryChannel, name: str) ->  VoiceChannel :
+async def create_voice_target_channel(category: CategoryChannel, name: str) -> VoiceChannel:
     guild = await fetch_guild()
     return await guild.create_voice_channel(name=name, category=category)
 
