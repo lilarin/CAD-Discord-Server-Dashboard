@@ -6,8 +6,13 @@ class BaseChannel(BaseModel):
     position: int
 
 
+class Category(BaseChannel):
+    name: str
+
+
 class Channel(BaseChannel):
     name: str
+    type: str
 
 
 class User(BaseModel):
@@ -17,4 +22,15 @@ class User(BaseModel):
 
 class Role(BaseModel):
     id: str
+    name: str
+
+
+class PermissionOverwriteModel(BaseModel):
+    id: int
+    allow: list
+    deny: list
+
+
+class RoleWithAccess(BaseModel):
+    id: int
     name: str
