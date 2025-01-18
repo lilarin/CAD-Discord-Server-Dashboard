@@ -40,4 +40,3 @@ async def get_users_by_role(role_id: int):
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
     except Exception as exception:
         raise HTTPException(status_code=500, detail=str(exception))
-
