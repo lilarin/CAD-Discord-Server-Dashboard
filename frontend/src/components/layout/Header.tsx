@@ -1,5 +1,8 @@
-import { LogOut, UserCircle } from "lucide-react";
+import { UserCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+import LogOutIcon from "@/assets/icons/logout.svg";
+import React from "react";
 
 export const Header = () => {
   return (
@@ -17,7 +20,7 @@ export const Header = () => {
             variant="ghost"
             size="default"
             className="text-gray-400 hover:text-gray-200 rounded">
-            <LogOut />
+            <img src={LogOutIcon} alt="Вийти з системи" className="w-5 h-5 cursor-pointer"/>
             Вийти з системи
           </Button>
         </div>
