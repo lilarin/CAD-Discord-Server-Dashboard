@@ -8,10 +8,12 @@ import Users from "./pages/Users";
 import Events from "./pages/Events";
 import Archivation from "./pages/Archivation";
 import Logs from "./pages/Logs";
+import { Toaster } from 'react-hot-toast';
 
 const App = () => {
   return (
     <BrowserRouter>
+      <Toaster />
       <div className="min-h-screen flex flex-col">
         <Header />
         <div className="flex flex-1">

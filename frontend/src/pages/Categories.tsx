@@ -32,6 +32,7 @@ import {
   useSortable,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import toast from 'react-hot-toast';
 
 function DraggableCategory({
   category,
@@ -114,6 +115,7 @@ function DraggableChannel({
   hoveredChannelId,
   setHoveredChannelId,
 }) {
+  const [isHovered, setIsHovered] = useState(false);
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: channel.id,
   });
@@ -129,6 +131,8 @@ function DraggableChannel({
       ref={setNodeRef}
       style={style}
       className="p-1 bg-[#2f3136] hover:bg-[#2a2c31] rounded ml-4 flex items-center justify-between pr-2"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <div className="flex justify-start w-4/5 items-center">
         <span className="cursor-grab mr-2" {...attributes} {...listeners}>
@@ -155,7 +159,7 @@ function DraggableChannel({
         )}
         <span>{channel.name.charAt(0).toUpperCase() + channel.name.slice(1)}</span>
       </div>
-      <div className={`flex justify-end space-x-2 items-center`}>
+      <div className={`flex justify-end space-x-2 items-center ${isHovered ? '' : 'opacity-0'}`}>
         <div className="relative group">
           <img
             src={RenameIcon}
@@ -179,12 +183,10 @@ function DraggableChannel({
 
 export default function Categories() {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [openCategoryId, setOpenCategoryId] = useState<number | null>(null);
   const [channels, setChannels] = useState<Channel[]>([]);
   const [isChannelsLoading, setIsChannelsLoading] = useState(false);
-  const [channelsError, setChannelsError] = useState<string | null>(null);
   const channelsRef = useRef<HTMLDivElement>(null);
   const [hoveredCategoryId, setHoveredCategoryId] = useState<number | null>(null);
   const [hoveredChannelId, setHoveredChannelId] = useState<number | null>(null);
@@ -192,12 +194,14 @@ export default function Categories() {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      // setError(null);
       try {
         const response = await getCategories();
         setCategories(response);
       } catch (error) {
-        // setError(error.message);
+          toast.error(error.message, {
+          position: "bottom-right",
+          duration: 10000
+        });
       } finally {
         setIsLoading(false);
       }
@@ -216,12 +220,14 @@ export default function Categories() {
 
       setOpenCategoryId(categoryId);
       setIsChannelsLoading(true);
-      // setChannelsError(null);
       try {
         const fetchedChannels = await getChannels(categoryId);
         setChannels(fetchedChannels);
       } catch (error) {
-        // setChannelsError(error.message);
+        toast.error(error.message, {
+          position: "bottom-right",
+          duration: 10000
+        });
       } finally {
         setIsChannelsLoading(false);
       }
@@ -241,8 +247,10 @@ export default function Categories() {
       try {
         await deleteCategory(categoryId);
       } catch (error) {
-        // setError(`Помилка видалення категорії: ${error.message}`);
-
+        toast.error(error.message, {
+          position: "bottom-right",
+          duration: 10000
+        });
         const fetchedCategories = await getCategories();
         setCategories(fetchedCategories);
       }
@@ -259,7 +267,10 @@ export default function Categories() {
         await deleteChannel(channelId);
         setChannels((prevChannels) => prevChannels.filter((channel) => channel.id !== channelId));
       } catch (error) {
-        // setChannelsError(`Помилка видалення каналу: ${error.message}`);
+        toast.error(error.message, {
+          position: "bottom-right",
+          duration: 10000
+        });
       }
     },
     [openCategoryId]
@@ -296,16 +307,16 @@ export default function Categories() {
         try {
           await updateCategoryPosition(active.id.toString(), overCategoryIndex);
         } catch (error) {
-          // setError(`Помилка оновлення позиції категорії: ${error.message}`);
-
+          toast.error(error.message, {
+            position: "bottom-right",
+            duration: 10000
+          });
           const fetchedCategories = await getCategories();
           setCategories(fetchedCategories);
         }
       } else if (channels.find((channel) => channel.id === active.id) && openCategoryId) {
         const activeChannel = channels.find((channel) => channel.id === active.id);
         const overChannel = channels.find((channel) => channel.id === over.id);
-        // console.log("activeChannel", activeChannel)
-        // console.log("overChannel", overChannel)
 
         if (!activeChannel || !overChannel || activeChannel.type !== overChannel.type) {
           return;
@@ -313,24 +324,19 @@ export default function Categories() {
 
         const activeChannelIndex = channels.findIndex((channel) => channel.id === active.id);
         const overChannelIndex = channels.findIndex((channel) => channel.id === over.id);
-        // console.log("activeChannelIndex", activeChannelIndex)
-        // console.log("overChannelIndex", overChannelIndex)
-        //
-        // console.log("Channels", channels)
+
         const newChannels = arrayMove(channels, activeChannelIndex, overChannelIndex);
-        // console.log("New channels", newChannels)
         setChannels(newChannels);
 
         try {
           await updateChannelPosition(activeChannel.id, overChannel.position);
           const fetchedChannels = await getChannels(openCategoryId);
           setChannels(fetchedChannels);
-          // console.log("Channel", activeChannel.id, "with id ", activeChannel.position, "new id should be" ,overChannel.position)
-          // await updateChannelPosition(activeChannel.id, overChannel.position);
-
         } catch (error) {
-          // setChannelsError(`Помилка оновлення позиції каналу: ${error.message}`);
-
+          toast.error(error.message, {
+            position: "bottom-right",
+            duration: 10000
+          });
           const fetchedChannels = await getChannels(openCategoryId);
           setChannels(fetchedChannels);
         }
@@ -346,9 +352,7 @@ export default function Categories() {
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd} sensors={sensors}>
       <div className="p-6 flex justify-left">
         {isLoading && <ComponentLoadingSpinner />}
-        <div className="w-1/2">
-          {error && <div className="text-red-500">Помилка завантаження категорій: {error}</div>}
-
+        <div className="w-2/3">
           <div className="mb-4">
             <input
               type="text"
@@ -361,7 +365,7 @@ export default function Categories() {
 
           <SortableContext items={filteredCategories.map((cat) => cat.id)}>
             <div className="mt-4 space-y-2">
-              {filteredCategories.length === 0 && !isLoading && !error && (
+              {filteredCategories.length === 0 && !isLoading && (
                 <div className="flex items-center justify-left text-gray-400">Категорій немає</div>
               )}
               {filteredCategories.map((category) => (
@@ -382,10 +386,6 @@ export default function Categories() {
                       {isChannelsLoading ? (
                         <div className="flex justify-center items-center p-2">
                           <ChannelLoadingSpinner />
-                        </div>
-                      ) : channelsError ? (
-                        <div className="text-red-500 p-2">
-                          Помилка завантаження каналів: {channelsError}
                         </div>
                       ) : (
                         <>
@@ -433,12 +433,12 @@ export default function Categories() {
                   )}
                 </div>
               ))}
-              {!isLoading && !error && filteredCategories.length > 0 && (
+              {!isLoading && filteredCategories.length > 0 && (
                 <div className="w-full flex items-center justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer">
                   <img src={PlusIcon} alt="Створити категорію" className="w-5 h-5" />
                 </div>
               )}
-              {!isLoading && !error && filteredCategories.length === 0 && (
+              {!isLoading && filteredCategories.length === 0 && (
                 <div className="w-full flex items-center justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer">
                   <img src={PlusIcon} alt="Створити категорію" className="w-5 h-5" />
                 </div>
