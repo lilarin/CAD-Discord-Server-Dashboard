@@ -51,7 +51,7 @@ function DraggableCategory({
   const style = {
     transform: CSS.Translate.toString(transform),
     transition,
-    ...(isDragging ? { border: '2px dashed #ccc', opacity: 0.7 } : {}),
+    ...(isDragging ? { border: 'dashed 2px #6b727f' } : {}),
   };
 
   return (
@@ -116,7 +116,7 @@ function DraggableChannel({
   const style = {
     transform: CSS.Translate.toString(transform),
     transition,
-    ...(isDragging ? { opacity: 0.7 } : {}),
+    ...(isDragging ? { border: 'dashed 2px #6b727f', zIndex: 9999 } : {}),
   };
 
   return (
@@ -143,7 +143,7 @@ function DraggableChannel({
         )}
         <span>{channel.name.charAt(0).toUpperCase() + channel.name.slice(1)}</span>
       </div>
-      <div className={`flex justify-end space-x-2 items-center ${isHovered ? '' : 'opacity-0'}`}>
+      <div className={`flex justify-end space-x-2 pr-1 ${isHovered ? '' : 'opacity-0'}`}>
         <div className="relative group">
           <img
             src={RenameIcon}
@@ -345,7 +345,7 @@ export default function Categories() {
 
   return (
     <DndContext collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd} sensors={sensors}>
-      <div className="p-6 flex justify-left">
+      <div className="p-6">
         {isLoading ? (
             <ComponentLoadingSpinner/>
         ) : (
@@ -363,7 +363,7 @@ export default function Categories() {
             <SortableContext items={filteredCategories.map((cat) => cat.id)}>
               <div className="mt-4 space-y-2">
                 {filteredCategories.length === 0 && !isLoading && (
-                  <div className="flex items-center justify-left text-gray-400">Категорій немає</div>
+                  <div className="text-gray-400">Категорій немає</div>
                 )}
                 {filteredCategories.map((category) => (
                   <div key={category.id}>
@@ -381,9 +381,7 @@ export default function Categories() {
                         className="mt-2 overflow-hidden transition-max-height duration-300 ease-in-out"
                       >
                         {isChannelsLoading ? (
-                          <div className="flex justify-center items-center p-2">
-                            <ChannelLoadingSpinner />
-                          </div>
+                          <ChannelLoadingSpinner />
                         ) : (
                           <>
                             {textChannels.length > 0 && (
@@ -421,7 +419,7 @@ export default function Categories() {
                                 Каналів немає
                               </div>
                             )}
-                            <div className="flex items-center justify-center p-1 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer mt-2 ml-4">
+                            <div className="flex justify-center p-1.5 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer mt-2 ml-4">
                               <img src={CreateChannel} alt="Створити канал" className="w-4 h-4" />
                             </div>
                           </>
