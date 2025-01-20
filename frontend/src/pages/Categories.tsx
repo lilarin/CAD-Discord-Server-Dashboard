@@ -9,6 +9,7 @@ import {
   deleteChannel,
   updateCategoryPosition,
   updateChannelPosition,
+  createChannel
 } from '@/lib/api';
 import { ChannelLoadingSpinner, ComponentLoadingSpinner } from '@/components/LoadingSpinner';
 import RenameIcon from '@/assets/icons/rename.svg';
@@ -159,8 +160,11 @@ function DraggableChannel({
   );
 }
 
-function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDeleteChannel, onCreateCategory }) {
+function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDeleteChannel, onCreateCategory, onCreateChannel }) {
   const [newCategoryName, setNewCategoryName] = useState('');
+  const [newChannelName, setNewChannelName] = useState('');
+  const [newChannelType, setNewChannelType] = useState<'text' | 'voice'>('text');
+
   const actionTextMap = {
     create: {
       category: 'Створення нової категорії',
@@ -192,6 +196,9 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
   const handleCreateAction = () => {
     if (target === 'category') {
       onCreateCategory(newCategoryName);
+    }
+    if (target === 'channel') {
+      onCreateChannel(newChannelName, newChannelType);
     }
   };
 
@@ -234,6 +241,40 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
               <button
                 onClick={handleCreateAction}
                 disabled={!newCategoryName.trim()}
+                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
+              >
+                Створити
+              </button>
+            </div>
+          </div>
+        )}
+        {action === 'create' && target === 'channel' && (
+          <div className="space-y-2 mt-4">
+            <input
+              type="text"
+              placeholder="Назва каналу"
+              className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+              value={newChannelName}
+              onChange={(e) => setNewChannelName(e.target.value)}
+            />
+            <select
+              className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+              value={newChannelType}
+              onChange={(e) => setNewChannelType(e.target.value as 'text' | 'voice')}
+            >
+              <option value="text">Текстовий</option>
+              <option value="voice">Голосовий</option>
+            </select>
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={onCancel}
+                className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Скасувати
+              </button>
+              <button
+                onClick={handleCreateAction}
+                disabled={!newChannelName.trim()}
                 className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
               >
                 Створити
@@ -333,7 +374,8 @@ export default function Categories() {
       setActionSidebar({ action: null, target: null, item: null });
 
       try {
-        await createCategory(categoryName);
+        const categories = await createCategory(categoryName);
+        setCategories(categories);
       } catch (error) {
         toast.error(error.message, {
           position: "bottom-right",
@@ -341,12 +383,31 @@ export default function Categories() {
         });
         const fetchedCategories = await getCategories();
         setCategories(fetchedCategories);
-      } finally {
-        const fetchedCategories = await getCategories();
-        setCategories(fetchedCategories);
       }
     },
     []
+  );
+
+  const handleCreateChannel = useCallback(
+    async (channelName: string, channelType: 'text' | 'voice') => {
+      const tempId = Date.now();
+      const newChannel: Channel = { id: tempId, name: channelName, type: channelType, position: 100 };
+      setChannels((prevChannels) => [...prevChannels, newChannel]);
+      setActionSidebar({ action: null, target: null, item: null });
+
+      try {
+        const channels = await createChannel(openCategoryId, channelName, channelType);
+        setChannels(channels);
+      } catch (error) {
+        toast.error(error.message, {
+          position: "bottom-right",
+          duration: 10000,
+        });
+        const channels = await getChannels(openCategoryId)
+        setChannels(channels);
+      }
+    },
+    [openCategoryId]
   );
 
   const handleDeleteCategory = useCallback(
@@ -361,7 +422,8 @@ export default function Categories() {
       setActionSidebar({ action: null, target: null, item: null });
 
       try {
-        await deleteCategory(categoryId);
+        const categories = await deleteCategory(categoryId);
+        setCategories(categories);
       } catch (error) {
         toast.error(error.message, {
           position: "bottom-right",
@@ -383,7 +445,8 @@ export default function Categories() {
       setActionSidebar({ action: null, target: null, item: null });
 
       try {
-        await deleteChannel(channelId);
+        const channels = await deleteChannel(channelId);
+        setChannels(channels);
       } catch (error) {
         toast.error(error.message, {
           position: "bottom-right",
@@ -575,6 +638,7 @@ export default function Categories() {
             onDeleteCategory={handleDeleteCategory}
             onDeleteChannel={handleDeleteChannelFromCategory}
             onCreateCategory={handleCreateCategory}
+            onCreateChannel={handleCreateChannel}
           />
         </div>
       )}
