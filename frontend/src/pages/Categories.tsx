@@ -9,7 +9,9 @@ import {
   deleteChannel,
   updateCategoryPosition,
   updateChannelPosition,
-  createChannel
+  createChannel,
+  renameChannel,
+  renameCategory,
 } from '@/lib/api';
 import { ChannelLoadingSpinner, ComponentLoadingSpinner } from '@/components/LoadingSpinner';
 import RenameIcon from '@/assets/icons/rename.svg';
@@ -160,26 +162,38 @@ function DraggableChannel({
   );
 }
 
-function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDeleteChannel, onCreateCategory, onCreateChannel }) {
+function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDeleteChannel, onCreateCategory, onCreateChannel, onRenameCategory, onRenameChannel }) {
   const [newCategoryName, setNewCategoryName] = useState('');
   const [newChannelName, setNewChannelName] = useState('');
   const [newChannelType, setNewChannelType] = useState<'text' | 'voice'>('text');
+  const [renameCategoryName, setRenameCategoryName] = useState('');
+  const [renameChannelName, setRenameChannelName] = useState('');
 
-  const actionTextMap = {
+    useEffect(() => {
+        if (action === 'rename') {
+            if (target === 'category' && item) {
+                setRenameCategoryName(item.name);
+            } else if (target === 'channel' && item) {
+                setRenameChannelName(item.name);
+            }
+        }
+    }, [action, target, item]);
+
+    const actionTextMap = {
     create: {
       category: 'Створення нової категорії',
       channel: 'Створення нового каналу',
     },
     rename: {
-      category: `Перейменування категорії "${item?.name || ''}"`,
-      channel: `Перейменування каналу "${item?.name || ''}"`,
+      category: `Перейменування категорії "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
+      channel: `Перейменування каналу "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
     },
     edit: {
-      category: `Редагування категорії "${item?.name || ''}"`,
+      category: `Редагування категорії "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
     },
     delete: {
-      category: `Видалити категорію "${item?.name || ''}"?`,
-      channel: `Видалити канал "${item?.name || ''}"?`,
+      category: `Видалити категорію "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"?`,
+      channel: `Видалити канал "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"?`,
     },
   };
 
@@ -202,61 +216,77 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
     }
   };
 
+  const handleRenameAction = () => {
+    if (target === 'category' && item) {
+      onRenameCategory(item.id, renameCategoryName);
+    } else if (target === 'channel' && item) {
+      onRenameChannel(item.id, renameChannelName);
+    }
+  };
+
+  const isRenameCategoryDisabled = !renameCategoryName.trim() || (item && renameCategoryName.trim() === item.name);
+  const isRenameChannelDisabled = !renameChannelName.trim() || (item && renameChannelName.trim() === item.name);
+
   return (
     <div className="w-full h-full pt-5 pr-5">
       <div className="bg-[#2F3136] rounded p-4">
         <h3 className="text-lg font-semibold mb-2">{text}</h3>
         {action === 'delete' && (
-          <div className="flex justify-end space-x-2 mt-4">
-            <button
-              onClick={onCancel}
-              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Скасувати
-            </button>
-            <button
-              onClick={handleDeleteAction}
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Видалити
-            </button>
-          </div>
-        )}
-        {action === 'create' && target === 'category' && (
-          <div className="space-y-2 mt-4">
-            <input
-              type="text"
-              placeholder="Назва категорії"
-              className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
-              value={newCategoryName}
-              onChange={(e) => setNewCategoryName(e.target.value)}
-            />
-            <div className="flex justify-end space-x-2">
+            <div className="flex justify-start space-x-3 pt-3 pb-1">
               <button
-                onClick={onCancel}
-                className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  onClick={handleDeleteAction}
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Видалити
+              </button>
+              <button
+                  onClick={onCancel}
+                  className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               >
                 Скасувати
               </button>
+            </div>
+        )}
+        {action === 'create' && target === 'category' && (
+            <div className="space-y-2 mt-4">
+              <input
+                  type="text"
+                  placeholder="Назва категорії"
+                  className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+              value={newCategoryName}
+              onChange={(e) => setNewCategoryName(e.target.value)}
+            />
+            <div className="flex justify-start space-x-3 pt-3 pb-1">
               <button
-                onClick={handleCreateAction}
-                disabled={!newCategoryName.trim()}
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
+                  onClick={handleCreateAction}
+                  disabled={!newCategoryName.trim()}
+                  className={`bg-green-600 ${
+                      (newCategoryName.trim()) ? 'hover:bg-green-700' : ''
+                  } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
               >
                 Створити
+              </button>
+              <button
+                  onClick={onCancel}
+                  className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Скасувати
               </button>
             </div>
           </div>
         )}
         {action === 'create' && target === 'channel' && (
-          <div className="space-y-2 mt-4">
-            <input
-              type="text"
-              placeholder="Назва каналу"
-              className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+            <div className="space-y-2 mt-4">
+              <input
+                  type="text"
+                  placeholder="Назва каналу"
+                  className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
               value={newChannelName}
               onChange={(e) => setNewChannelName(e.target.value)}
             />
+            <div className="flex justify-start space-x-3 p-1">
+              Тип каналу
+            </div>
             <select
               className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
               value={newChannelType}
@@ -265,38 +295,95 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
               <option value="text">Текстовий</option>
               <option value="voice">Голосовий</option>
             </select>
-            <div className="flex justify-end space-x-2">
+              <div className="flex justify-start space-x-3 pt-3 pb-1">
+                <button
+                    onClick={handleCreateAction}
+                    disabled={!newChannelName.trim()}
+                    className={`bg-green-600 ${
+                        (newChannelName.trim()) ? 'hover:bg-green-700' : ''
+                    } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
+                >
+                  Створити
+                </button>
+                <button
+                    onClick={onCancel}
+                    className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Скасувати
+                </button>
+              </div>
+            </div>
+        )}
+        {action === 'rename' && target === 'category' && item && (
+            <div className="space-y-2 mt-4">
+                <input
+                    type="text"
+                    placeholder="Нова назва категорії"
+                    className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+                    value={renameCategoryName}
+                    onChange={(e) => setRenameCategoryName(e.target.value)}
+                />
+                <div className="flex justify-start space-x-3 pt-3 pb-1">
+                    <button
+                        onClick={handleRenameAction}
+                        disabled={isRenameCategoryDisabled}
+                        className={`bg-green-600 ${
+                            (!isRenameCategoryDisabled) ? 'hover:bg-green-700' : ''
+                        } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
+                    >
+                        Зберегти
+                    </button>
+                    <button
+                        onClick={onCancel}
+                        className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    >
+                        Скасувати
+                    </button>
+                </div>
+            </div>
+        )}
+        {action === 'rename' && target === 'channel' && item && (
+            <div className="space-y-2 mt-4">
+                <input
+                    type="text"
+                    placeholder="Нова назва каналу"
+                    className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+                    value={renameChannelName}
+                    onChange={(e) => setRenameChannelName(e.target.value)}
+                />
+                <div className="flex justify-start space-x-3 pt-3 pb-1">
+                    <button
+                        onClick={handleRenameAction}
+                        disabled={isRenameChannelDisabled}
+                        className={`bg-green-600 ${
+                            (!isRenameChannelDisabled) ? 'hover:bg-green-700' : ''
+                        } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
+                    >
+                        Зберегти
+                    </button>
+                    <button
+                        onClick={onCancel}
+                        className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    >
+                        Скасувати
+                    </button>
+                </div>
+            </div>
+        )}
+        {action !== 'delete' && action !== 'create' && action !== 'rename' && (
+            <div className="flex justify-end mt-4">
               <button
-                onClick={onCancel}
-                className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  onClick={onCancel}
+                  className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               >
-                Скасувати
-              </button>
-              <button
-                onClick={handleCreateAction}
-                disabled={!newChannelName.trim()}
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
-              >
-                Створити
+                Закрити
               </button>
             </div>
-          </div>
-        )}
-        {action !== 'delete' && action !== 'create' && (
-          <div className="flex justify-end mt-4">
-            <button
-              onClick={onCancel}
-              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Закрити
-            </button>
-          </div>
         )}
       </div>
     </div>
   );
 }
-
 export default function Categories() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -348,9 +435,9 @@ export default function Categories() {
         setChannels([]);
         return;
       }
-
       setOpenCategoryId(categoryId);
       setIsChannelsLoading(true);
+
       try {
         const fetchedChannels = await getChannels(categoryId);
         setChannels(fetchedChannels);
@@ -408,6 +495,54 @@ export default function Categories() {
       }
     },
     [openCategoryId]
+  );
+
+  const handleRenameCategory = useCallback(
+      async (categoryId: number, newName: string) => {
+          setCategories(prevCategories =>
+              prevCategories.map(category =>
+                  category.id === categoryId ? { ...category, name: newName } : category
+              )
+          );
+          setActionSidebar({ action: null, target: null, item: null });
+
+          try {
+              const updatedCategories = await renameCategory(categoryId, newName);
+              setCategories(updatedCategories);
+          } catch (error) {
+              toast.error(error.message, {
+                  position: "bottom-right",
+                  duration: 10000,
+              });
+              const fetchedCategories = await getCategories();
+              setCategories(fetchedCategories);
+          }
+      },
+      []
+  );
+
+  const handleRenameChannel = useCallback(
+      async (channelId: number, newName: string) => {
+          setChannels(prevChannels =>
+              prevChannels.map(channel =>
+                  channel.id === channelId ? { ...channel, name: newName } : channel
+              )
+          );
+          setActionSidebar({ action: null, target: null, item: null });
+          
+          try {
+              const updatedChannels = await renameChannel(channelId, newName);
+              setChannels(updatedChannels);
+          } catch (error) {
+              toast.error(error.message, {
+                  position: "bottom-right",
+                  duration: 10000,
+              });
+              const fetchedChannels = await getChannels(openCategoryId);
+              setChannels(fetchedChannels);
+          }
+      },
+      [openCategoryId]
   );
 
   const handleDeleteCategory = useCallback(
@@ -592,7 +727,7 @@ export default function Categories() {
                               )}
                               {voiceChannels.length > 0 && (
                                 <SortableContext items={voiceChannels.map((channel) => channel.id)}>
-                                  <ul className="mt-1">
+                                  <ul className="space-y-1 mt-1">
                                     {voiceChannels.map((channel) => (
                                       <DraggableChannel
                                         key={channel.id}
@@ -639,6 +774,8 @@ export default function Categories() {
             onDeleteChannel={handleDeleteChannelFromCategory}
             onCreateCategory={handleCreateCategory}
             onCreateChannel={handleCreateChannel}
+            onRenameCategory={handleRenameCategory}
+            onRenameChannel={handleRenameChannel}
           />
         </div>
       )}
