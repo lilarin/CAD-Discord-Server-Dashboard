@@ -36,13 +36,13 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import toast from 'react-hot-toast';
 
+type ActionType = 'create' | 'rename' | 'edit' | 'delete' | null;
+type ActionTarget = 'category' | 'channel' | null;
+
 function DraggableCategory({
   category,
   handleCategoryClick,
-  handleDeleteCategory,
-  hoveredCategoryId,
-  setHoveredCategoryId,
-  openCategoryId
+  onActionTriggered,
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: category.id,
@@ -74,27 +74,25 @@ function DraggableCategory({
         <span>{category.name.charAt(0).toUpperCase() + category.name.slice(1)}</span>
       </div>
       <div className="flex justify-end space-x-2">
-        <div className="relative group">
+        <div className="relative group" onClick={() => onActionTriggered('rename', 'category', category)}>
         <img
             src={RenameIcon}
             alt="Перейменувати"
             className="w-5 h-5 cursor-pointer filter group-hover:brightness-200 transition-all duration-200"
           />
         </div>
-        <div className="relative group">
+        <div className="relative group" onClick={() => onActionTriggered('edit', 'category', category)}>
           <img
             src={EditIcon}
             alt="Змінити"
             className="w-5 h-5 cursor-pointer filter group-hover:brightness-200 transition-all duration-200"
           />
         </div>
-        <div className="relative group" onClick={() => handleDeleteCategory(category.id)}>
+        <div className="relative group" onClick={() => onActionTriggered('delete', 'category', category)}>
           <img
-            src={hoveredCategoryId === category.id ? DeleteHoveredIcon : DeleteIcon}
+            src={DeleteIcon}
             alt="Видалити"
-            className="w-5 h-5 cursor-pointer filter transition-all duration-200"
-            onMouseEnter={() => setHoveredCategoryId(category.id)}
-            onMouseLeave={() => setHoveredCategoryId(null)}
+            className="w-5 h-5 cursor-pointer filter group-hover:brightness-200 transition-all duration-200"
           />
         </div>
       </div>
@@ -104,9 +102,7 @@ function DraggableCategory({
 
 function DraggableChannel({
   channel,
-  handleDeleteChannel,
-  hoveredChannelId,
-  setHoveredChannelId,
+  onActionTriggered,
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -144,24 +140,86 @@ function DraggableChannel({
         <span>{channel.name.charAt(0).toUpperCase() + channel.name.slice(1)}</span>
       </div>
       <div className={`flex justify-end space-x-2 pr-1 ${isHovered ? '' : 'opacity-0'}`}>
-        <div className="relative group">
+        <div className="relative group" onClick={() => onActionTriggered('rename', 'channel', channel)}>
           <img
             src={RenameIcon}
             alt="Перейменувати"
             className="w-4 h-4 cursor-pointer filter group-hover:brightness-200 transition-all duration-200"
           />
         </div>
-        <div className="relative group" onClick={() => handleDeleteChannel(channel.id)}>
+        <div className="relative group" onClick={() => onActionTriggered('delete', 'channel', channel)}>
           <img
-            src={hoveredChannelId === channel.id ? DeleteHoveredIcon : DeleteIcon}
+            src={DeleteIcon}
             alt="Видалити"
-            className="w-4 h-4 cursor-pointer filter transition-all duration-200"
-            onMouseEnter={() => setHoveredChannelId(channel.id)}
-            onMouseLeave={() => setHoveredChannelId(null)}
+            className="w-4 h-4 cursor-pointer filter group-hover:brightness-200 transition-all duration-200"
           />
         </div>
       </div>
     </li>
+  );
+}
+
+function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDeleteChannel }) {
+  const actionTextMap = {
+    create: {
+      category: 'Створення нової категорії',
+      channel: 'Створення нового каналу',
+    },
+    rename: {
+      category: `Перейменування категорії "${item?.name || ''}"`,
+      channel: `Перейменування каналу "${item?.name || ''}"`,
+    },
+    edit: {
+      category: `Редагування категорії "${item?.name || ''}"`,
+    },
+    delete: {
+      category: `Видалити категорію "${item?.name || ''}"?`,
+      channel: `Видалити канал "${item?.name || ''}"?`,
+    },
+  };
+
+  const text = action && target ? actionTextMap[action][target] : '';
+
+  const handleDelete = () => {
+    if (target === 'category' && item) {
+      onDeleteCategory(item.id);
+    } else if (target === 'channel' && item) {
+      onDeleteChannel(item.id);
+    }
+  };
+
+  return (
+    <div className="w-full h-full pt-5 pr-5">
+      <div className="bg-[#2F3136] rounded p-4">
+        <h3 className="text-lg font-semibold mb-2">{text}</h3>
+        {action === 'delete' && (
+          <div className="flex justify-end space-x-2 mt-4">
+            <button
+              onClick={onCancel}
+              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Скасувати
+            </button>
+            <button
+              onClick={handleDelete}
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Видалити
+            </button>
+          </div>
+        )}
+        {action !== 'delete' && (
+          <div className="flex justify-end mt-4">
+            <button
+              onClick={onCancel}
+              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Закрити
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -172,10 +230,21 @@ export default function Categories() {
   const [channels, setChannels] = useState<Channel[]>([]);
   const [isChannelsLoading, setIsChannelsLoading] = useState(false);
   const channelsRef = useRef<HTMLDivElement>(null);
-  const [hoveredCategoryId, setHoveredCategoryId] = useState<number | null>(null);
-  const [hoveredChannelId, setHoveredChannelId] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [isDraggingCategory, setIsDraggingCategory] = useState(false);
+  const [actionSidebar, setActionSidebar] = useState<{
+    action: ActionType;
+    target: ActionTarget;
+    item: Category | Channel | null;
+  }>({ action: null, target: null, item: null });
+
+  const handleActionTriggered = (action: ActionType, target: ActionTarget, item: Category | Channel | null) => {
+    setActionSidebar({ action, target, item });
+  };
+
+  const handleCancelAction = () => {
+    setActionSidebar({ action: null, target: null, item: null });
+  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -241,6 +310,8 @@ export default function Categories() {
         });
         const fetchedCategories = await getCategories();
         setCategories(fetchedCategories);
+      } finally {
+        setActionSidebar({ action: null, target: null, item: null });
       }
     },
     [openCategoryId]
@@ -259,6 +330,10 @@ export default function Categories() {
           position: "bottom-right",
           duration: 10000
         });
+        const fetchedChannels = await getChannels(openCategoryId);
+        setChannels(fetchedChannels);
+      } finally {
+        setActionSidebar({ action: null, target: null, item: null });
       }
     },
     [openCategoryId]
@@ -344,100 +419,107 @@ export default function Categories() {
   const voiceChannels = channels.filter((channel) => channel.type === 'voice');
 
   return (
-    <DndContext collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd} sensors={sensors}>
-      <div className="p-6">
-        {isLoading ? (
-            <ComponentLoadingSpinner/>
-        ) : (
-          <div className="w-2/3">
-            <div className="mb-4">
-              <input
-                type="text"
-                placeholder="Пошук за назвою категорії..."
-                className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
-                value={searchTerm}
-                onChange={handleSearch}
-              />
-            </div>
-
-            <SortableContext items={filteredCategories.map((cat) => cat.id)}>
-              <div className="mt-4 space-y-2">
-                {filteredCategories.length === 0 && !isLoading && (
-                  <div className="text-gray-400">Категорій немає</div>
-                )}
-                {filteredCategories.map((category) => (
-                  <div key={category.id}>
-                    <DraggableCategory
-                      category={category}
-                      handleCategoryClick={handleCategoryClick}
-                      handleDeleteCategory={handleDeleteCategory}
-                      openCategoryId={openCategoryId}
-                      hoveredCategoryId={hoveredCategoryId}
-                      setHoveredCategoryId={setHoveredCategoryId}
-                    />
-                    {openCategoryId === category.id && !isDraggingCategory && (
-                      <div
-                        ref={channelsRef}
-                        className="mt-2 overflow-hidden transition-max-height duration-300 ease-in-out"
-                      >
-                        {isChannelsLoading ? (
-                          <ChannelLoadingSpinner />
-                        ) : (
-                          <>
-                            {textChannels.length > 0 && (
-                              <SortableContext items={textChannels.map((channel) => channel.id)}>
-                                <ul className="space-y-1">
-                                  {textChannels.map((channel) => (
-                                    <DraggableChannel
-                                      key={channel.id}
-                                      channel={channel}
-                                      handleDeleteChannel={handleDeleteChannelFromCategory}
-                                      hoveredChannelId={hoveredChannelId}
-                                      setHoveredChannelId={setHoveredChannelId}
-                                    />
-                                  ))}
-                                </ul>
-                              </SortableContext>
-                            )}
-                            {voiceChannels.length > 0 && (
-                              <SortableContext items={voiceChannels.map((channel) => channel.id)}>
-                                <ul className="space-y-1 mt-1">
-                                  {voiceChannels.map((channel) => (
-                                    <DraggableChannel
-                                      key={channel.id}
-                                      channel={channel}
-                                      handleDeleteChannel={handleDeleteChannelFromCategory}
-                                      hoveredChannelId={hoveredChannelId}
-                                      setHoveredChannelId={setHoveredChannelId}
-                                    />
-                                  ))}
-                                </ul>
-                              </SortableContext>
-                            )}
-                            {textChannels.length === 0 && voiceChannels.length === 0 && (
-                              <div className="flex items-center justify-left ml-4 text-gray-400">
-                                Каналів немає
-                              </div>
-                            )}
-                            <div className="flex justify-center p-1.5 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer mt-2 ml-4">
-                              <img src={CreateChannel} alt="Створити канал" className="w-4 h-4" />
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                ))}
-                {!isLoading && filteredCategories.length > 0 && (
-                  <div className="w-full flex items-center justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer">
-                    <img src={CreateCategory} alt="Створити категорію" className="w-5 h-5" />
-                  </div>
-                )}
+    <div className="flex">
+      <DndContext collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd} sensors={sensors}>
+        <div className="p-5 w-2/3">
+          {isLoading ? (
+              <ComponentLoadingSpinner/>
+          ) : (
+            <div>
+              <div className="mb-2">
+                <input
+                  type="text"
+                  placeholder="Пошук за назвою категорії..."
+                  className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+                  value={searchTerm}
+                  onChange={handleSearch}
+                />
               </div>
-            </SortableContext>
-          </div>
-        )}
-      </div>
-    </DndContext>
+
+              <SortableContext items={filteredCategories.map((cat) => cat.id)}>
+                <div className="space-y-2">
+                  {filteredCategories.length === 0 && !isLoading && (
+                    <div className="text-gray-400">Категорій немає</div>
+                  )}
+                  {filteredCategories.map((category) => (
+                    <div key={category.id}>
+                      <DraggableCategory
+                        category={category}
+                        handleCategoryClick={handleCategoryClick}
+                        onActionTriggered={handleActionTriggered}
+                      />
+                      {openCategoryId === category.id && !isDraggingCategory && (
+                        <div
+                          ref={channelsRef}
+                          className="overflow-hidden transition-max-height duration-300 ease-in-out"
+                        >
+                          {isChannelsLoading ? (
+                            <ChannelLoadingSpinner />
+                          ) : (
+                            <>
+                              {textChannels.length > 0 && (
+                                <SortableContext items={textChannels.map((channel) => channel.id)}>
+                                  <ul className="space-y-1 mt-1">
+                                    {textChannels.map((channel) => (
+                                      <DraggableChannel
+                                        key={channel.id}
+                                        channel={channel}
+                                        onActionTriggered={handleActionTriggered}
+                                      />
+                                    ))}
+                                  </ul>
+                                </SortableContext>
+                              )}
+                              {voiceChannels.length > 0 && (
+                                <SortableContext items={voiceChannels.map((channel) => channel.id)}>
+                                  <ul className="mt-1">
+                                    {voiceChannels.map((channel) => (
+                                      <DraggableChannel
+                                        key={channel.id}
+                                        channel={channel}
+                                        onActionTriggered={handleActionTriggered}
+                                      />
+                                    ))}
+                                  </ul>
+                                </SortableContext>
+                              )}
+                              {textChannels.length === 0 && voiceChannels.length === 0 && (
+                                <div className="flex items-center justify-left ml-4 mt-2 mb-2 text-gray-400">
+                                  Каналів немає
+                                </div>
+                              )}
+                              <div className="flex justify-center p-1.5 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer mt-1.5 ml-4" onClick={() => handleActionTriggered('create', 'channel', null)}>
+                                <img src={CreateChannel} alt="Створити канал" className="w-4 h-4" />
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {!isLoading && filteredCategories.length > 0 && (
+                    <div className="w-full flex items-center justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer" onClick={() => handleActionTriggered('create', 'category', null)}>
+                      <img src={CreateCategory} alt="Створити категорію" className="w-5 h-5" />
+                    </div>
+                  )}
+                </div>
+              </SortableContext>
+            </div>
+          )}
+        </div>
+      </DndContext>
+      {actionSidebar.action && actionSidebar.target && (
+        <div className="w-1/3">
+          <ActionSidebar
+            action={actionSidebar.action}
+            target={actionSidebar.target}
+            item={actionSidebar.item}
+            onCancel={handleCancelAction}
+            onDeleteCategory={handleDeleteCategory}
+            onDeleteChannel={handleDeleteChannelFromCategory}
+          />
+        </div>
+      )}
+    </div>
   );
 }
