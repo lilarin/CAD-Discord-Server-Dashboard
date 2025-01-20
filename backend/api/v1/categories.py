@@ -11,7 +11,7 @@ from backend.services.format import (
 )
 from backend.services.utils import (
     create_template_category,
-    delete_target_category
+    delete_target_category, rename_target_channel
 )
 
 router = APIRouter()
@@ -24,6 +24,27 @@ async def get_categories():
         return await format_categories_response()
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
+    except Exception as exception:
+        raise HTTPException(status_code=500, detail=str(exception))
+
+
+@router.patch("/categories/{channel_id}/rename/{name}", response_model=list[Category])
+@uniform_response_middleware
+async def rename_channel(channel_id: int, name: str):
+    try:
+        channel = await fetch_channel(channel_id)
+        if channel.type not in [disnake.ChannelType.category]:
+            raise ValueError("Incorrect channel type")
+
+        if channel.name.lower() == name.lower():
+            raise ValueError("Name cannot be the same")
+
+        await rename_target_channel(channel, name)
+        return await format_categories_response()
+    except disnake.errors.HTTPException as exception:
+        raise HTTPException(status_code=exception.status, detail=str(exception.text))
+    except ValueError as exception:
+        raise HTTPException(status_code=400, detail=str(exception))
     except Exception as exception:
         raise HTTPException(status_code=500, detail=str(exception))
 
@@ -81,6 +102,7 @@ async def delete_category(category_id: int):
             raise ValueError("Incorrect channel type")
 
         await delete_target_category(channel)
+        return await format_categories_response()
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
     except ValueError as exception:

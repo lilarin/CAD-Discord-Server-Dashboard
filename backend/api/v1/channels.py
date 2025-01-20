@@ -1,13 +1,11 @@
 import disnake
 from fastapi import APIRouter, HTTPException
 
-from backend.middlewares.schemas import ResponseWrapper
 from backend.middlewares.uniform_response import uniform_response_middleware
 from backend.schemas import Channel
 from backend.services.fetch import fetch_channel, fetch_channels_by_type
 from backend.services.format import (
     format_channels_by_category_response,
-    format_channel_response,
     format_base_channel_response
 )
 from backend.services.requests import update_channel_order
@@ -38,19 +36,20 @@ async def get_channels_by_category_id(category_id: int):
         raise HTTPException(status_code=500, detail=str(exception))
 
 
-@router.patch("/channels/{channel_id}/rename/{name}", response_model=Channel)
+@router.patch("/channels/{channel_id}/rename/{name}", response_model=list[Channel])
 @uniform_response_middleware
 async def rename_channel(channel_id: int, name: str):
     try:
         channel = await fetch_channel(channel_id)
-        if channel.type not in [disnake.ChannelType.text, disnake.ChannelType.voice, disnake.ChannelType.category]:
+        if channel.type not in [disnake.ChannelType.text, disnake.ChannelType.voice]:
             raise ValueError("Incorrect channel type")
 
         if channel.name.lower() == name.lower():
             raise ValueError("Name cannot be the same")
 
-        channel = await rename_target_channel(channel, name)
-        return await format_channel_response(channel)
+        await rename_target_channel(channel, name)
+        category = await fetch_channel(channel.category_id)
+        return await format_channels_by_category_response(category)
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
     except ValueError as exception:
@@ -99,8 +98,8 @@ async def create_text_channel(category_id: int, name: str):
         if channel.type != disnake.ChannelType.category:
             raise ValueError("Incorrect channel type")
 
-        created_channel = await create_text_target_channel(channel, name)
-        return await format_channel_response(created_channel)
+        await create_text_target_channel(channel, name)
+        return await format_channels_by_category_response(channel)
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
     except ValueError as exception:
@@ -117,8 +116,8 @@ async def create_voice_channel(category_id: int, name: str):
         if channel.type != disnake.ChannelType.category:
             raise ValueError("Incorrect channel type")
 
-        created_channel = await create_voice_target_channel(channel, name)
-        return await format_channel_response(created_channel)
+        await create_voice_target_channel(channel, name)
+        return await format_channels_by_category_response(channel)
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
     except ValueError as exception:
@@ -127,7 +126,7 @@ async def create_voice_channel(category_id: int, name: str):
         raise HTTPException(status_code=500, detail=str(exception))
 
 
-@router.delete("/channels/{channel_id}", response_model=ResponseWrapper)
+@router.delete("/channels/{channel_id}", response_model=list[Channel])
 @uniform_response_middleware
 async def delete_channel(channel_id: int):
     try:
@@ -136,6 +135,8 @@ async def delete_channel(channel_id: int):
             raise ValueError("Incorrect channel type")
 
         await delete_target_channel(channel)
+        category = await fetch_channel(channel.category_id)
+        return await format_channels_by_category_response(category)
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
     except ValueError as exception:

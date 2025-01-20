@@ -37,11 +37,3 @@ async def format_base_channel_response(channel: TextChannel | VoiceChannel, inde
         id=str(channel.id),
         position=index,
     )
-
-
-async def format_channel_response(channel: TextChannel | VoiceChannel) -> Channel:
-    return Channel(
-        id=str(channel.id),
-        name=channel.name,
-        position=channel.position,
-    )
