@@ -3,8 +3,9 @@ import {
   Category,
   Channel,
   getCategories,
-  getChannels,
+  createCategory,
   deleteCategory,
+  getChannels,
   deleteChannel,
   updateCategoryPosition,
   updateChannelPosition,
@@ -13,7 +14,6 @@ import { ChannelLoadingSpinner, ComponentLoadingSpinner } from '@/components/Loa
 import RenameIcon from '@/assets/icons/rename.svg';
 import EditIcon from '@/assets/icons/edit.svg';
 import DeleteIcon from '@/assets/icons/delete.svg';
-import DeleteHoveredIcon from '@/assets/icons/delete_hover.svg';
 import CreateCategory from '@/assets/icons/create_category.svg';
 import CreateChannel from '@/assets/icons/create_channel.svg';
 import TextIcon from '@/assets/icons/text.svg';
@@ -159,7 +159,8 @@ function DraggableChannel({
   );
 }
 
-function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDeleteChannel }) {
+function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDeleteChannel, onCreateCategory }) {
+  const [newCategoryName, setNewCategoryName] = useState('');
   const actionTextMap = {
     create: {
       category: 'Створення нової категорії',
@@ -180,11 +181,17 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
 
   const text = action && target ? actionTextMap[action][target] : '';
 
-  const handleDelete = () => {
+  const handleDeleteAction = () => {
     if (target === 'category' && item) {
       onDeleteCategory(item.id);
     } else if (target === 'channel' && item) {
       onDeleteChannel(item.id);
+    }
+  };
+
+  const handleCreateAction = () => {
+    if (target === 'category') {
+      onCreateCategory(newCategoryName);
     }
   };
 
@@ -201,14 +208,40 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
               Скасувати
             </button>
             <button
-              onClick={handleDelete}
+              onClick={handleDeleteAction}
               className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
               Видалити
             </button>
           </div>
         )}
-        {action !== 'delete' && (
+        {action === 'create' && target === 'category' && (
+          <div className="space-y-2 mt-4">
+            <input
+              type="text"
+              placeholder="Назва категорії"
+              className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+              value={newCategoryName}
+              onChange={(e) => setNewCategoryName(e.target.value)}
+            />
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={onCancel}
+                className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Скасувати
+              </button>
+              <button
+                onClick={handleCreateAction}
+                disabled={!newCategoryName.trim()}
+                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
+              >
+                Створити
+              </button>
+            </div>
+          </div>
+        )}
+        {action !== 'delete' && action !== 'create' && (
           <div className="flex justify-end mt-4">
             <button
               onClick={onCancel}
@@ -292,15 +325,41 @@ export default function Categories() {
     [openCategoryId, isDraggingCategory]
   );
 
+  const handleCreateCategory = useCallback(
+    async (categoryName: string) => {
+      const tempId = Date.now();
+      const newCategory: Category = { id: tempId, name: categoryName };
+      setCategories((prevCategories) => [...prevCategories, newCategory]);
+      setActionSidebar({ action: null, target: null, item: null });
+
+      try {
+        await createCategory(categoryName);
+      } catch (error) {
+        toast.error(error.message, {
+          position: "bottom-right",
+          duration: 10000
+        });
+        const fetchedCategories = await getCategories();
+        setCategories(fetchedCategories);
+      } finally {
+        const fetchedCategories = await getCategories();
+        setCategories(fetchedCategories);
+      }
+    },
+    []
+  );
+
   const handleDeleteCategory = useCallback(
     async (categoryId: number) => {
-        setCategories((prevCategories) =>
-          prevCategories.filter((category) => category.id !== categoryId)
-        );
-        if (openCategoryId === categoryId) {
-          setOpenCategoryId(null);
-          setChannels([]);
-        }
+      if (openCategoryId === categoryId) {
+        setOpenCategoryId(null);
+        setChannels([]);
+      }
+      setCategories((prevCategories) =>
+        prevCategories.filter((category) => category.id !== categoryId)
+      );
+      setActionSidebar({ action: null, target: null, item: null });
+
       try {
         await deleteCategory(categoryId);
       } catch (error) {
@@ -310,8 +369,6 @@ export default function Categories() {
         });
         const fetchedCategories = await getCategories();
         setCategories(fetchedCategories);
-      } finally {
-        setActionSidebar({ action: null, target: null, item: null });
       }
     },
     [openCategoryId]
@@ -322,9 +379,11 @@ export default function Categories() {
       if (!openCategoryId) {
         return;
       }
+      setChannels((prevChannels) => prevChannels.filter((channel) => channel.id !== channelId));
+      setActionSidebar({ action: null, target: null, item: null });
+
       try {
         await deleteChannel(channelId);
-        setChannels((prevChannels) => prevChannels.filter((channel) => channel.id !== channelId));
       } catch (error) {
         toast.error(error.message, {
           position: "bottom-right",
@@ -332,8 +391,6 @@ export default function Categories() {
         });
         const fetchedChannels = await getChannels(openCategoryId);
         setChannels(fetchedChannels);
-      } finally {
-        setActionSidebar({ action: null, target: null, item: null });
       }
     },
     [openCategoryId]
@@ -517,6 +574,7 @@ export default function Categories() {
             onCancel={handleCancelAction}
             onDeleteCategory={handleDeleteCategory}
             onDeleteChannel={handleDeleteChannelFromCategory}
+            onCreateCategory={handleCreateCategory}
           />
         </div>
       )}
