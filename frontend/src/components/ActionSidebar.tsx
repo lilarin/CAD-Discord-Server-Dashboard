@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {Category, Channel} from "@/lib/api.ts";
+import HintIcon from "@/assets/icons/hint.svg";
 
 type ActionType = 'create' | 'rename' | 'edit' | 'delete' | null;
 type ActionTarget = 'category' | 'channel' | null;
@@ -7,7 +8,7 @@ type ActionTarget = 'category' | 'channel' | null;
 interface ActionSidebarProps {
   action: ActionType;
   target: ActionTarget;
-  item: Category | Channel
+  item: Category | Channel | null;
   onCancel: () => void;
   onDeleteCategory?: (id: number) => void;
   onDeleteChannel?: (id: number) => void;
@@ -23,6 +24,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
   const [newChannelType, setNewChannelType] = useState<'text' | 'voice'>('text');
   const [renameCategoryName, setRenameCategoryName] = useState('');
   const [renameChannelName, setRenameChannelName] = useState('');
+  const [showHint, setShowHint] = useState(false);
 
     useEffect(() => {
         if (action === 'rename') {
@@ -44,7 +46,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
       channel: `Перейменування каналу "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
     },
     edit: {
-      category: `Редагування категорії "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
+      category: `Редагування доступу ролей до категорії "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
     },
     delete: {
       category: `Видалити категорію "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"?`,
@@ -52,7 +54,23 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
     },
   };
 
+  const hintTextMap = {
+    create: {
+      category: 'Категорію варто сприймати як дисципліну, чи розділ зі своїми каналами та доступом',
+      channel: 'Введіть назву для каналу та оберіть його тип',
+    },
+    rename: {
+      category: 'Регістр для назви каналу не враховується та обробляється автоматично',
+      channel: 'Регістр для назви категорії не враховується та обробляється автоматично',
+    },
+    edit: {},
+    delete: {
+      category: 'При видаленні категорії всі канали в ній також будуть видалені',
+    },
+  };
+
   const text = action && target ? actionTextMap[action][target] : '';
+  const hintText = action && target ? hintTextMap[action][target] : '';
 
   const handleDeleteAction = () => {
     if (target === 'category' && item) {
@@ -85,9 +103,10 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
   return (
     <div className="w-full h-full pt-5 pr-5">
       <div className="bg-[#2F3136] rounded p-4">
-        <h3 className="text-lg font-semibold mb-2">{text}</h3>
+        <span className="text-lg font-semibold mb-2">{text}</span>
         {action === 'delete' && (
-            <div className="flex justify-start space-x-3 pt-3 pb-1">
+          <div className="flex justify-between items-center pt-3 pb-1">
+            <div className="flex justify-start space-x-3">
               <button
                   onClick={handleDeleteAction}
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -101,8 +120,19 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                 Скасувати
               </button>
             </div>
+            {hintText && (
+              <button
+                onMouseEnter={() => setShowHint(true)}
+                onMouseLeave={() => setShowHint(false)}
+                className="focus:outline-none"
+              >
+                <img src={HintIcon} alt="Інформація" className="w-6 h-6" />
+              </button>
+            )}
+          </div>
         )}
         {action === 'create' && target === 'category' && (
+          <div>
             <div className="space-y-2 mt-4">
               <input
                   type="text"
@@ -111,26 +141,39 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
               value={newCategoryName}
               onChange={(e) => setNewCategoryName(e.target.value)}
             />
-            <div className="flex justify-start space-x-3 pt-3 pb-1">
-              <button
-                  onClick={handleCreateAction}
-                  disabled={!newCategoryName.trim()}
-                  className={`bg-green-600 ${
-                      (newCategoryName.trim()) ? 'hover:bg-green-700' : ''
-                  } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
-              >
-                Створити
-              </button>
-              <button
-                  onClick={onCancel}
-                  className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              >
-                Скасувати
-              </button>
+            </div>
+            <div className="flex justify-between items-center pt-3 pb-1">
+              <div className="flex justify-start space-x-3">
+                <button
+                    onClick={handleCreateAction}
+                    disabled={!newCategoryName.trim()}
+                    className={`bg-green-600 ${
+                        (newCategoryName.trim()) ? 'hover:bg-green-700' : ''
+                    } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
+                >
+                  Створити
+                </button>
+                <button
+                    onClick={onCancel}
+                    className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Скасувати
+                </button>
+              </div>
+              {hintText && (
+                <button
+                  onMouseEnter={() => setShowHint(true)}
+                  onMouseLeave={() => setShowHint(false)}
+                  className="focus:outline-none"
+                >
+                  <img src={HintIcon} alt="Інформація" className="w-6 h-6" />
+                </button>
+              )}
             </div>
           </div>
         )}
         {action === 'create' && target === 'channel' && (
+          <div>
             <div className="space-y-2 mt-4">
               <input
                   type="text"
@@ -150,7 +193,9 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
               <option value="text">Текстовий</option>
               <option value="voice">Голосовий</option>
             </select>
-              <div className="flex justify-start space-x-3 pt-3 pb-1">
+              </div>
+            <div className="flex justify-between items-center pt-3 pb-1">
+              <div className="flex justify-start space-x-3">
                 <button
                     onClick={handleCreateAction}
                     disabled={!newChannelName.trim()}
@@ -167,9 +212,20 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                   Скасувати
                 </button>
               </div>
+              {hintText && (
+                <button
+                  onMouseEnter={() => setShowHint(true)}
+                  onMouseLeave={() => setShowHint(false)}
+                  className="focus:outline-none"
+                >
+                  <img src={HintIcon} alt="Інформація" className="w-6 h-6" />
+                </button>
+              )}
             </div>
+          </div>
         )}
         {action === 'rename' && target === 'category' && item && (
+          <div>
             <div className="space-y-2 mt-4">
                 <input
                     type="text"
@@ -178,26 +234,39 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                     value={renameCategoryName}
                     onChange={(e) => setRenameCategoryName(e.target.value)}
                 />
-                <div className="flex justify-start space-x-3 pt-3 pb-1">
-                    <button
-                        onClick={handleRenameAction}
-                        disabled={isRenameCategoryDisabled}
-                        className={`bg-green-600 ${
-                            (!isRenameCategoryDisabled) ? 'hover:bg-green-700' : ''
-                        } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
-                    >
-                        Зберегти
-                    </button>
-                    <button
-                        onClick={onCancel}
-                        className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                        Скасувати
-                    </button>
-                </div>
             </div>
+            <div className="flex justify-between items-center pt-3 pb-1">
+              <div className="flex justify-start space-x-3">
+                <button
+                    onClick={handleRenameAction}
+                    disabled={isRenameCategoryDisabled}
+                    className={`bg-green-600 ${
+                        (!isRenameCategoryDisabled) ? 'hover:bg-green-700' : ''
+                    } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
+                >
+                  Зберегти
+                </button>
+                <button
+                    onClick={onCancel}
+                    className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Скасувати
+                </button>
+              </div>
+              {hintText && (
+                <button
+                  onMouseEnter={() => setShowHint(true)}
+                  onMouseLeave={() => setShowHint(false)}
+                  className="focus:outline-none"
+                >
+                  <img src={HintIcon} alt="Інформація" className="w-6 h-6" />
+                </button>
+              )}
+            </div>
+          </div>
         )}
         {action === 'rename' && target === 'channel' && item && (
+          <div>
             <div className="space-y-2 mt-4">
                 <input
                     type="text"
@@ -206,36 +275,46 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                     value={renameChannelName}
                     onChange={(e) => setRenameChannelName(e.target.value)}
                 />
-                <div className="flex justify-start space-x-3 pt-3 pb-1">
-                    <button
-                        onClick={handleRenameAction}
-                        disabled={isRenameChannelDisabled}
-                        className={`bg-green-600 ${
-                            (!isRenameChannelDisabled) ? 'hover:bg-green-700' : ''
-                        } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
-                    >
-                        Зберегти
-                    </button>
-                    <button
-                        onClick={onCancel}
-                        className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                        Скасувати
-                    </button>
-                </div>
             </div>
-        )}
-        {action !== 'delete' && action !== 'create' && action !== 'rename' && (
-            <div className="flex justify-end mt-4">
-              <button
-                  onClick={onCancel}
-                  className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              >
-                Закрити
-              </button>
+            <div className="flex justify-between items-center pt-3 pb-1">
+              <div className="flex justify-start space-x-3">
+                <button
+                    onClick={handleRenameAction}
+                    disabled={isRenameChannelDisabled}
+                    className={`bg-green-600 ${
+                        (!isRenameChannelDisabled) ? 'hover:bg-green-700' : ''
+                    } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
+                >
+                  Зберегти
+                </button>
+                <button
+                    onClick={onCancel}
+                    className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Скасувати
+                </button>
+              </div>
+              {hintText && (
+                <button
+                  onMouseEnter={() => setShowHint(true)}
+                  onMouseLeave={() => setShowHint(false)}
+                  className="focus:outline-none"
+                >
+                  <img src={HintIcon} alt="Інформація" className="w-6 h-6" />
+                </button>
+              )}
             </div>
+          </div>
         )}
       </div>
+      {showHint && hintText && (
+        <div className="w-full pt-5">
+          <div className="bg-[#2F3136] rounded p-4">
+            <h3 className="font-semibold mb-2">Підказка</h3>
+            <h3 className="font-light">{hintText}</h3>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
