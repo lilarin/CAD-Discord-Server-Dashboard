@@ -266,3 +266,44 @@ export async function getCategoryAccessRoles(categoryId: number): Promise<Role[]
     }
   }
 }
+
+export async function editCategoryPermissions(categoryId: number, rolesWithAccess: number[]): Promise<Role[]> {
+  try {
+    const response = await api.put<ApiResponse<Role[]>>(
+      `/api/v1/categories/${categoryId}/permissions`,
+      rolesWithAccess
+    );
+    return response.data.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      const statusCode = axiosError.response?.status || 500;
+      throw new ApiError(axiosError.message, statusCode);
+    } else if (error instanceof Error) {
+      throw new ClientError(error.message);
+    } else {
+      throw new ClientError(`Something went wrong: ${String(error)}`);
+    }
+  }
+}
+
+export async function getRoles(categoryId: number): Promise<Role[]> {
+  try {
+    console.log(categoryId)
+    const response = await api.get<ApiResponse<Role[]>>(
+        `/api/v1/roles`
+    );
+    return response.data.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      const statusCode = axiosError.response?.status || 500;
+      throw new ApiError(error.message, statusCode);
+    } else if (error instanceof Error) {
+      throw new ClientError(error.message);
+    } else {
+      throw new ClientError(`Something went wrong: ${String(error)}`);
+    }
+  }
+}
+
