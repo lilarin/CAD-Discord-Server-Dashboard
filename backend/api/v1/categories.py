@@ -1,13 +1,14 @@
 import disnake
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Body
 
 from backend.middlewares.uniform_response import uniform_response_middleware
-from backend.schemas import RoleWithAccess, Category
+from backend.schemas import Category, Role, BaseRole
 from backend.services.requests import update_channel_order
-from backend.services.fetch import fetch_channel, fetch_channels_by_type
+from backend.services.fetch import fetch_channel, fetch_channels_by_type, fetch_roles_with_access, fetch_roles_by_ids, \
+    fetch_guild_default_role
 from backend.services.format import (
     format_categories_response,
-    format_base_channel_response
+    format_base_channel_response, format_roles_with_access_response, format_roles_with_access_by_roles
 )
 from backend.services.utils import (
     create_template_category,
@@ -111,23 +112,15 @@ async def delete_category(category_id: int):
         raise HTTPException(status_code=500, detail=str(exception))
 
 
-@router.get("/categories/{category_id}")
+@router.get("/categories/{category_id}/permissions", response_model=list[Role])
 @uniform_response_middleware
-async def get_category_permissions(category_id: int) -> list[RoleWithAccess]:
+async def get_category_permissions(category_id: int):
     try:
         category = await fetch_channel(category_id)
         if not isinstance(category, disnake.CategoryChannel):
             raise ValueError("Incorrect channel type, expected category")
 
-        roles_with_view_access = [
-            RoleWithAccess(
-                id=target.id,
-                name=target.name
-            )
-            for target, permissions in category.overwrites.items()
-            if isinstance(target, disnake.Role) and permissions.view_channel is True
-        ]
-        return roles_with_view_access
+        return await format_roles_with_access_response(category)
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
     except ValueError as exception:
@@ -136,24 +129,27 @@ async def get_category_permissions(category_id: int) -> list[RoleWithAccess]:
         raise HTTPException(status_code=500, detail=str(exception))
 
 
-@router.patch("/categories/{category_id}", deprecated=True)
-@uniform_response_middleware
-async def edit_category_permissions(category_id: int) -> list[RoleWithAccess]:
+@router.put("/categories/{category_id}/permissions", response_model=list[Role])
+async def edit_category_permissions(category_id: int, roles_with_access: list[int] = Body(...)):
     try:
-        pass
-        # category = await fetch_channel(category_id)
-        # if not isinstance(category, disnake.CategoryChannel):
-        #     raise ValueError("Incorrect channel type, expected category")
-        #
-        # roles_with_view_access = [
-        #     RoleWithAccess(
-        #         id=target.id,
-        #         name=target.name
-        #     )
-        #     for target, permissions in category.overwrites.items()
-        #     if isinstance(target, disnake.Role) and permissions.view_channel is True
-        # ]
-        # return roles_with_view_access
+        category = await fetch_channel(category_id)
+        if not isinstance(category, disnake.CategoryChannel):
+            raise ValueError("Incorrect channel type, expected category")
+
+        try:
+            roles_with_access = await fetch_roles_by_ids(roles_with_access)
+        except disnake.errors.HTTPException:
+            raise ValueError("Incorrect object in roles")
+
+        for role in roles_with_access:
+            await category.set_permissions(role, read_messages=True)
+
+        default_role = await fetch_guild_default_role()
+        for role in await fetch_roles_with_access(category):
+            if role not in roles_with_access and role != default_role.id:
+                await category.set_permissions(role, overwrite=None)
+
+        return await format_roles_with_access_by_roles(roles_with_access)
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
     except ValueError as exception:
