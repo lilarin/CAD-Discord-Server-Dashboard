@@ -8,6 +8,14 @@ async def fetch_guild() -> Guild:
     return await bot.fetch_guild(variables.GUILD_ID)
 
 
+async def fetch_roles_by_ids(roles: list) -> list[Role]:
+    guild = await fetch_guild()
+    return [
+        await guild.fetch_role(role_id)
+        for role_id in roles
+    ]
+
+
 async def fetch_channels() -> list[VoiceChannel | TextChannel | CategoryChannel]:
     guild = await fetch_guild()
     channels_sequence = await guild.fetch_channels()
@@ -40,6 +48,14 @@ async def fetch_channel(channel_id: int) -> VoiceChannel | TextChannel | Categor
     guild = await fetch_guild()
     channel = await guild.fetch_channel(channel_id)
     return channel
+
+
+async def fetch_roles_with_access(category: CategoryChannel) -> list[Role]:
+    return [
+        target
+        for target, permissions in category.overwrites.items()
+        if isinstance(target, Role) and permissions.view_channel is True
+    ]
 
 
 async def fetch_users() -> list[Member]:
