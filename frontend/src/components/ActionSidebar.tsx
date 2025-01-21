@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import {Category, Channel} from "@/lib/api.ts";
+import React, {useState, useEffect, useMemo} from 'react';
+import {Category, Channel, Role, getCategoryAccessRoles, editCategoryPermissions} from "@/lib/api.ts";
 import HintIcon from "@/assets/icons/hint.svg";
 import DeleteIcon from "@/assets/icons/delete.svg";
 import AddRoleIcon from "@/assets/icons/add_role.svg";
-import { getCategoryAccessRoles, Role } from "@/lib/api";
 import { ChannelLoadingSpinner } from '@/components/LoadingSpinner';
 import toast from "react-hot-toast";
 
@@ -31,6 +30,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
   const [renameChannelName, setRenameChannelName] = useState('');
   const [showHint, setShowHint] = useState(false);
   const [roles, setRoles] = useState<Role[]>([]);
+  const [initialRoles, setInitialRoles] = useState<Role[]>([]);
   const [isLoadingPermissions, setIsLoadingPermissions] = useState(false);
 
   useEffect(() => {
@@ -50,6 +50,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
         try {
           const fetchedRoles = await getCategoryAccessRoles(item.id);
           setRoles(fetchedRoles);
+          setInitialRoles([...fetchedRoles]);
         } catch (error) {
           toast.error(error.message, {
             position: "bottom-right",
@@ -61,8 +62,10 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
         }
       };
       fetchRoles().then(r => {});
+
     } else {
       setRoles([]);
+      setInitialRoles([]);
     }
   }, [action, target, item]);
 
@@ -117,13 +120,34 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
     if (target === 'channel') {
       onCreateChannel?.(newChannelName, newChannelType);
     }
-  };
+   };
 
   const handleRenameAction = () => {
     if (target === 'category' && item) {
       onRenameCategory?.(item.id, renameCategoryName);
     } else if (target === 'channel' && item) {
       onRenameChannel?.(item.id, renameChannelName);
+    }
+  };
+
+  const handleSavePermissions = async () => {
+    if (action === 'edit' && target === 'category' && item) {
+      try {
+        const roleIds = roles.map(role => role.id);
+        if (!isEditCategoryDisabled) {
+          await editCategoryPermissions(item.id, roleIds);
+          setInitialRoles([...roles]);
+          toast.success("Зміни збережено",  {position: "bottom-right"});
+        }
+      } catch (error) {
+        toast.error(error.message, {
+
+          position: "bottom-right",
+          duration: 10000
+        });
+        const fetchedRoles = await getCategoryAccessRoles(item.id);
+        setRoles(fetchedRoles);
+      }
     }
   };
 
@@ -138,13 +162,24 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
 
   const isRenameCategoryDisabled = !renameCategoryName.trim() || (item && renameCategoryName.trim().toLowerCase() === item.name.toLowerCase());
   const isRenameChannelDisabled = !renameChannelName.trim() || (item && renameChannelName.trim().toLowerCase() === item.name.toLowerCase());
-  const isEditCategoryDisabled = true
+
+  const isEditCategoryDisabled = useMemo(() => {
+    if (action === 'edit' && target === 'category') {
+      if (!initialRoles || !roles) return true;
+      if (initialRoles.length !== roles.length) return false;
+      const initialRoleIds = initialRoles.map(r => r.id).sort();
+      const currentRoleIds = roles.map(r => r.id).sort();
+      return initialRoleIds.every((id, index) => id === currentRoleIds[index]);
+    }
+    return true;
+  }, [action, target, initialRoles, roles]);
+
 
   return (
     <div className="w-full h-full pt-5 pr-5">
       <div className="bg-[#2F3136] rounded p-4">
         <span className="text-lg font-semibold mb-2">{text}</span>
-        {action === 'delete' && (
+         {action === 'delete' && (
           <div className="flex justify-between items-center pt-4 pb-1">
             <div className="flex justify-start space-x-3">
               <button
@@ -156,7 +191,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
               <button
                   onClick={onCancel}
                   className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              >
+               >
                 Скасувати
               </button>
             </div>
@@ -382,7 +417,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
             <div className="flex justify-between items-center pt-4 pb-1">
               <div className="flex justify-start space-x-3">
                   <button
-                      onClick={handleRenameAction}
+                      onClick={handleSavePermissions}
                       disabled={isEditCategoryDisabled}
                       className={`bg-green-600 ${
                           (!isEditCategoryDisabled) ? 'hover:bg-green-700' : ''
