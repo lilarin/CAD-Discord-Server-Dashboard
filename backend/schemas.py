@@ -20,17 +20,9 @@ class User(BaseModel):
     name: str
 
 
-class Role(BaseModel):
+class BaseRole(BaseModel):
     id: str
-    name: str
 
 
-class PermissionOverwriteModel(BaseModel):
-    id: int
-    allow: list
-    deny: list
-
-
-class RoleWithAccess(BaseModel):
-    id: int
+class Role(BaseRole):
     name: str
