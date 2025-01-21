@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {Category, Channel} from "@/lib/api.ts";
 import HintIcon from "@/assets/icons/hint.svg";
 import DeleteIcon from "@/assets/icons/delete.svg";
+import AddRoleIcon from "@/assets/icons/add_role.svg";
 import { getCategoryAccessRoles, Role } from "@/lib/api";
 import { ChannelLoadingSpinner } from '@/components/LoadingSpinner';
 import toast from "react-hot-toast";
@@ -92,9 +93,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
       category: 'Регістр для назви каналу не враховується та обробляється автоматично',
       channel: 'Регістр для назви категорії не враховується та обробляється автоматично',
     },
-    edit: {
-      category: 'Список ролей, що бачать категорію',
-    },
+    edit: {},
     delete: {
       category: 'При видаленні категорії всі канали в ній також будуть видалені',
     },
@@ -128,13 +127,18 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
     }
   };
 
+  const handleRemoveRole = (roleId: number) => {
+    setRoles(roles.filter(role => role.id !== roleId));
+  };
+
+  const handleAddRole = () => {
+    // TODO: Implement logic to add a new role
+    console.log('Add role clicked');
+  };
+
   const isRenameCategoryDisabled = !renameCategoryName.trim() || (item && renameCategoryName.trim().toLowerCase() === item.name.toLowerCase());
   const isRenameChannelDisabled = !renameChannelName.trim() || (item && renameChannelName.trim().toLowerCase() === item.name.toLowerCase());
-  const isEditCategoryDisabled = true;
-
-  const handleRemoveRole = (roleId: number) => {
-    setRoles(currentRoles => currentRoles.filter(role => role.id !== roleId));
-  };
+  const isEditCategoryDisabled = true
 
   return (
     <div className="w-full h-full pt-5 pr-5">
@@ -344,37 +348,39 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
         )}
         {action === 'edit' && target === 'category' && item && (
           <div>
-            <div className="space-y-2 mt-4">
-              <h3 className="font-semibold">Ролі з доступом:</h3>
-              {isLoadingPermissions ? (
-                <div className="flex justify-center items-center p-2">
-                  <ChannelLoadingSpinner />
-                </div>
-              ) : roles.length > 0 ? (
+            {isLoadingPermissions ? (
+              <div className="flex justify-center items-center p-2">
+                <ChannelLoadingSpinner />
+              </div>
+            ) : roles.length > 0 ? (
                 <ul className="space-y-2 mt-2">
+                  <h3 className="font-light">Ролі з доступом:</h3>
                   {roles.map(role => (
-                    <li key={role.id} className="bg-[#36393F] rounded p-2 flex justify-between items-center group">
-                      {role.name}
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveRole(role.id)}
-                        className="focus:outline-none p-1"
-                      >
-                        <img
-                          src={DeleteIcon}
-                          alt="Видалити"
-                          className="w-5 h-5 cursor-pointer filter group-hover:brightness-200 transition-all duration-200"
-                        />
-                      </button>
-                    </li>
+                      <li key={role.id}
+                          className="bg-[#36393F] rounded pl-2 p-1.5 flex justify-between items-center hover:bg-[#3e4147] pr-1.5">
+                        {role.name}
+                        <button onClick={() => handleRemoveRole(role.id)}>
+                          <img
+                              src={DeleteIcon}
+                              alt="Видалити"
+                              className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-200"
+                          />
+                        </button>
+                      </li>
                   ))}
                 </ul>
-              ) : (
-                <div className="text-gray-400 mt-2">Немає ролей з доступом до цієї категорії.</div>
-              )}
-            </div>
-              <div className="flex justify-between items-center pt-4 pb-1">
-                <div className="flex justify-start space-x-3">
+            ) : (
+                <div className="text-gray-400 mt-2 mb-2">Немає ролей з доступом до цієї категорії</div>
+            )}
+            {!isLoadingPermissions && (
+              <div
+                  className="flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer mt-1.5"
+                  onClick={handleAddRole}>
+                <img src={AddRoleIcon} alt="Додати роль" className="w-4 h-4"/>
+              </div>
+            )}
+            <div className="flex justify-between items-center pt-4 pb-1">
+              <div className="flex justify-start space-x-3">
                   <button
                       onClick={handleRenameAction}
                       disabled={isEditCategoryDisabled}
