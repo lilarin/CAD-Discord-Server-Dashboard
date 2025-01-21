@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {Category, Channel} from "@/lib/api.ts";
 import HintIcon from "@/assets/icons/hint.svg";
+import DeleteIcon from "@/assets/icons/delete.svg";
 import { getCategoryAccessRoles, Role } from "@/lib/api";
 import { ChannelLoadingSpinner } from '@/components/LoadingSpinner';
 import toast from "react-hot-toast";
@@ -129,7 +130,11 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
 
   const isRenameCategoryDisabled = !renameCategoryName.trim() || (item && renameCategoryName.trim().toLowerCase() === item.name.toLowerCase());
   const isRenameChannelDisabled = !renameChannelName.trim() || (item && renameChannelName.trim().toLowerCase() === item.name.toLowerCase());
-  const isEditCategoryDisabled = true
+  const isEditCategoryDisabled = true;
+
+  const handleRemoveRole = (roleId: number) => {
+    setRoles(currentRoles => currentRoles.filter(role => role.id !== roleId));
+  };
 
   return (
     <div className="w-full h-full pt-5 pr-5">
@@ -348,8 +353,19 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
               ) : roles.length > 0 ? (
                 <ul className="space-y-2 mt-2">
                   {roles.map(role => (
-                    <li key={role.id} className="bg-[#36393F] rounded p-2">
+                    <li key={role.id} className="bg-[#36393F] rounded p-2 flex justify-between items-center group">
                       {role.name}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveRole(role.id)}
+                        className="focus:outline-none p-1"
+                      >
+                        <img
+                          src={DeleteIcon}
+                          alt="Видалити"
+                          className="w-5 h-5 cursor-pointer filter group-hover:brightness-200 transition-all duration-200"
+                        />
+                      </button>
                     </li>
                   ))}
                 </ul>
