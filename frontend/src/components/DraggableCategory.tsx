@@ -5,7 +5,6 @@ import RenameIcon from "@/assets/icons/rename.svg";
 import EditIcon from "@/assets/icons/edit.svg";
 import DeleteIcon from "@/assets/icons/delete.svg";
 import React from "react";
-import ActionSidebar from "@/components/ActionSidebar.tsx";
 
 function DraggableCategory({
   category,

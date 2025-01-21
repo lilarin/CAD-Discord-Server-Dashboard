@@ -6,7 +6,6 @@ import TextIcon from "@/assets/icons/text.svg";
 import VoiceIcon from "@/assets/icons/voice.svg";
 import RenameIcon from "@/assets/icons/rename.svg";
 import DeleteIcon from "@/assets/icons/delete.svg";
-import DraggableCategory from "@/components/DraggableCategory.tsx";
 
 function DraggableChannel({
   channel,

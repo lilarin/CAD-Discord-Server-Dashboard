@@ -67,7 +67,7 @@ export default function Categories() {
         const response = await getCategories();
         setCategories(response);
       } catch (error) {
-          toast.error(error.message, {
+        toast.error(error.message, {
           position: "bottom-right",
           duration: 10000
         });
