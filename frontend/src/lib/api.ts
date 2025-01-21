@@ -35,6 +35,11 @@ export interface Category {
   name: string;
 }
 
+export interface Role {
+  id: number;
+  name: string;
+}
+
 export interface Channel {
   id: number;
   position: number;
@@ -223,11 +228,30 @@ export async function renameChannel(channelId: number, name: string): Promise<Ch
   }
 }
 
-
 export async function renameCategory(channelId: number, name: string): Promise<Category[]> {
   try {
     const response = await api.patch<ApiResponse<Category[]>>(
       `/api/v1/categories/${channelId}/rename/${name}`
+    );
+    return response.data.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      const statusCode = axiosError.response?.status || 500;
+      throw new ApiError(error.message, statusCode);
+    } else if (error instanceof Error) {
+      throw new ClientError(error.message);
+    } else {
+      throw new ClientError(`Something went wrong: ${String(error)}`);
+    }
+  }
+}
+
+export async function getCategoryAccessRoles(categoryId: number): Promise<Role[]> {
+  try {
+    console.log(categoryId)
+    const response = await api.get<ApiResponse<Role[]>>(
+        `/api/v1/categories/${categoryId}/permissions`
     );
     return response.data.data;
   } catch (error) {
