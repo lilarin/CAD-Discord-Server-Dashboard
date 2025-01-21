@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {Category, Channel} from "@/lib/api.ts";
 import HintIcon from "@/assets/icons/hint.svg";
+import { getCategoryAccessRoles, Role } from "@/lib/api";
+import { ChannelLoadingSpinner } from '@/components/LoadingSpinner';
+import toast from "react-hot-toast";
 
 type ActionType = 'create' | 'rename' | 'edit' | 'delete' | null;
 type ActionTarget = 'category' | 'channel' | null;
@@ -25,16 +28,41 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
   const [renameCategoryName, setRenameCategoryName] = useState('');
   const [renameChannelName, setRenameChannelName] = useState('');
   const [showHint, setShowHint] = useState(false);
+  const [roles, setRoles] = useState<Role[]>([]);
+  const [isLoadingPermissions, setIsLoadingPermissions] = useState(false);
 
-    useEffect(() => {
-        if (action === 'rename') {
-            if (target === 'category' && item) {
-                setRenameCategoryName(item.name);
-            } else if (target === 'channel' && item) {
-                setRenameChannelName(item.name);
-            }
+  useEffect(() => {
+    if (action === 'rename') {
+      if (target === 'category' && item) {
+        setRenameCategoryName(item.name);
+      } else if (target === 'channel' && item) {
+        setRenameChannelName(item.name);
+      }
+    }
+  }, [action, target, item]);
+
+  useEffect(() => {
+    if (action === 'edit' && target === 'category' && item) {
+      const fetchRoles = async () => {
+        setIsLoadingPermissions(true);
+        try {
+          const fetchedRoles = await getCategoryAccessRoles(item.id);
+          setRoles(fetchedRoles);
+        } catch (error) {
+          toast.error(error.message, {
+            position: "bottom-right",
+            duration: 10000
+          });
+          setRoles([]);
+        } finally {
+          setIsLoadingPermissions(false);
         }
-    }, [action, target, item]);
+      };
+      fetchRoles().then(r => {});
+    } else {
+      setRoles([]);
+    }
+  }, [action, target, item]);
 
     const actionTextMap = {
     create: {
@@ -63,7 +91,9 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
       category: 'Регістр для назви каналу не враховується та обробляється автоматично',
       channel: 'Регістр для назви категорії не враховується та обробляється автоматично',
     },
-    edit: {},
+    edit: {
+      category: 'Список ролей, що бачать категорію',
+    },
     delete: {
       category: 'При видаленні категорії всі канали в ній також будуть видалені',
     },
@@ -99,13 +129,14 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
 
   const isRenameCategoryDisabled = !renameCategoryName.trim() || (item && renameCategoryName.trim().toLowerCase() === item.name.toLowerCase());
   const isRenameChannelDisabled = !renameChannelName.trim() || (item && renameChannelName.trim().toLowerCase() === item.name.toLowerCase());
+  const isEditCategoryDisabled = true
 
   return (
     <div className="w-full h-full pt-5 pr-5">
       <div className="bg-[#2F3136] rounded p-4">
         <span className="text-lg font-semibold mb-2">{text}</span>
         {action === 'delete' && (
-          <div className="flex justify-between items-center pt-3 pb-1">
+          <div className="flex justify-between items-center pt-4 pb-1">
             <div className="flex justify-start space-x-3">
               <button
                   onClick={handleDeleteAction}
@@ -142,7 +173,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
               onChange={(e) => setNewCategoryName(e.target.value)}
             />
             </div>
-            <div className="flex justify-between items-center pt-3 pb-1">
+            <div className="flex justify-between items-center pt-4 pb-1">
               <div className="flex justify-start space-x-3">
                 <button
                     onClick={handleCreateAction}
@@ -194,7 +225,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
               <option value="voice">Голосовий</option>
             </select>
               </div>
-            <div className="flex justify-between items-center pt-3 pb-1">
+            <div className="flex justify-between items-center pt-4 pb-1">
               <div className="flex justify-start space-x-3">
                 <button
                     onClick={handleCreateAction}
@@ -235,7 +266,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                     onChange={(e) => setRenameCategoryName(e.target.value)}
                 />
             </div>
-            <div className="flex justify-between items-center pt-3 pb-1">
+            <div className="flex justify-between items-center pt-4 pb-1">
               <div className="flex justify-start space-x-3">
                 <button
                     onClick={handleRenameAction}
@@ -276,7 +307,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                     onChange={(e) => setRenameChannelName(e.target.value)}
                 />
             </div>
-            <div className="flex justify-between items-center pt-3 pb-1">
+            <div className="flex justify-between items-center pt-4 pb-1">
               <div className="flex justify-start space-x-3">
                 <button
                     onClick={handleRenameAction}
@@ -306,14 +337,64 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
             </div>
           </div>
         )}
+        {action === 'edit' && target === 'category' && item && (
+          <div>
+            <div className="space-y-2 mt-4">
+              <h3 className="font-semibold">Ролі з доступом:</h3>
+              {isLoadingPermissions ? (
+                <div className="flex justify-center items-center p-2">
+                  <ChannelLoadingSpinner />
+                </div>
+              ) : roles.length > 0 ? (
+                <ul className="space-y-2 mt-2">
+                  {roles.map(role => (
+                    <li key={role.id} className="bg-[#36393F] rounded p-2">
+                      {role.name}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="text-gray-400 mt-2">Немає ролей з доступом до цієї категорії.</div>
+              )}
+            </div>
+              <div className="flex justify-between items-center pt-4 pb-1">
+                <div className="flex justify-start space-x-3">
+                  <button
+                      onClick={handleRenameAction}
+                      disabled={isEditCategoryDisabled}
+                      className={`bg-green-600 ${
+                          (!isEditCategoryDisabled) ? 'hover:bg-green-700' : ''
+                      } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
+                  >
+                    Зберегти
+                  </button>
+                  <button
+                      onClick={onCancel}
+                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  >
+                    Скасувати
+                  </button>
+                </div>
+                {hintText && (
+                    <button
+                        onMouseEnter={() => setShowHint(true)}
+                        onMouseLeave={() => setShowHint(false)}
+                        className="focus:outline-none"
+                    >
+                      <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
+                    </button>
+                )}
+              </div>
+          </div>
+        )}
       </div>
       {showHint && hintText && (
-        <div className="w-full pt-5">
-          <div className="bg-[#2F3136] rounded p-4">
-            <h3 className="font-semibold mb-2">Підказка</h3>
-            <h3 className="font-light">{hintText}</h3>
+          <div className="w-full pt-5">
+            <div className="bg-[#2F3136] rounded p-4">
+              <h3 className="font-semibold mb-2">Підказка</h3>
+              <h3 className="font-light">{hintText}</h3>
+            </div>
           </div>
-        </div>
       )}
     </div>
   );
