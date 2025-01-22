@@ -287,9 +287,8 @@ export async function editCategoryPermissions(categoryId: number, rolesWithAcces
   }
 }
 
-export async function getRoles(categoryId: number): Promise<Role[]> {
+export async function getRoles(): Promise<Role[]> {
   try {
-    console.log(categoryId)
     const response = await api.get<ApiResponse<Role[]>>(
         `/api/v1/roles`
     );
