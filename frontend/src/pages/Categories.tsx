@@ -14,8 +14,8 @@ import {
   renameCategory,
 } from '@/lib/api';
 import { ChannelLoadingSpinner, ComponentLoadingSpinner } from '@/components/LoadingSpinner';
-import CreateCategory from '@/assets/icons/create_category.svg';
-import CreateChannel from '@/assets/icons/create_channel.svg';
+import CreateCategoryIcon from '@/assets/icons/create_category.svg';
+import CreateChannelIcon from '@/assets/icons/create_channel.svg';
 import {
   DndContext,
   closestCenter,
@@ -152,27 +152,27 @@ export default function Categories() {
   );
 
   const handleRenameCategory = useCallback(
-      async (categoryId: number, newName: string) => {
-          setCategories(prevCategories =>
-              prevCategories.map(category =>
-                  category.id === categoryId ? { ...category, name: newName } : category
-              )
-          );
-          setActionSidebar({ action: null, target: null, item: null });
+    async (categoryId: number, newName: string) => {
+      setCategories(prevCategories =>
+          prevCategories.map(category =>
+              category.id === categoryId ? { ...category, name: newName } : category
+          )
+      );
+      setActionSidebar({ action: null, target: null, item: null });
 
-          try {
-              const updatedCategories = await renameCategory(categoryId, newName);
-              setCategories(updatedCategories);
-          } catch (error) {
-              toast.error(error.message, {
-                  position: "bottom-right",
-                  duration: 10000,
-              });
-              const fetchedCategories = await getCategories();
-              setCategories(fetchedCategories);
-          }
-      },
-      []
+      try {
+          const updatedCategories = await renameCategory(categoryId, newName);
+          setCategories(updatedCategories);
+      } catch (error) {
+          toast.error(error.message, {
+              position: "bottom-right",
+              duration: 10000,
+          });
+          const fetchedCategories = await getCategories();
+          setCategories(fetchedCategories);
+      }
+    },
+    []
   );
 
   const handleRenameChannel = useCallback(
@@ -398,7 +398,7 @@ export default function Categories() {
                                 </div>
                               )}
                               <div className="flex justify-center p-1.5 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer mt-1.5 ml-4" onClick={() => handleActionTriggered('create', 'channel', null)}>
-                                <img src={CreateChannel} alt="Створити канал" className="w-4 h-4" />
+                                <img src={CreateChannelIcon} alt="Створити канал" className="w-4 h-4" />
                               </div>
                             </>
                           )}
@@ -408,7 +408,7 @@ export default function Categories() {
                   ))}
                   {!isLoading && filteredCategories.length > 0 && (
                     <div className="w-full flex items-center justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer" onClick={() => handleActionTriggered('create', 'category', null)}>
-                      <img src={CreateCategory} alt="Створити категорію" className="w-5 h-5" />
+                      <img src={CreateCategoryIcon} alt="Створити категорію" className="w-5 h-5" />
                     </div>
                   )}
                 </div>

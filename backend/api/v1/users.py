@@ -13,7 +13,10 @@ router = APIRouter()
 async def get_users():
     try:
         users = [
-            User(id=str(member.id), name=member.display_name)
+            User(
+                id=str(member.id),
+                name=member.display_name
+            )
             for member in await fetch_users()
         ]
         users.sort(key=lambda user: user.name)
@@ -30,7 +33,10 @@ async def get_users_by_role(role_id: int):
     try:
         role = await fetch_role(role_id)
         users = [
-            User(id=str(member.id), name=member.display_name)
+            User(
+                id=str(member.id),
+                name=member.display_name
+            )
             for member in await fetch_users()
             if role in member.roles
         ]

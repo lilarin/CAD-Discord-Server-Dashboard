@@ -2,13 +2,19 @@ import disnake
 from fastapi import APIRouter, HTTPException, Body
 
 from backend.middlewares.uniform_response import uniform_response_middleware
-from backend.schemas import Category, Role, BaseRole
+from backend.schemas import Category, Role
 from backend.services.requests import update_channel_order
-from backend.services.fetch import fetch_channel, fetch_channels_by_type, fetch_roles_with_access, fetch_roles_by_ids, \
-    fetch_guild_default_role
+from backend.services.fetch import (
+    fetch_channel,
+    fetch_channels_by_type,
+    fetch_roles_with_access,
+    fetch_roles_by_ids
+)
 from backend.services.format import (
     format_categories_response,
-    format_base_channel_response, format_roles_with_access_response, format_roles_with_access_by_roles
+    format_base_channel_response,
+    format_roles_with_access_response,
+    format_roles_with_access_by_roles
 )
 from backend.services.utils import (
     create_template_category,
@@ -130,26 +136,31 @@ async def get_category_permissions(category_id: int):
 
 
 @router.put("/categories/{category_id}/permissions", response_model=list[Role])
-async def edit_category_permissions(category_id: int, roles_with_access: list[int] = Body(...)):
+async def edit_category_permissions(category_id: int, roles_with_access: list[str] = Body(...)):
     try:
         category = await fetch_channel(category_id)
         if not isinstance(category, disnake.CategoryChannel):
             raise ValueError("Incorrect channel type, expected category")
 
         try:
-            roles_with_access = await fetch_roles_by_ids(roles_with_access)
+            fetched_roles_with_access = await fetch_roles_by_ids(roles_with_access)
         except disnake.errors.HTTPException:
             raise ValueError("Incorrect object in roles")
 
-        for role in roles_with_access:
-            await category.set_permissions(role, read_messages=True)
+        actual_roles_with_access = fetch_roles_with_access(category)
 
-        default_role = await fetch_guild_default_role()
-        for role in await fetch_roles_with_access(category):
-            if role not in roles_with_access and role != default_role.id:
+        for role in await actual_roles_with_access:
+            if role not in fetched_roles_with_access:
                 await category.set_permissions(role, overwrite=None)
 
-        return await format_roles_with_access_by_roles(roles_with_access)
+        permissions_overwrites = {}
+        for role in fetched_roles_with_access:
+            permissions_overwrites[role] = disnake.PermissionOverwrite(view_channel=True)
+
+        if permissions_overwrites is not None:
+            await category.edit(overwrites=permissions_overwrites)
+
+        return await format_roles_with_access_by_roles(fetched_roles_with_access)
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
     except ValueError as exception:
