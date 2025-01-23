@@ -21,7 +21,7 @@ export const Sidebar = () => {
   const location = useLocation();
 
   return (
-    <div className="flex w-1/6 flex-col bg-[#2F3136] border-r border-border/40">
+    <div className="sticky top-0 flex w-1/6 flex-col bg-[#2F3136] border-r border-border/40 h-screen"> {/* Додали sticky та h-screen */}
         <div className="px-4 pb-5 pt-6">
             <h1 className="text-lg font-semibold text-gray-200 text-center pb-2">Панель керування</h1>
             <div className="mt-3 border-t border-gray-600"></div>
