@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 220 17% 17%;
+    --background: 220 15% 15%;
     --foreground: 0 0% 95%;
 
     --card: 220 17% 17%;
@@ -29,7 +29,6 @@
     --destructive-foreground: 0 0% 95%;
 
     --border: 220 17% 25%;
-    --input: 220 17% 25%;
     --ring: 220 17% 25%;
   }
 }
@@ -40,5 +39,9 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  ::-webkit-scrollbar {
+      width: 0;
   }
 }

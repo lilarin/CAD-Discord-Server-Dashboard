@@ -136,7 +136,9 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
       category: 'Регістр для назви каналу не враховується та обробляється автоматично',
       channel: 'Регістр для назви категорії не враховується та обробляється автоматично',
     },
-    edit: {},
+    edit: {
+      category: 'Оберіть ролі для доступу до категорії та всіх її каналів',
+    },
     delete: {
       category: 'При видаленні категорії всі канали в ній також будуть видалені',
     },
@@ -448,10 +450,10 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                   <div className="flex justify-center items-center p-2">
                     <ChannelLoadingSpinner/>
                   </div>
-              ) : sortedRoles.length > 0 ? ( // Используем sortedRoles здесь
+              ) : sortedRoles.length > 0 ? (
                   <ul className="space-y-2 mt-2">
                     <h3 className="font-light">Ролі з доступом:</h3>
-                    {sortedRoles.map(role => ( // Используем sortedRoles в map
+                    {sortedRoles.map(role => (
                         <li key={role.id}
                             className="bg-[#36393F] rounded pl-2 p-1.5 flex justify-between items-center hover:bg-[#3e4147] pr-1.5">
                           {role.name}
@@ -546,15 +548,6 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
         <div ref={dropdownRef} className="w-full pt-5 relative">
           <div className="bg-[#2F3136] rounded p-4 text-gray-400">
             <h3 className="font-semibold mb-2">Доступні ролі</h3>
-            <div className="p-2 border-b border-gray-500">
-              <input
-                  type="text"
-                  placeholder="Пошук ролі"
-                  className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
-                  value={roleSearchTerm}
-                  onChange={(e) => setRoleSearchTerm(e.target.value)}
-              />
-            </div>
             <div className="mt-2">Немає ролей для додавання</div>
           </div>
         </div>

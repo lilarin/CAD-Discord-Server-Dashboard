@@ -335,7 +335,7 @@ export default function Categories() {
               <ComponentLoadingSpinner/>
           ) : (
             <div>
-              <div className="mb-2">
+              <div className="mb-5">
                 <input
                   type="text"
                   placeholder="Пошук за назвою категорії..."
