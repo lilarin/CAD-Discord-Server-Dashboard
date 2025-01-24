@@ -16,7 +16,7 @@ interface ActionSidebarProps {
   onCancel: () => void;
   onDeleteCategory?: (id: number) => void;
   onDeleteChannel?: (id: number) => void;
-    onDeleteRole?: (id: number) => void;
+  onDeleteRole?: (id: number) => void;
   onCreateCategory?: (name: string) => void;
   onCreateChannel?: (name: string, type: 'text' | 'voice') => void;
   onRenameCategory?: (id: number, newName: string) => void;
@@ -244,14 +244,13 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
     return true;
   }, [action, target, initialRoles, roles]);
 
-  // Sort roles by name
   const sortedRoles = useMemo(() => {
     return [...roles].sort((a, b) => a.name.localeCompare(b.name));
   }, [roles]);
 
 
   return (
-    <div className="w-full h-full">
+    <div className="sticky top-5">
       <div className="bg-[#2F3136] rounded p-4">
         <span className="text-lg font-semibold mb-2">{text}</span>
         {action === 'delete' && (
