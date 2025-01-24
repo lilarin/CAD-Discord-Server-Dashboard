@@ -21,27 +21,27 @@ export const Sidebar = () => {
   const location = useLocation();
 
   return (
-    <div className="sticky top-0 flex w-1/6 flex-col bg-[#2F3136] border-r border-border/40 h-screen"> {/* Додали sticky та h-screen */}
-        <div className="px-4 pb-5 pt-6">
-            <h1 className="text-lg font-semibold text-gray-200 text-center pb-2">Панель керування</h1>
-            <div className="mt-3 border-t border-gray-600"></div>
-        </div>
-        <div className="flex flex-1 flex-col gap-3 p-3">
-        {navigation.map((item) => (
-          <Link
-            key={item.name}
-            to={item.href}
-            className={cn(
-              "flex items-center gap-3 rounded px-3 py-2 text-sm transition-colors",
-              location.pathname === item.href
-                ? "bg-[#36393F] text-gray-200"
-                : "text-gray-400 hover:bg-[#36393F] hover:text-gray-200 hover:rounded"
-            )}
-          >
-            <img src={item.icon} alt={item.name} className="h-4 w-4" />
-            {item.name}
-          </Link>
-        ))}
+    <div className="sticky top-0 flex w-1/6 flex-col bg-[#2F3136] border-r border-border/40">
+      <div className="px-4 pb-5 pt-6 sticky top-0 bg-[#2F3136] z-10">
+        <h1 className="text-lg font-semibold text-gray-200 text-center pb-2">Панель керування</h1>
+        <div className="mt-3 border-t border-gray-600"></div>
+          <div className="flex flex-1 flex-col gap-3 pt-3 overflow-y-auto">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={cn(
+                  "flex items-center gap-3 rounded px-3 py-2 text-sm transition-colors",
+                  location.pathname === item.href
+                    ? "bg-[#36393F] text-gray-200"
+                    : "text-gray-400 hover:bg-[#36393F] hover:text-gray-200 hover:rounded"
+                )}
+              >
+              <img src={item.icon} alt={item.name} className="h-4 w-4" />
+                {item.name}
+              </Link>
+            ))}
+          </div>
       </div>
     </div>
   );
