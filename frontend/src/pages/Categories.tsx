@@ -418,7 +418,7 @@ export default function Categories() {
         </div>
       </DndContext>
       {actionSidebar.action && actionSidebar.target && (
-        <div className="w-1/3">
+        <div className="w-1/3 pr-5 pt-5">
           <ActionSidebar
             action={actionSidebar.action}
             target={actionSidebar.target}
