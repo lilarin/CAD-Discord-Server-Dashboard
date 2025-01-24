@@ -47,6 +47,13 @@ export interface Channel {
   type: string
 }
 
+export interface User {
+  id: number;
+  position: number;
+  name: string;
+  type: string
+}
+
 interface ApiResponse<T> {
   data: T;
   success: boolean;
@@ -306,3 +313,21 @@ export async function getRoles(): Promise<Role[]> {
   }
 }
 
+export async function getEditableRoles(): Promise<Role[]> {
+  try {
+    const response = await api.get<ApiResponse<Role[]>>(
+        `/api/v1/roles/editable`
+    );
+    return response.data.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      const statusCode = axiosError.response?.status || 500;
+      throw new ApiError(error.message, statusCode);
+    } else if (error instanceof Error) {
+      throw new ClientError(error.message);
+    } else {
+      throw new ClientError(`Something went wrong: ${String(error)}`);
+    }
+  }
+}
