@@ -6,28 +6,31 @@ import AddRoleIcon from "@/assets/icons/add_role.svg";
 import { ChannelLoadingSpinner } from '@/components/LoadingSpinner';
 import toast from "react-hot-toast";
 
-type ActionType = 'create' | 'rename' | 'edit' | 'delete' | null;
-type ActionTarget = 'category' | 'channel' | null;
+export type ActionType = 'create' | 'rename' | 'edit' | 'delete' | null;
+export type ActionTarget = 'category' | 'channel' | 'role' | null;
 
 interface ActionSidebarProps {
   action: ActionType;
   target: ActionTarget;
-  item: Category | Channel | null;
+  item: Category | Channel | Role | null;
   onCancel: () => void;
   onDeleteCategory?: (id: number) => void;
   onDeleteChannel?: (id: number) => void;
+    onDeleteRole?: (id: number) => void;
   onCreateCategory?: (name: string) => void;
   onCreateChannel?: (name: string, type: 'text' | 'voice') => void;
   onRenameCategory?: (id: number, newName: string) => void;
   onRenameChannel?: (id: number, newName: string) => void;
+  onRenameRole?: (id: number, newName: string) => void;
 }
 
-function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDeleteChannel, onCreateCategory, onCreateChannel, onRenameCategory, onRenameChannel }: ActionSidebarProps) {
+function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDeleteChannel, onCreateCategory, onCreateChannel, onRenameCategory, onRenameChannel, onDeleteRole, onRenameRole }: ActionSidebarProps) {
   const [newCategoryName, setNewCategoryName] = useState('');
   const [newChannelName, setNewChannelName] = useState('');
   const [newChannelType, setNewChannelType] = useState<'text' | 'voice'>('text');
   const [renameCategoryName, setRenameCategoryName] = useState('');
   const [renameChannelName, setRenameChannelName] = useState('');
+    const [renameRoleName, setRenameRoleName] = useState('');
   const [showHint, setShowHint] = useState(false);
   const [roles, setRoles] = useState<Role[]>([]);
   const [initialRoles, setInitialRoles] = useState<Role[]>([]);
@@ -45,6 +48,8 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
         setRenameCategoryName(item.name);
       } else if (target === 'channel' && item) {
         setRenameChannelName(item.name);
+      } else if (target === 'role' && item) {
+          setRenameRoleName(item.name)
       }
     }
   }, [action, target, item]);
@@ -117,6 +122,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
     rename: {
       category: `Перейменування категорії "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
       channel: `Перейменування каналу "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
+        role: `Перейменування ролі "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
     },
     edit: {
       category: `Редагування доступу ролей до категорії "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
@@ -124,6 +130,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
     delete: {
       category: `Видалити категорію "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"?`,
       channel: `Видалити канал "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"?`,
+        role: `Видалити роль "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"?`,
     },
   };
 
@@ -152,6 +159,8 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
       onDeleteCategory?.(item.id);
     } else if (target === 'channel' && item) {
       onDeleteChannel?.(item.id);
+    } else if(target === 'role' && item) {
+        onDeleteRole?.(item.id)
     }
   };
 
@@ -169,6 +178,8 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
       onRenameCategory?.(item.id, renameCategoryName);
     } else if (target === 'channel' && item) {
       onRenameChannel?.(item.id, renameChannelName);
+    } else if(target === 'role' && item) {
+        onRenameRole?.(item.id, renameRoleName)
     }
   };
 
@@ -220,6 +231,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
 
   const isRenameCategoryDisabled = !renameCategoryName.trim() || (item && renameCategoryName.trim().toLowerCase() === item.name.toLowerCase());
   const isRenameChannelDisabled = !renameChannelName.trim() || (item && renameChannelName.trim().toLowerCase() === item.name.toLowerCase());
+    const isRenameRoleDisabled = !renameRoleName.trim() || (item && renameRoleName.trim().toLowerCase() === item.name.toLowerCase());
 
   const isEditCategoryDisabled = useMemo(() => {
     if (action === 'edit' && target === 'category') {
@@ -239,7 +251,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
 
 
   return (
-    <div className="w-full h-full pt-5 pr-5">
+    <div className="w-full h-full">
       <div className="bg-[#2F3136] rounded p-4">
         <span className="text-lg font-semibold mb-2">{text}</span>
         {action === 'delete' && (
@@ -444,6 +456,47 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
               </div>
             </div>
         )}
+          {action === 'rename' && target === 'role' && item && (
+              <div>
+                  <div className="space-y-2 mt-4">
+                      <input
+                          type="text"
+                          placeholder="Нова назва ролі"
+                          className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+                          value={renameRoleName}
+                          onChange={(e) => setRenameRoleName(e.target.value)}
+                      />
+                  </div>
+                  <div className="flex justify-between items-center pt-4 pb-1">
+                      <div className="flex justify-start space-x-3">
+                          <button
+                              onClick={handleRenameAction}
+                              disabled={isRenameRoleDisabled}
+                              className={`bg-green-600 ${
+                                  (!isRenameRoleDisabled) ? 'hover:bg-green-700' : ''
+                              } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
+                          >
+                              Зберегти
+                          </button>
+                          <button
+                              onClick={onCancel}
+                              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                          >
+                              Скасувати
+                          </button>
+                      </div>
+                      {hintText && (
+                          <button
+                              onMouseEnter={() => setShowHint(true)}
+                              onMouseLeave={() => setShowHint(false)}
+                              className="focus:outline-none"
+                          >
+                              <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
+                          </button>
+                      )}
+                  </div>
+              </div>
+          )}
         {action === 'edit' && target === 'category' && item && (
             <div>
               {isLoadingPermissions ? (
