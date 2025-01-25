@@ -1,8 +1,9 @@
 import disnake
 from disnake import CategoryChannel, VoiceChannel, TextChannel
 
+from backend.common.variables import variables
 from backend.schemas import Channel, BaseChannel, Category, Role
-from backend.services.fetch import fetch_channels, fetch_roles_with_access
+from backend.services.fetch import fetch_channels, fetch_roles_with_access, fetch_guild_default_role, fetch_roles
 
 
 async def format_categories_response() -> list[Category]:
@@ -57,3 +58,39 @@ async def format_base_channel_response(channel: TextChannel | VoiceChannel, inde
         id=str(channel.id),
         position=index,
     )
+
+
+async def format_non_editable_roles_response() -> list[Role]:
+    default_role = await fetch_guild_default_role()
+    roles = [
+        Role(
+            id=str(role.id),
+            name=role.name
+        )
+        for role in await fetch_roles()
+        if role != default_role
+    ]
+    roles = sorted(roles, key=lambda role: (
+        0 if int(role.id) == variables.TEACHER_ROLE_ID else
+        1 if int(role.id) == variables.STUDENT_ROLE_ID else
+        2,
+        role.name.lower()
+    ))
+
+    return roles
+
+
+async def format_editable_roles_response() -> list[Role]:
+    default_role = await fetch_guild_default_role()
+    roles = [
+        Role(
+            id=str(role.id),
+            name=role.name
+        )
+        for role in await fetch_roles()
+        if role != default_role and role.id != variables.ADMINISTRATOR_ROLE_ID and
+           role.id != variables.TEACHER_ROLE_ID and role.id != variables.STUDENT_ROLE_ID
+    ]
+    roles = sorted(roles, key=lambda role: role.name.lower())
+
+    return roles
