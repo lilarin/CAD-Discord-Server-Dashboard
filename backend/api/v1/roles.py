@@ -1,10 +1,11 @@
 import disnake
 from fastapi import APIRouter, HTTPException
 
-from backend.common.variables import variables
 from backend.middlewares.uniform_response import uniform_response_middleware
 from backend.schemas import Role
-from backend.services.fetch import fetch_roles, fetch_guild_default_role
+from backend.services.fetch import fetch_role
+from backend.services.format import format_editable_roles_response, format_non_editable_roles_response
+from backend.services.utils import create_target_role, rename_target_role, delete_target_role
 
 router = APIRouter()
 
@@ -13,23 +14,7 @@ router = APIRouter()
 @uniform_response_middleware
 async def get_roles():
     try:
-        default_role = await fetch_guild_default_role()
-        roles = [
-            Role(
-                id=str(role.id),
-                name=role.name
-            )
-            for role in await fetch_roles()
-            if role != default_role
-        ]
-        roles = sorted(roles, key=lambda role: (
-            0 if int(role.id) == variables.TEACHER_ROLE_ID else
-            1 if int(role.id) == variables.STUDENT_ROLE_ID else
-            2,
-            role.name.lower()
-        ))
-
-        return roles
+        return await format_non_editable_roles_response()
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
     except Exception as exception:
@@ -40,19 +25,45 @@ async def get_roles():
 @uniform_response_middleware
 async def get_editable_roles():
     try:
-        default_role = await fetch_guild_default_role()
-        roles = [
-            Role(
-                id=str(role.id),
-                name=role.name
-            )
-            for role in await fetch_roles()
-            if role != default_role and role.id != variables.ADMINISTRATOR_ROLE_ID and
-               role.id != variables.TEACHER_ROLE_ID and role.id != variables.STUDENT_ROLE_ID
-        ]
-        roles = sorted(roles, key=lambda role: role.name.lower())
+        return await format_editable_roles_response()
+    except disnake.errors.HTTPException as exception:
+        raise HTTPException(status_code=exception.status, detail=str(exception.text))
+    except Exception as exception:
+        raise HTTPException(status_code=500, detail=str(exception))
 
-        return roles
+
+@router.post("/roles/{name}", response_model=list[Role])
+@uniform_response_middleware
+async def create_role(name: str):
+    try:
+        await create_target_role(name)
+        return await format_editable_roles_response()
+    except disnake.errors.HTTPException as exception:
+        raise HTTPException(status_code=exception.status, detail=str(exception.text))
+    except Exception as exception:
+        raise HTTPException(status_code=500, detail=str(exception))
+
+
+@router.patch("/roles/{role_id}/rename/{name}", response_model=list[Role])
+@uniform_response_middleware
+async def rename_role(role_id: int, name: str):
+    try:
+        role = await fetch_role(role_id)
+        await rename_target_role(role, name)
+        return await format_editable_roles_response()
+    except disnake.errors.HTTPException as exception:
+        raise HTTPException(status_code=exception.status, detail=str(exception.text))
+    except Exception as exception:
+        raise HTTPException(status_code=500, detail=str(exception))
+
+
+@router.delete("/roles/{role_id}", response_model=list[Role])
+@uniform_response_middleware
+async def delete_role(role_id: int):
+    try:
+        role = await fetch_role(role_id)
+        await delete_target_role(role)
+        return await format_editable_roles_response()
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
     except Exception as exception:
