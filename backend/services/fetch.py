@@ -58,6 +58,15 @@ async def fetch_roles_with_access(category: CategoryChannel) -> list[Role]:
     ]
 
 
+async def fetch_user(user_id: int) -> Member:
+    guild = await fetch_guild()
+    return await guild.fetch_member(user_id)
+
+
+async def fetch_user_roles(user: Member) -> list[Role]:
+    return [role for role in user.roles]
+
+
 async def fetch_users() -> list[Member]:
     guild = await fetch_guild()
     members = await guild.fetch_members().flatten()
