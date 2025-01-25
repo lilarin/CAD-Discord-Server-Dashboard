@@ -35,7 +35,7 @@ export const Sidebar = () => {
               "flex items-center gap-3 rounded px-3 py-2 text-sm transition-colors",
               location.pathname === item.href
                 ? "bg-[#36393F] text-gray-200"
-                : "text-gray-400 hover:bg-[#36393F] hover:text-gray-200 hover:rounded"
+                : "text-gray-400 hover:bg-[#36393F] hover:text-gray-200 hover:rounded transition-all duration-200"
             )}
           >
             <img src={item.icon} alt={item.name} className="h-4 w-4" />

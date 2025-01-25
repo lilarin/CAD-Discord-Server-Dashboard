@@ -7,7 +7,7 @@ export const PaginationControl = ({currentPage, pageCount, handlePageChange}: {c
             <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="px-4 py-2 mx-1 rounded bg-[#2f3136] text-white disabled:opacity-50"
+                className={`px-4 py-2 mx-1 rounded bg-[#2f3136] text-white disabled:opacity-50 ${currentPage === 1 ? '' : 'hover:bg-[#292B2F]'} transition-all duration-300`}
             >
                 Попередня
             </button>
@@ -25,7 +25,7 @@ export const PaginationControl = ({currentPage, pageCount, handlePageChange}: {c
             <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === pageCount}
-                className="px-4 py-2 mx-1 rounded bg-[#2f3136] text-white disabled:opacity-50"
+                className={`px-4 py-2 mx-1 rounded bg-[#2f3136] text-white disabled:opacity-50 ${currentPage === pageCount ? '' : 'hover:bg-[#292B2F]'} transition-all duration-300`}
             >
                 Наступна
             </button>

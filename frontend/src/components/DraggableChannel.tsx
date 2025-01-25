@@ -51,14 +51,14 @@ function DraggableChannel({
           <img
             src={RenameIcon}
             alt="Перейменувати"
-            className="w-4 h-4 cursor-pointer filter group-hover:brightness-200 transition-all duration-200"
+            className="w-4 h-4 cursor-pointer filter group-hover:brightness-200 transition-all duration-300"
           />
         </div>
         <div className="relative group" onClick={() => onActionTriggered('delete', 'channel', channel)}>
           <img
             src={DeleteIcon}
             alt="Видалити"
-            className="w-4 h-4 cursor-pointer filter group-hover:brightness-200 transition-all duration-200"
+            className="w-4 h-4 cursor-pointer filter group-hover:brightness-200 transition-all duration-300"
           />
         </div>
       </div>

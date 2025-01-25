@@ -45,21 +45,21 @@ function DraggableCategory({
         <img
             src={RenameIcon}
             alt="Перейменувати"
-            className="w-5 h-5 cursor-pointer filter group-hover:brightness-200 transition-all duration-200"
+            className="w-5 h-5 cursor-pointer filter group-hover:brightness-200 transition-all duration-300"
           />
         </div>
         <div className="relative group" onClick={() => onActionTriggered('edit', 'category', category)}>
           <img
             src={EditIcon}
             alt="Змінити"
-            className="w-5 h-5 cursor-pointer filter group-hover:brightness-200 transition-all duration-200"
+            className="w-5 h-5 cursor-pointer filter group-hover:brightness-200 transition-all duration-300"
           />
         </div>
         <div className="relative group" onClick={() => onActionTriggered('delete', 'category', category)}>
           <img
             src={DeleteIcon}
             alt="Видалити"
-            className="w-5 h-5 cursor-pointer filter group-hover:brightness-200 transition-all duration-200"
+            className="w-5 h-5 cursor-pointer filter group-hover:brightness-200 transition-all duration-300"
           />
         </div>
       </div>

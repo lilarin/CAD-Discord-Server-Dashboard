@@ -341,9 +341,9 @@ export default function Categories() {
                   onChange={handleSearch}
                 />
                 <div
-                  className="flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer w-1/3 ml-5"
+                  className="flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer w-1/3 ml-5 transition-all duration-300"
                   onClick={() => handleActionTriggered('create', 'category', null)}>
-                  <img src={CreateCategoryIcon} alt="Створити категорію" className="w-5 h-5"/>
+                  <img src={CreateCategoryIcon} alt="Створити категорію" className="w-5 h-5 transition-all"/>
                 </div>
               </div>
                 <SortableContext items={filteredCategories.map((cat) => cat.id)}>
@@ -398,7 +398,7 @@ export default function Categories() {
                                   Каналів немає
                                 </div>
                               )}
-                              <div className="flex justify-center p-1.5 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer mt-1.5 ml-4" onClick={() => handleActionTriggered('create', 'channel', null)}>
+                              <div className="flex justify-center p-1.5 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer mt-1.5 ml-4 transition-all duration-300" onClick={() => handleActionTriggered('create', 'channel', null)}>
                                 <img src={CreateChannelIcon} alt="Створити канал" className="w-4 h-4" />
                               </div>
                             </>

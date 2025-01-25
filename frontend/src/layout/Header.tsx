@@ -20,7 +20,7 @@ export const Header = () => {
         <Button
           variant="ghost"
           size="default"
-          className="text-gray-400 hover:text-gray-200 rounded flex items-center gap-2"
+          className="text-gray-400 hover:text-gray-200 rounded flex items-center gap-2 transition-all duration-300"
         >
           <img src={LogOutIcon} alt="Вийти з системи" className="w-5 h-5 cursor-pointer" />
           Вийти з системи

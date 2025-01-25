@@ -106,7 +106,7 @@ export default function Groups({ itemsPerPage = ITEMS_PER_PAGE }: { itemsPerPage
                     onChange={handleSearch}
                 />
                 <div
-                  className="flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer w-1/3 ml-5"
+                  className="flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer w-1/3 ml-5 transition-all duration-300"
                   onClick={() => handleActionTriggered('create', 'role', null)}>
                   <img src={CreateRoleIcon} alt="Створити групу" className="w-5 h-5"/>
                 </div>
@@ -129,11 +129,11 @@ export default function Groups({ itemsPerPage = ITEMS_PER_PAGE }: { itemsPerPage
                         <div className="flex items-center space-x-2">
                             <button onClick={() => handleActionTriggered('rename', 'role', role)}>
                                 <img src={RenameIcon} alt="Перейменувати"
-                                     className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-200"/>
+                                     className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"/>
                             </button>
                             <button onClick={() => handleActionTriggered('delete', 'role', role)}>
                                 <img src={DeleteIcon} alt="Видалити"
-                                     className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-200"/>
+                                     className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"/>
                             </button>
                         </div>
                     </li>

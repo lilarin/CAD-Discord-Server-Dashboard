@@ -42,7 +42,6 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
   const [roleSearchTerm, setRoleSearchTerm] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-
   useEffect(() => {
     if (action === 'rename') {
       if (target === 'category' && item) {
@@ -262,18 +261,19 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
               <div className="flex justify-start space-x-3">
                 <button
                     onClick={handleDeleteAction}
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
                 >
                   Видалити
                 </button>
                 <button
                     onClick={onCancel}
-                    className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
                 >
                   Скасувати
                 </button>
               </div>
               {hintText && (
+                <div className="hover:brightness-200 transition-all duration-300">
                   <button
                       onMouseEnter={() => setShowHint(true)}
                       onMouseLeave={() => setShowHint(false)}
@@ -281,6 +281,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                   >
                     <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
                   </button>
+                </div>
               )}
             </div>
         )}
@@ -301,19 +302,20 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                       onClick={handleCreateAction}
                       disabled={!newCategoryName.trim()}
                       className={`bg-green-600 ${
-                          (newCategoryName.trim()) ? 'hover:bg-green-700' : ''
+                          (newCategoryName.trim()) ? 'hover:bg-green-700 transition-all duration-300' : ''
                       } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
                   >
                     Створити
                   </button>
                   <button
                       onClick={onCancel}
-                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
                   >
                     Скасувати
                   </button>
                 </div>
                 {hintText && (
+                  <div className="hover:brightness-200 transition-all duration-300">
                     <button
                         onMouseEnter={() => setShowHint(true)}
                         onMouseLeave={() => setShowHint(false)}
@@ -321,6 +323,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                     >
                       <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
                     </button>
+                  </div>
                 )}
               </div>
             </div>
@@ -353,19 +356,20 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                       onClick={handleCreateAction}
                       disabled={!newChannelName.trim()}
                       className={`bg-green-600 ${
-                          (newChannelName.trim()) ? 'hover:bg-green-700' : ''
+                          (newChannelName.trim()) ? 'hover:bg-green-700 transition-all duration-300' : ''
                       } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
                   >
                     Створити
                   </button>
                   <button
                       onClick={onCancel}
-                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
                   >
                     Скасувати
                   </button>
                 </div>
                 {hintText && (
+                  <div className="hover:brightness-200 transition-all duration-300">
                     <button
                         onMouseEnter={() => setShowHint(true)}
                         onMouseLeave={() => setShowHint(false)}
@@ -373,6 +377,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                     >
                       <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
                     </button>
+                  </div>
                 )}
               </div>
             </div>
@@ -394,27 +399,29 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                       onClick={handleCreateAction}
                       disabled={isCreateRoleDisabled}
                       className={`bg-green-600 ${
-                          (!isCreateRoleDisabled) ? 'hover:bg-green-700' : ''
+                          (!isCreateRoleDisabled) ? 'hover:bg-green-700 transition-all duration-300' : ''
                       } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
                   >
                       Створити
                   </button>
                   <button
                       onClick={onCancel}
-                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
                   >
                       Скасувати
                   </button>
               </div>
-             {hintText && (
-              <button
-                  onMouseEnter={() => setShowHint(true)}
-                  onMouseLeave={() => setShowHint(false)}
-                  className="focus:outline-none"
-              >
-                  <img src={HintIcon} alt="Інформація" className="w-6 h-6" />
-              </button>
-             )}
+              {hintText && (
+                <div className="hover:brightness-200 transition-all duration-300">
+                  <button
+                    onMouseEnter={() => setShowHint(true)}
+                    onMouseLeave={() => setShowHint(false)}
+                    className="focus:outline-none"
+                  >
+                    <img src={HintIcon} alt="Інформація" className="w-6 h-6" />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -435,19 +442,20 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                       onClick={handleRenameAction}
                       disabled={isRenameCategoryDisabled}
                       className={`bg-green-600 ${
-                          (!isRenameCategoryDisabled) ? 'hover:bg-green-700' : ''
+                          (!isRenameCategoryDisabled) ? 'hover:bg-green-700 transition-all duration-300' : ''
                       } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
                   >
                     Зберегти
                   </button>
                   <button
                       onClick={onCancel}
-                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
                   >
                     Скасувати
                   </button>
                 </div>
                 {hintText && (
+                  <div className="hover:brightness-200 transition-all duration-300">
                     <button
                         onMouseEnter={() => setShowHint(true)}
                         onMouseLeave={() => setShowHint(false)}
@@ -455,6 +463,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                     >
                       <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
                     </button>
+                  </div>
                 )}
               </div>
             </div>
@@ -476,26 +485,28 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                       onClick={handleRenameAction}
                       disabled={isRenameChannelDisabled}
                       className={`bg-green-600 ${
-                          (!isRenameChannelDisabled) ? 'hover:bg-green-700' : ''
+                          (!isRenameChannelDisabled) ? 'hover:bg-green-700 transition-all duration-300' : ''
                       } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
                   >
                     Зберегти
                   </button>
                   <button
                       onClick={onCancel}
-                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
                   >
                     Скасувати
                   </button>
                 </div>
                 {hintText && (
-                    <button
-                        onMouseEnter={() => setShowHint(true)}
-                        onMouseLeave={() => setShowHint(false)}
-                        className="focus:outline-none"
-                    >
-                      <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
-                    </button>
+                    <div className="hover:brightness-200 transition-all duration-300">
+                      <button
+                          onMouseEnter={() => setShowHint(true)}
+                          onMouseLeave={() => setShowHint(false)}
+                          className="focus:outline-none"
+                      >
+                        <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
+                      </button>
+                    </div>
                 )}
               </div>
             </div>
@@ -517,19 +528,20 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                               onClick={handleRenameAction}
                               disabled={isRenameRoleDisabled}
                               className={`bg-green-600 ${
-                                  (!isRenameRoleDisabled) ? 'hover:bg-green-700' : ''
+                                  (!isRenameRoleDisabled) ? 'hover:bg-green-700 transition-all duration-300' : ''
                               } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
                           >
                               Зберегти
                           </button>
                           <button
                               onClick={onCancel}
-                              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
                           >
                               Скасувати
                           </button>
                       </div>
                       {hintText && (
+                        <div className="hover:brightness-200 transition-all duration-300">
                           <button
                               onMouseEnter={() => setShowHint(true)}
                               onMouseLeave={() => setShowHint(false)}
@@ -537,6 +549,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                           >
                               <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
                           </button>
+                        </div>
                       )}
                   </div>
               </div>
@@ -558,7 +571,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                             <img
                                 src={DeleteIcon}
                                 alt="Видалити"
-                                className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-200"
+                                className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"
                             />
                           </button>
                         </li>
@@ -569,7 +582,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
               )}
               {!isLoadingPermissions && (
                   <div
-                      className="flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer mt-2"
+                      className="flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer mt-2  transition-all duration-300"
                       onClick={handleAddRole}>
                     <img src={AddRoleIcon} alt="Додати роль" className="w-4 h-4 mr-2"/>
                   </div>
@@ -580,19 +593,20 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                       onClick={handleSavePermissions}
                       disabled={isEditCategoryDisabled}
                       className={`bg-green-600 ${
-                          (!isEditCategoryDisabled) ? 'hover:bg-green-700' : ''
-                      } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
+                          (!isEditCategoryDisabled) ? 'hover:bg-green-700 transition-all duration-300' : ''
+                      } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40 transition-all duration-300`}
                   >
                     Зберегти
                   </button>
                   <button
                       onClick={onCancel}
-                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
                   >
                     Скасувати
                   </button>
                 </div>
                 {hintText && (
+                  <div className="hover:brightness-200 transition-all duration-300">
                     <button
                         onMouseEnter={() => setShowHint(true)}
                         onMouseLeave={() => setShowHint(false)}
@@ -600,6 +614,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                     >
                       <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
                     </button>
+                  </div>
                 )}
               </div>
             </div>
