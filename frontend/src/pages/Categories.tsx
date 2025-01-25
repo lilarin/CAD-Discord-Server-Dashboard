@@ -33,10 +33,7 @@ import {
 import toast from 'react-hot-toast';
 import DraggableChannel from "@/components/DraggableChannel.tsx";
 import DraggableCategory from "@/components/DraggableCategory.tsx";
-import ActionSidebar from '@/components//ActionSidebar';
-
-type ActionType = 'create' | 'rename' | 'edit' | 'delete' | null;
-type ActionTarget = 'category' | 'channel' | null;
+import ActionSidebar, {ActionTarget, ActionType} from '@/components//ActionSidebar';
 
 export default function Categories() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -334,30 +331,34 @@ export default function Categories() {
           {isLoading ? (
               <ComponentLoadingSpinner/>
           ) : (
-            <div>
-              <div className="mb-5">
+            <div className="sticky top-5">
+              <div className="mb-5 flex justify-between items-center">
                 <input
                   type="text"
                   placeholder="Пошук за назвою категорії..."
-                  className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+                  className="w-2/3 p-2 rounded bg-[#292B2F] text-white focus:outline-none"
                   value={searchTerm}
                   onChange={handleSearch}
                 />
+                <div
+                  className="flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer w-1/3 ml-5"
+                  onClick={() => handleActionTriggered('create', 'category', null)}>
+                  <img src={CreateCategoryIcon} alt="Створити категорію" className="w-5 h-5"/>
+                </div>
               </div>
-
-              <SortableContext items={filteredCategories.map((cat) => cat.id)}>
-                <div className="space-y-2">
-                  {filteredCategories.length === 0 && !isLoading && (
-                    <div className="text-gray-400">Категорій немає</div>
-                  )}
-                  {filteredCategories.map((category) => (
-                    <div key={category.id}>
-                      <DraggableCategory
-                        category={category}
-                        handleCategoryClick={handleCategoryClick}
-                        onActionTriggered={handleActionTriggered}
-                      />
-                      {openCategoryId === category.id && !isDraggingCategory && (
+                <SortableContext items={filteredCategories.map((cat) => cat.id)}>
+                  <div className="space-y-2">
+                    {filteredCategories.length === 0 && !isLoading && (
+                      <div className="text-gray-400">Категорій немає</div>
+                    )}
+                    {filteredCategories.map((category) => (
+                      <div key={category.id}>
+                        <DraggableCategory
+                          category={category}
+                          handleCategoryClick={handleCategoryClick}
+                          onActionTriggered={handleActionTriggered}
+                        />
+                        {openCategoryId === category.id && !isDraggingCategory && (
                         <div
                           ref={channelsRef}
                           className="overflow-hidden transition-max-height duration-300 ease-in-out"
@@ -406,11 +407,6 @@ export default function Categories() {
                       )}
                     </div>
                   ))}
-                  {!isLoading && filteredCategories.length > 0 && (
-                    <div className="w-full flex items-center justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer" onClick={() => handleActionTriggered('create', 'category', null)}>
-                      <img src={CreateCategoryIcon} alt="Створити категорію" className="w-5 h-5" />
-                    </div>
-                  )}
                 </div>
               </SortableContext>
             </div>
