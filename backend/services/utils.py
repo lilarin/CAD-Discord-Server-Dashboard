@@ -1,4 +1,4 @@
-from disnake import CategoryChannel, VoiceChannel, TextChannel, PermissionOverwrite
+from disnake import CategoryChannel, VoiceChannel, TextChannel, PermissionOverwrite, Role
 
 from backend.common.variables import variables
 from backend.services.fetch import (
@@ -56,3 +56,16 @@ async def sync_permissions_with_category(channel_id: id) -> VoiceChannel | TextC
     channel = await fetch_channel(channel_id)
     await channel.edit(sync_permissions=True)
     return channel
+
+
+async def create_target_role(role_name: str) -> Role:
+    guild = await fetch_guild()
+    return await guild.create_role(name=role_name)
+
+
+async def rename_target_role(role: Role, role_name: str) -> Role:
+    return await role.edit(name=role_name)
+
+
+async def delete_target_role(role: Role) -> None:
+    await role.delete()
