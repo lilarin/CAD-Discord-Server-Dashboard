@@ -6,8 +6,12 @@ import { PaginationControl } from "@/hooks/PaginationControl.tsx";
 import ActionSidebar, {ActionTarget, ActionType} from '@/components/ActionSidebar';
 import RenameIcon from '@/assets/icons/rename.svg';
 import DeleteIcon from '@/assets/icons/delete.svg';
+import CreateRoleIcon from '@/assets/icons/create_role.svg';
 
-const usePaginatedRoles = (itemsPerPage: number = 12) => {
+
+const ITEMS_PER_PAGE = 12;
+
+const usePaginatedRoles = (itemsPerPage: number = ITEMS_PER_PAGE) => {
     const [roles, setRoles] = useState<Role[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
@@ -62,7 +66,7 @@ const usePaginatedRoles = (itemsPerPage: number = 12) => {
     }
 };
 
-export default function Groups({ itemsPerPage = 12 }: { itemsPerPage?: number }) {
+export default function Groups({ itemsPerPage = ITEMS_PER_PAGE }: { itemsPerPage?: number }) {
     const {
         rolesOnPage,
         isLoading,
@@ -93,14 +97,19 @@ export default function Groups({ itemsPerPage = 12 }: { itemsPerPage?: number })
       <div className="flex w-full h-full p-5">
         <div className="w-2/3 h-full flex flex-col pr-5">
           {!isLoading && (
-            <div className="mb-5">
+            <div className="mb-5 flex justify-between items-center">
                 <input
                     type="text"
                     placeholder="Пошук за назвою групи..."
-                    className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+                    className="w-2/3 p-2 rounded bg-[#292B2F] text-white focus:outline-none"
                     value={searchTerm}
                     onChange={handleSearch}
                 />
+                <div
+                  className="flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer w-1/3 ml-5"
+                  onClick={() => handleActionTriggered('create', 'role', null)}>
+                  <img src={CreateRoleIcon} alt="Створити групу" className="w-5 h-5"/>
+                </div>
             </div>
           )}
 
