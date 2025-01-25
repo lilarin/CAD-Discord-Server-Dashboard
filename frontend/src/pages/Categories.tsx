@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
-  Category,
-  Channel,
   getCategories,
   createCategory,
   deleteCategory,
@@ -27,13 +25,13 @@ import {
 import {
   arrayMove,
   SortableContext,
-  sortableKeyboardCoordinates,
-  useSortable,
+  sortableKeyboardCoordinates
 } from '@dnd-kit/sortable';
 import toast from 'react-hot-toast';
 import DraggableChannel from "@/components/DraggableChannel.tsx";
 import DraggableCategory from "@/components/DraggableCategory.tsx";
 import ActionSidebar, {ActionTarget, ActionType} from '@/components//ActionSidebar';
+import {Category, Channel} from "@/lib/types.ts";
 
 export default function Categories() {
   const [categories, setCategories] = useState<Category[]>([]);

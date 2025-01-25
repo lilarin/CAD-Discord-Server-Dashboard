@@ -1,10 +1,15 @@
 import React, {useState, useEffect, useMemo, useRef} from 'react';
-import {Category, Channel, Role, getCategoryAccessRoles, editCategoryPermissions, getRoles} from "@/lib/api.ts";
+import {
+  getCategoryAccessRoles,
+  editCategoryPermissions,
+  getAllRoles
+} from "@/lib/api.ts";
 import HintIcon from "@/assets/icons/hint.svg";
 import DeleteIcon from "@/assets/icons/delete.svg";
 import AddRoleIcon from "@/assets/icons/add_role.svg";
 import { ChannelLoadingSpinner } from '@/components/LoadingSpinner';
 import toast from "react-hot-toast";
+import {Category, Channel, Role} from "@/lib/types.ts";
 
 export type ActionType = 'create' | 'rename' | 'edit' | 'delete' | null;
 export type ActionTarget = 'category' | 'channel' | 'role' | null;
@@ -57,7 +62,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
   useEffect(() => {
     const fetchAllRoles = async () => {
       try {
-        const fetchedAllRoles = await getRoles();
+        const fetchedAllRoles = await getAllRoles();
         setAllRolesList(fetchedAllRoles);
       } catch (error) {
         toast.error("Не вдалося завантажити список ролей", {

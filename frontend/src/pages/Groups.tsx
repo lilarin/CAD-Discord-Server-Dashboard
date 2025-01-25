@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { getEditableRoles, Role } from '@/lib/api';
+import { getEditableRoles } from '@/lib/api';
 import { ComponentLoadingSpinner } from '@/components/LoadingSpinner';
 import toast from 'react-hot-toast';
 import { PaginationControl } from "@/hooks/PaginationControl.tsx";
@@ -7,6 +7,7 @@ import ActionSidebar, {ActionTarget, ActionType} from '@/components/ActionSideba
 import RenameIcon from '@/assets/icons/rename.svg';
 import DeleteIcon from '@/assets/icons/delete.svg';
 import CreateRoleIcon from '@/assets/icons/create_role.svg';
+import {Role} from "@/lib/types.ts";
 
 
 const ITEMS_PER_PAGE = 12;
