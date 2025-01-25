@@ -14,7 +14,7 @@ from backend.services.format import (
     format_categories_response,
     format_base_channel_response,
     format_roles_with_access_response,
-    format_roles_with_access_by_roles
+    format_roles_response
 )
 from backend.services.utils import (
     create_template_category,
@@ -136,6 +136,7 @@ async def get_category_permissions(category_id: int):
 
 
 @router.put("/categories/{category_id}/permissions", response_model=list[Role])
+@uniform_response_middleware
 async def edit_category_permissions(category_id: int, roles_with_access: list[str] = Body(...)):
     try:
         category = await fetch_channel(category_id)
@@ -160,7 +161,7 @@ async def edit_category_permissions(category_id: int, roles_with_access: list[st
         if permissions_overwrites is not None:
             await category.edit(overwrites=permissions_overwrites)
 
-        return await format_roles_with_access_by_roles(fetched_roles_with_access)
+        return await format_roles_response(fetched_roles_with_access)
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
     except ValueError as exception:
