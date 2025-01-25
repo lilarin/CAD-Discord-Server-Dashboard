@@ -1,4 +1,4 @@
-from disnake import CategoryChannel, VoiceChannel, TextChannel, PermissionOverwrite, Role
+from disnake import CategoryChannel, VoiceChannel, TextChannel, PermissionOverwrite, Role, Member
 
 from backend.common.variables import variables
 from backend.services.fetch import (
@@ -69,3 +69,12 @@ async def rename_target_role(role: Role, role_name: str) -> Role:
 
 async def delete_target_role(role: Role) -> None:
     await role.delete()
+
+
+async def rename_target_user(user: Member, name: str) -> Member:
+    return await user.edit(nick=name)
+
+
+async def kick_target_user(user: Member) -> None:
+    guild = await fetch_guild()
+    await guild.kick(user)
