@@ -28,9 +28,10 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
   const [newCategoryName, setNewCategoryName] = useState('');
   const [newChannelName, setNewChannelName] = useState('');
   const [newChannelType, setNewChannelType] = useState<'text' | 'voice'>('text');
+  const [newRoleName, setNewRoleName] = useState('');
   const [renameCategoryName, setRenameCategoryName] = useState('');
   const [renameChannelName, setRenameChannelName] = useState('');
-    const [renameRoleName, setRenameRoleName] = useState('');
+  const [renameRoleName, setRenameRoleName] = useState('');
   const [showHint, setShowHint] = useState(false);
   const [roles, setRoles] = useState<Role[]>([]);
   const [initialRoles, setInitialRoles] = useState<Role[]>([]);
@@ -118,11 +119,12 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
     create: {
       category: 'Створення нової категорії',
       channel: 'Створення нового каналу',
+      role: 'Створення нової ролі',
     },
     rename: {
       category: `Перейменування категорії "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
       channel: `Перейменування каналу "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
-        role: `Перейменування ролі "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
+      role: `Перейменування ролі "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
     },
     edit: {
       category: `Редагування доступу ролей до категорії "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
@@ -130,14 +132,15 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
     delete: {
       category: `Видалити категорію "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"?`,
       channel: `Видалити канал "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"?`,
-        role: `Видалити роль "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"?`,
+      role: `Видалити роль "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"?`,
     },
   };
 
   const hintTextMap = {
     create: {
-      category: 'Категорію варто сприймати як дисципліну, чи розділ зі своїми каналами та доступом',
+      category: 'Категорію варто сприймати як дисципліну, чи розділ зі своїми каналами та доступом. Після створення категорії вона знаходитиметься внизу списку',
       channel: 'Введіть назву для каналу та оберіть його тип',
+      role: 'Після створення ролі незалежно від її назви вона буде на першій сторінці до подальших оновлень',
     },
     rename: {
       category: 'Регістр для назви каналу не враховується та обробляється автоматично',
@@ -231,7 +234,8 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
 
   const isRenameCategoryDisabled = !renameCategoryName.trim() || (item && renameCategoryName.trim().toLowerCase() === item.name.toLowerCase());
   const isRenameChannelDisabled = !renameChannelName.trim() || (item && renameChannelName.trim().toLowerCase() === item.name.toLowerCase());
-    const isRenameRoleDisabled = !renameRoleName.trim() || (item && renameRoleName.trim().toLowerCase() === item.name.toLowerCase());
+  const isRenameRoleDisabled = !renameRoleName.trim() || (item && renameRoleName.trim().toLowerCase() === item.name.toLowerCase());
+  const isCreateRoleDisabled = !newRoleName.trim()
 
   const isEditCategoryDisabled = useMemo(() => {
     if (action === 'edit' && target === 'category') {
@@ -372,6 +376,47 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                 )}
               </div>
             </div>
+        )}
+        {action === 'create' && target === 'role' && (
+          <div>
+            <div className="space-y-2 mt-4">
+              <input
+                  type="text"
+                  placeholder="Назва ролі"
+                  className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+                  value={newRoleName}
+                  onChange={(e) => setNewRoleName(e.target.value)}
+              />
+            </div>
+            <div className="flex justify-between items-center pt-4 pb-1">
+              <div className="flex justify-start space-x-3">
+                  <button
+                      onClick={handleCreateAction}
+                      disabled={isCreateRoleDisabled}
+                      className={`bg-green-600 ${
+                          (!isCreateRoleDisabled) ? 'hover:bg-green-700' : ''
+                      } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
+                  >
+                      Створити
+                  </button>
+                  <button
+                      onClick={onCancel}
+                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  >
+                      Скасувати
+                  </button>
+              </div>
+             {hintText && (
+              <button
+                  onMouseEnter={() => setShowHint(true)}
+                  onMouseLeave={() => setShowHint(false)}
+                  className="focus:outline-none"
+              >
+                  <img src={HintIcon} alt="Інформація" className="w-6 h-6" />
+              </button>
+             )}
+            </div>
+          </div>
         )}
         {action === 'rename' && target === 'category' && item && (
             <div>
