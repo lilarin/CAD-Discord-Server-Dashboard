@@ -3,6 +3,8 @@
 The goal of this project is to develop a comprehensive discord control panel using FastAPI & Vue, React
 
 ## Interim results of work
-![Edition](https://imgur.com/DownR5y.png)
-![Creation](https://imgur.com/gFcNp1O.png)
-![Deletion](https://imgur.com/AVgxdV7.png)
+![CategoryEdition](https://imgur.com/KpgLlfF.png)
+![ChannelCreation](https://imgur.com/9bpXyrf.png)
+![CategoryDeletion](https://imgur.com/B4RQoRS.png)
+![RoleCreation](https://imgur.com/WDuPZxb.png)
+![RoleRename](https://imgur.com/YbFN8yC.png)
