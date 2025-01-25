@@ -87,35 +87,37 @@ export default function Users({ itemsPerPage = ITEMS_PER_PAGE }: { itemsPerPage?
     <div className="flex w-2/3 h-full p-5">
       <div className="w-full h-full flex flex-col pr-5">
         {!isLoading && (
-            <div className="mb-5 flex justify-between items-center">
-                <input
-                    type="text"
-                    placeholder="Пошук за іменем користувача..."
-                    className="w-2/3 p-2 rounded bg-[#292B2F] text-white focus:outline-none"
-                    value={searchTerm}
-                    onChange={handleSearch}
-                />
-                <div
-                    className="flex justify-center p-2 border-dashed border-gray-500 text-gray-300 border rounded cursor-pointer w-1/3 ml-5 transition-all duration-300">
-                    <img src={CreateRoleIcon} alt="Створити групу" className="w-5 h-5"/>
-                </div>
+          <div className="mb-5 flex justify-between items-center">
+            <input
+              type="text"
+              placeholder="Пошук за іменем користувача..."
+              className="w-2/3 p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+            <div
+              className="flex justify-center p-2 border-dashed border-gray-500 text-gray-300 border rounded cursor-pointer w-1/3 ml-5 transition-all duration-300">
+              <img src={CreateRoleIcon} alt="Створити групу" className="w-5 h-5"/>
             </div>
+          </div>
         )}
 
-
-          {isLoading ? (
-              <ComponentLoadingSpinner/>
-          ) : (
-              <div className="flex-grow">
-                  {filteredUsers.length === 0 ? (
-                      <div className="text-gray-400">Користувачів немає</div>
-                  ) : (
-                      <ul className="list-none p-0">
-                          {usersOnPage.map((user) => (
-                              <li key={user.id}
-                      className="py-2 px-4 rounded bg-[#2f3136] text-white mb-2 flex justify-between items-center">
-                      {user.name}
-                      <div className="text-gray-400">{user.type}</div>
+        {isLoading ? (
+          <ComponentLoadingSpinner/>
+        ) : (
+          <div className="flex-grow">
+            {filteredUsers.length === 0 ? (
+                <div className="text-gray-400">Користувачів немає</div>
+            ) : (
+              <ul className="list-none p-0">
+                {usersOnPage.map((user) => (
+                  <li
+                    key={user.id}
+                    className="py-2 px-4 rounded bg-[#2f3136] text-white mb-2 flex justify-between items-center">
+                    {user.name}
+                    <div className="text-gray-400">
+                      {user.type}
+                    </div>
                   </li>
                 ))}
               </ul>

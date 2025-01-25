@@ -120,7 +120,7 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
   }, [isRoleListOpen]);
 
 
-    const actionTextMap = {
+  const actionTextMap = {
     create: {
       category: 'Створення нової категорії',
       channel: 'Створення нового каналу',
@@ -266,13 +266,55 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
       <div className="bg-[#2F3136] rounded p-4">
         <span className="text-lg font-semibold mb-2">{text}</span>
         {action === 'delete' && (
+          <div className="flex justify-between items-center pt-4 pb-1">
+            <div className="flex justify-start space-x-3">
+              <button
+                onClick={handleDeleteAction}
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
+              >
+                Видалити
+              </button>
+              <button
+                onClick={onCancel}
+                className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
+              >
+                Скасувати
+              </button>
+            </div>
+            {hintText && (
+              <div className="hover:brightness-200 transition-all duration-300">
+                <button
+                  onMouseEnter={() => setShowHint(true)}
+                  onMouseLeave={() => setShowHint(false)}
+                  className="focus:outline-none"
+                >
+                  <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+        {action === 'create' && target === 'category' && (
+          <div>
+            <div className="space-y-2 mt-4">
+              <input
+                  type="text"
+                  placeholder="Назва категорії"
+                  className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+              />
+            </div>
             <div className="flex justify-between items-center pt-4 pb-1">
               <div className="flex justify-start space-x-3">
                 <button
-                    onClick={handleDeleteAction}
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
+                    onClick={handleCreateAction}
+                    disabled={!newCategoryName.trim()}
+                    className={`bg-green-600 ${
+                        (newCategoryName.trim()) ? 'hover:bg-green-700 transition-all duration-300' : ''
+                    } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
                 >
-                  Видалити
+                  Створити
                 </button>
                 <button
                     onClick={onCancel}
@@ -284,141 +326,95 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
               {hintText && (
                 <div className="hover:brightness-200 transition-all duration-300">
                   <button
-                      onMouseEnter={() => setShowHint(true)}
-                      onMouseLeave={() => setShowHint(false)}
-                      className="focus:outline-none"
+                    onMouseEnter={() => setShowHint(true)}
+                    onMouseLeave={() => setShowHint(false)}
+                    className="focus:outline-none"
                   >
                     <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
                   </button>
                 </div>
               )}
             </div>
-        )}
-        {action === 'create' && target === 'category' && (
-            <div>
-              <div className="space-y-2 mt-4">
-                <input
-                    type="text"
-                    placeholder="Назва категорії"
-                    className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
-                    value={newCategoryName}
-                    onChange={(e) => setNewCategoryName(e.target.value)}
-                />
-              </div>
-              <div className="flex justify-between items-center pt-4 pb-1">
-                <div className="flex justify-start space-x-3">
-                  <button
-                      onClick={handleCreateAction}
-                      disabled={!newCategoryName.trim()}
-                      className={`bg-green-600 ${
-                          (newCategoryName.trim()) ? 'hover:bg-green-700 transition-all duration-300' : ''
-                      } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
-                  >
-                    Створити
-                  </button>
-                  <button
-                      onClick={onCancel}
-                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
-                  >
-                    Скасувати
-                  </button>
-                </div>
-                {hintText && (
-                  <div className="hover:brightness-200 transition-all duration-300">
-                    <button
-                        onMouseEnter={() => setShowHint(true)}
-                        onMouseLeave={() => setShowHint(false)}
-                        className="focus:outline-none"
-                    >
-                      <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
+          </div>
         )}
         {action === 'create' && target === 'channel' && (
-            <div>
-              <div className="space-y-2 mt-4">
-                <input
-                    type="text"
-                    placeholder="Назва каналу"
-                    className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
-                    value={newChannelName}
-                    onChange={(e) => setNewChannelName(e.target.value)}
-                />
-                <div className="flex justify-start space-x-3 p-1">
-                  Тип каналу
-                </div>
-                <select
-                    className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
-                    value={newChannelType}
-                    onChange={(e) => setNewChannelType(e.target.value as 'text' | 'voice')}
-                >
-                  <option value="text">Текстовий</option>
-                  <option value="voice">Голосовий</option>
-                </select>
+          <div>
+            <div className="space-y-2 mt-4">
+              <input
+                type="text"
+                placeholder="Назва каналу"
+                className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+                value={newChannelName}
+                onChange={(e) => setNewChannelName(e.target.value)}
+              />
+              <div className="flex justify-start space-x-3 p-1">
+                Тип каналу
               </div>
-              <div className="flex justify-between items-center pt-4 pb-1">
-                <div className="flex justify-start space-x-3">
-                  <button
-                      onClick={handleCreateAction}
-                      disabled={!newChannelName.trim()}
-                      className={`bg-green-600 ${
-                          (newChannelName.trim()) ? 'hover:bg-green-700 transition-all duration-300' : ''
-                      } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
-                  >
-                    Створити
-                  </button>
-                  <button
-                      onClick={onCancel}
-                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
-                  >
-                    Скасувати
-                  </button>
-                </div>
-                {hintText && (
-                  <div className="hover:brightness-200 transition-all duration-300">
-                    <button
-                        onMouseEnter={() => setShowHint(true)}
-                        onMouseLeave={() => setShowHint(false)}
-                        className="focus:outline-none"
-                    >
-                      <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
-                    </button>
-                  </div>
-                )}
-              </div>
+              <select
+                className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+                value={newChannelType}
+                onChange={(e) => setNewChannelType(e.target.value as 'text' | 'voice')}
+              >
+                <option value="text">Текстовий</option>
+                <option value="voice">Голосовий</option>
+              </select>
             </div>
+            <div className="flex justify-between items-center pt-4 pb-1">
+              <div className="flex justify-start space-x-3">
+                <button
+                  onClick={handleCreateAction}
+                  disabled={!newChannelName.trim()}
+                  className={`bg-green-600 ${
+                      (newChannelName.trim()) ? 'hover:bg-green-700 transition-all duration-300' : ''
+                  } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}>
+                  Створити
+                </button>
+                <button
+                  onClick={onCancel}
+                  className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
+                >
+                  Скасувати
+                </button>
+              </div>
+              {hintText && (
+                <div className="hover:brightness-200 transition-all duration-300">
+                  <button
+                    onMouseEnter={() => setShowHint(true)}
+                    onMouseLeave={() => setShowHint(false)}
+                    className="focus:outline-none">
+                    <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
         )}
         {action === 'create' && target === 'role' && (
           <div>
             <div className="space-y-2 mt-4">
               <input
-                  type="text"
-                  placeholder="Назва ролі"
-                  className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
-                  value={newRoleName}
-                  onChange={(e) => setNewRoleName(e.target.value)}
+                type="text"
+                placeholder="Назва ролі"
+                className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+                value={newRoleName}
+                onChange={(e) => setNewRoleName(e.target.value)}
               />
             </div>
             <div className="flex justify-between items-center pt-4 pb-1">
               <div className="flex justify-start space-x-3">
-                  <button
-                      onClick={handleCreateAction}
-                      disabled={isCreateRoleDisabled}
-                      className={`bg-green-600 ${
-                          (!isCreateRoleDisabled) ? 'hover:bg-green-700 transition-all duration-300' : ''
-                      } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
-                  >
-                      Створити
-                  </button>
-                  <button
-                      onClick={onCancel}
-                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
-                  >
-                      Скасувати
-                  </button>
+                <button
+                  onClick={handleCreateAction}
+                  disabled={isCreateRoleDisabled}
+                  className={`bg-green-600 ${(!isCreateRoleDisabled) ? 'hover:bg-green-700 transition-all duration-300' : ''} text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
+                >
+                  Створити
+                </button>
+                <button
+                  onClick={onCancel}
+                  className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
+                >
+                  Скасувати
+                </button>
               </div>
               {hintText && (
                 <div className="hover:brightness-200 transition-all duration-300">
@@ -435,181 +431,112 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
           </div>
         )}
         {action === 'rename' && target === 'category' && item && (
-            <div>
-              <div className="space-y-2 mt-4">
-                <input
-                    type="text"
-                    placeholder="Нова назва категорії"
-                    className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
-                    value={renameCategoryName}
-                    onChange={(e) => setRenameCategoryName(e.target.value)}
-                />
+          <div>
+            <div className="space-y-2 mt-4">
+              <input
+                type="text"
+                placeholder="Нова назва категорії"
+                className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+                value={renameCategoryName}
+                onChange={(e) => setRenameCategoryName(e.target.value)}
+              />
+            </div>
+            <div className="flex justify-between items-center pt-4 pb-1">
+              <div className="flex justify-start space-x-3">
+                <button
+                  onClick={handleRenameAction}
+                  disabled={isRenameCategoryDisabled}
+                  className={`bg-green-600 ${(!isRenameCategoryDisabled) ? 'hover:bg-green-700 transition-all duration-300' : ''} text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
+                >
+                  Зберегти
+                </button>
+                <button
+                  onClick={onCancel}
+                  className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
+                >
+                  Скасувати
+                </button>
               </div>
-              <div className="flex justify-between items-center pt-4 pb-1">
-                <div className="flex justify-start space-x-3">
+              {hintText && (
+                <div className="hover:brightness-200 transition-all duration-300">
                   <button
-                      onClick={handleRenameAction}
-                      disabled={isRenameCategoryDisabled}
-                      className={`bg-green-600 ${
-                          (!isRenameCategoryDisabled) ? 'hover:bg-green-700 transition-all duration-300' : ''
-                      } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
+                    onMouseEnter={() => setShowHint(true)}
+                    onMouseLeave={() => setShowHint(false)}
+                    className="focus:outline-none"
                   >
-                    Зберегти
-                  </button>
-                  <button
-                      onClick={onCancel}
-                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
-                  >
-                    Скасувати
+                    <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
                   </button>
                 </div>
-                {hintText && (
-                  <div className="hover:brightness-200 transition-all duration-300">
-                    <button
-                        onMouseEnter={() => setShowHint(true)}
-                        onMouseLeave={() => setShowHint(false)}
-                        className="focus:outline-none"
-                    >
-                      <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
-                    </button>
-                  </div>
-                )}
-              </div>
+              )}
             </div>
+          </div>
         )}
         {action === 'rename' && target === 'channel' && item && (
+          <div>
+            <div className="space-y-2 mt-4">
+              <input
+                type="text"
+                placeholder="Нова назва каналу"
+                className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+                value={renameChannelName}
+                onChange={(e) => setRenameChannelName(e.target.value)}
+              />
+            </div>
+            <div className="flex justify-between items-center pt-4 pb-1">
+              <div className="flex justify-start space-x-3">
+                <button
+                  onClick={handleRenameAction}
+                  disabled={isRenameChannelDisabled}
+                  className={`bg-green-600 ${
+                      (!isRenameChannelDisabled) ? 'hover:bg-green-700 transition-all duration-300' : ''
+                  } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
+                >
+                  Зберегти
+                </button>
+                <button
+                    onClick={onCancel}
+                    className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
+                >
+                  Скасувати
+                </button>
+              </div>
+              {hintText && (
+                <div className="hover:brightness-200 transition-all duration-300">
+                  <button
+                    onMouseEnter={() => setShowHint(true)}
+                    onMouseLeave={() => setShowHint(false)}
+                    className="focus:outline-none"
+                  >
+                    <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+          {action === 'rename' && target === 'role' && item && (
             <div>
               <div className="space-y-2 mt-4">
                 <input
-                    type="text"
-                    placeholder="Нова назва каналу"
-                    className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
-                    value={renameChannelName}
-                    onChange={(e) => setRenameChannelName(e.target.value)}
+                  type="text"
+                  placeholder="Нова назва ролі"
+                  className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+                  value={renameRoleName}
+                  onChange={(e) => setRenameRoleName(e.target.value)}
                 />
               </div>
               <div className="flex justify-between items-center pt-4 pb-1">
                 <div className="flex justify-start space-x-3">
                   <button
-                      onClick={handleRenameAction}
-                      disabled={isRenameChannelDisabled}
-                      className={`bg-green-600 ${
-                          (!isRenameChannelDisabled) ? 'hover:bg-green-700 transition-all duration-300' : ''
-                      } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
+                    onClick={handleRenameAction}
+                    disabled={isRenameRoleDisabled}
+                    className={`bg-green-600 ${(!isRenameRoleDisabled) ? 'hover:bg-green-700 transition-all duration-300' : ''} text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
                   >
                     Зберегти
                   </button>
                   <button
-                      onClick={onCancel}
-                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
-                  >
-                    Скасувати
-                  </button>
-                </div>
-                {hintText && (
-                    <div className="hover:brightness-200 transition-all duration-300">
-                      <button
-                          onMouseEnter={() => setShowHint(true)}
-                          onMouseLeave={() => setShowHint(false)}
-                          className="focus:outline-none"
-                      >
-                        <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
-                      </button>
-                    </div>
-                )}
-              </div>
-            </div>
-        )}
-          {action === 'rename' && target === 'role' && item && (
-              <div>
-                  <div className="space-y-2 mt-4">
-                      <input
-                          type="text"
-                          placeholder="Нова назва ролі"
-                          className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
-                          value={renameRoleName}
-                          onChange={(e) => setRenameRoleName(e.target.value)}
-                      />
-                  </div>
-                  <div className="flex justify-between items-center pt-4 pb-1">
-                      <div className="flex justify-start space-x-3">
-                          <button
-                              onClick={handleRenameAction}
-                              disabled={isRenameRoleDisabled}
-                              className={`bg-green-600 ${
-                                  (!isRenameRoleDisabled) ? 'hover:bg-green-700 transition-all duration-300' : ''
-                              } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
-                          >
-                              Зберегти
-                          </button>
-                          <button
-                              onClick={onCancel}
-                              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
-                          >
-                              Скасувати
-                          </button>
-                      </div>
-                      {hintText && (
-                        <div className="hover:brightness-200 transition-all duration-300">
-                          <button
-                              onMouseEnter={() => setShowHint(true)}
-                              onMouseLeave={() => setShowHint(false)}
-                              className="focus:outline-none"
-                          >
-                              <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
-                          </button>
-                        </div>
-                      )}
-                  </div>
-              </div>
-          )}
-        {action === 'edit' && target === 'category' && item && (
-            <div>
-              {isLoadingPermissions ? (
-                  <div className="flex justify-center items-center p-2">
-                    <ChannelLoadingSpinner/>
-                  </div>
-              ) : sortedRoles.length > 0 ? (
-                  <ul className="space-y-2 mt-2">
-                    <h3 className="font-light">Ролі з доступом:</h3>
-                    {sortedRoles.map(role => (
-                        <li key={role.id}
-                            className="bg-[#36393F] rounded pl-2 p-1.5 flex justify-between items-center hover:bg-[#3e4147] pr-1.5">
-                          {role.name}
-                          <button onClick={() => handleRemoveRole(role.id)}>
-                            <img
-                                src={DeleteIcon}
-                                alt="Видалити"
-                                className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"
-                            />
-                          </button>
-                        </li>
-                    ))}
-                  </ul>
-              ) : (
-                  <div className="text-gray-400 mt-2 mb-2">Немає ролей з доступом до цієї категорії</div>
-              )}
-              {!isLoadingPermissions && (
-                  <div
-                      className="flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer mt-2  transition-all duration-300"
-                      onClick={handleAddRole}>
-                    <img src={AddRoleIcon} alt="Додати роль" className="w-4 h-4 mr-2"/>
-                  </div>
-              )}
-              <div className="flex justify-between items-center pt-4 pb-1">
-                <div className="flex justify-start space-x-3">
-                  <button
-                      onClick={handleSavePermissions}
-                      disabled={isEditCategoryDisabled}
-                      className={`bg-green-600 ${
-                          (!isEditCategoryDisabled) ? 'hover:bg-green-700 transition-all duration-300' : ''
-                      } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40 transition-all duration-300`}
-                  >
-                    Зберегти
-                  </button>
-                  <button
-                      onClick={onCancel}
-                      className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
+                    onClick={onCancel}
+                    className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
                   >
                     Скасувати
                   </button>
@@ -621,12 +548,77 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
                         onMouseLeave={() => setShowHint(false)}
                         className="focus:outline-none"
                     >
-                      <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
+                        <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
                     </button>
                   </div>
                 )}
               </div>
             </div>
+          )}
+        {action === 'edit' && target === 'category' && item && (
+          <div>
+            {isLoadingPermissions ? (
+              <div className="flex justify-center items-center p-2">
+                <ChannelLoadingSpinner/>
+              </div>
+            ) : sortedRoles.length > 0 ? (
+              <ul className="space-y-2 mt-2">
+                <h3 className="font-light">Ролі з доступом:</h3>
+                {sortedRoles.map(role => (
+                  <li key={role.id}
+                    className="bg-[#36393F] rounded pl-2 p-1.5 flex justify-between items-center hover:bg-[#3e4147] pr-1.5">
+                    {role.name}
+                    <button onClick={() => handleRemoveRole(role.id)}>
+                      <img
+                        src={DeleteIcon}
+                        alt="Видалити"
+                        className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"
+                      />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="text-gray-400 mt-2 mb-2">Немає ролей з доступом до цієї категорії</div>
+            )}
+            {!isLoadingPermissions && (
+              <div
+                className="flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer mt-2  transition-all duration-300"
+                onClick={handleAddRole}>
+                <img src={AddRoleIcon} alt="Додати роль" className="w-4 h-4 mr-2"/>
+              </div>
+            )}
+            <div className="flex justify-between items-center pt-4 pb-1">
+              <div className="flex justify-start space-x-3">
+                <button
+                  onClick={handleSavePermissions}
+                  disabled={isEditCategoryDisabled}
+                  className={`bg-green-600 ${
+                      (!isEditCategoryDisabled) ? 'hover:bg-green-700 transition-all duration-300' : ''
+                  } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40 transition-all duration-300`}
+                >
+                  Зберегти
+                </button>
+                <button
+                  onClick={onCancel}
+                  className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
+                >
+                  Скасувати
+                </button>
+              </div>
+              {hintText && (
+                <div className="hover:brightness-200 transition-all duration-300">
+                  <button
+                    onMouseEnter={() => setShowHint(true)}
+                    onMouseLeave={() => setShowHint(false)}
+                    className="focus:outline-none"
+                  >
+                    <img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
         )}
       </div>
       {showHint && hintText && (
@@ -642,22 +634,22 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
           <div className="bg-[#2F3136] rounded p-4">
             <div className="border-gray-500">
               <input
-                  type="text"
-                  placeholder="Пошук за назвою ролі..."
-                  className="w-full mb-1 p-2 rounded bg-[#292B2F] text-white focus:outline-none"
-                  value={roleSearchTerm}
-                  onChange={(e) => setRoleSearchTerm(e.target.value)}
+                type="text"
+                placeholder="Пошук за назвою ролі..."
+                className="w-full mb-1 p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+                value={roleSearchTerm}
+                onChange={(e) => setRoleSearchTerm(e.target.value)}
               />
             </div>
             <ul className="space-y-2 mt-2 max-h-32 overflow-y-auto">
               {filteredAvailableRoles.length > 0 ? (
-                  filteredAvailableRoles.map(role => (
-                      <li key={role.id}
-                          onClick={() => handleSelectAvailableRole(role)}
-                          className="bg-[#36393F] rounded pl-2 p-1.5 flex items-center hover:bg-[#3e4147] cursor-pointer">
-                        {role.name}
-                      </li>
-                  ))
+                filteredAvailableRoles.map(role => (
+                  <li key={role.id}
+                     onClick={() => handleSelectAvailableRole(role)}
+                     className="bg-[#36393F] rounded pl-2 p-1.5 flex items-center hover:bg-[#3e4147] cursor-pointer">
+                    {role.name}
+                  </li>
+                ))
               ) : (
                   <li className="text-gray-400 p-2">Немає ролей</li>
               )}
@@ -666,13 +658,13 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
         </div>
     )}
     {isRoleListOpen && availableRoles.length === 0 && (
-        <div ref={dropdownRef} className="w-full pt-5 relative">
-          <div className="bg-[#2F3136] rounded p-4 text-gray-400">
-            <h3 className="font-semibold mb-2">Доступні ролі</h3>
-            <div className="mt-2">Немає ролей для додавання</div>
-          </div>
+      <div ref={dropdownRef} className="w-full pt-5 relative">
+        <div className="bg-[#2F3136] rounded p-4 text-gray-400">
+          <h3 className="font-semibold mb-2">Доступні ролі</h3>
+          <div className="mt-2">Немає ролей для додавання</div>
         </div>
-      )}
+      </div>
+    )}
     </div>
   );
 }
