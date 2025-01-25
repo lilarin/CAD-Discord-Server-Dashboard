@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import {Category, Channel, Role} from "@/lib/types.ts";
+import {Category, Channel, Role, User} from "@/lib/types.ts";
 
 if (!import.meta.env.VITE_API_URL) {
     throw new Error('Missing environment variable: VITE_API_URL');
@@ -126,4 +126,8 @@ export async function renameRole(roleId: number, name: string): Promise<Role[]> 
 
 export async function deleteRole(roleId: number): Promise<Role[]> {
   return handleRequest(api.delete<ApiResponse<Role[]>>(`/api/v1/roles/${roleId}`));
+}
+
+export async function getUsers(): Promise<User[]> {
+  return handleRequest(api.get<ApiResponse<User[]>>(`/api/v1/users`));
 }
