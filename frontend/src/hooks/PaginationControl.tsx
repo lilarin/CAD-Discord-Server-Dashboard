@@ -44,19 +44,16 @@ export const PaginationControl = ({
       </button>
 
       {visiblePages.map((pageNumber, index) => {
-          if (typeof pageNumber === 'number') {
-           return  <button
+        if (typeof pageNumber === 'number') {
+          return <button
             key={index}
             onClick={() => handlePageChange(pageNumber)}
-            className={`px-4 py-2 mx-1 rounded ${
-              currentPage === pageNumber ? "bg-[#7289da]" : "bg-[#2f3136]"
-            } text-white`}
-          >
+            className={`px-4 py-2 mx-1 rounded ${currentPage === pageNumber ? "bg-[#7289da]" : "bg-[#2f3136]"} text-white`}>
             {pageNumber}
           </button>
-          } else {
-            return <span key={index} className="px-4 py-2 mx-1 text-white">...</span>;
-          }
+        } else {
+          return <span key={index} className="px-4 py-2 mx-1 text-white">...</span>;
+        }
       })}
 
       <button
