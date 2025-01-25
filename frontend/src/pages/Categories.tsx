@@ -32,6 +32,7 @@ import DraggableChannel from "@/components/DraggableChannel.tsx";
 import DraggableCategory from "@/components/DraggableCategory.tsx";
 import ActionSidebar, {ActionTarget, ActionType} from '@/components//ActionSidebar';
 import {Category, Channel} from "@/lib/types.ts";
+import SearchIcon from "@/assets/icons/search.svg";
 
 export default function Categories() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -323,38 +324,45 @@ export default function Categories() {
   const voiceChannels = channels.filter((channel) => channel.type === 'voice');
 
   return (
-    <div className="flex">
+    <div className="flex w-full h-full p-5">
       <DndContext collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd} sensors={sensors}>
-        <div className="p-5 w-2/3">
+        <div className="w-2/3">
           {isLoading ? (
               <ComponentLoadingSpinner/>
           ) : (
             <div className="sticky top-5">
               <div className="mb-5 flex justify-between items-center">
-                <input
-                  type="text"
-                  placeholder="Пошук за назвою категорії..."
-                  className="w-2/3 p-2 rounded bg-[#292B2F] text-white focus:outline-none"
-                  value={searchTerm}
-                  onChange={handleSearch}
-                />
+                <div className="w-full flex flex-row relative">
+                  <input
+                    type="text"
+                    placeholder="Пошук за назвою категорії..."
+                    className="w-full p-2 rounded bg-[#292B2F] focus:outline-none pr-8"
+                    value={searchTerm}
+                    onChange={handleSearch}
+                  />
+                  <img
+                    src={SearchIcon}
+                    alt="Пошук"
+                    className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none"
+                  />
+                </div>
                 <div
                   className="flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer w-1/3 ml-5 transition-all duration-300"
                   onClick={() => handleActionTriggered('create', 'category', null)}>
                   <img src={CreateCategoryIcon} alt="Створити категорію" className="w-5 h-5 transition-all"/>
                 </div>
               </div>
-                <SortableContext items={filteredCategories.map((cat) => cat.id)}>
-                  <div className="space-y-2">
-                    {filteredCategories.length === 0 && !isLoading && (
-                      <div className="text-gray-400">Категорій немає</div>
-                    )}
-                    {filteredCategories.map((category) => (
-                      <div key={category.id}>
-                        <DraggableCategory
-                          category={category}
-                          handleCategoryClick={handleCategoryClick}
-                          onActionTriggered={handleActionTriggered}
+              <SortableContext items={filteredCategories.map((cat) => cat.id)}>
+                <div className="space-y-2">
+                  {filteredCategories.length === 0 && !isLoading && (
+                    <div className="text-gray-400">Категорій немає</div>
+                  )}
+                  {filteredCategories.map((category) => (
+                    <div key={category.id}>
+                      <DraggableCategory
+                        category={category}
+                        handleCategoryClick={handleCategoryClick}
+                        onActionTriggered={handleActionTriggered}
                         />
                         {openCategoryId === category.id && !isDraggingCategory && (
                         <div
@@ -412,7 +420,7 @@ export default function Categories() {
         </div>
       </DndContext>
       {actionSidebar.action && actionSidebar.target && (
-        <div className="w-1/3 pr-5 pt-5">
+        <div className="w-1/3 pl-5">
           <ActionSidebar
             action={actionSidebar.action}
             target={actionSidebar.target}
