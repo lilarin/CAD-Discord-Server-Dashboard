@@ -1,5 +1,5 @@
 import { UserCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button.tsx";
 import LogOutIcon from "@/assets/icons/logout.svg";
 import React from "react";
 

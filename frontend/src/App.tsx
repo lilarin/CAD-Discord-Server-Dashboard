@@ -1,13 +1,13 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { Header } from "./components/layout/Header";
-import { Sidebar } from "./components/layout/Sidebar";
-import Categories from "./pages/Categories.tsx";
-import Groups from "./pages/Groups";
-import Users from "./pages/Users";
-import Events from "./pages/Events";
-import Archivation from "./pages/Archivation";
-import Logs from "./pages/Logs";
+import { Header } from "@/layout/Header";
+import { Sidebar } from "@/layout/Sidebar";
+import Categories from "@/pages/Categories.tsx";
+import Groups from "@/pages/Groups";
+import Users from "@/pages/Users";
+import Events from "@/pages/Events";
+import Archivation from "@/pages/Archivation";
+import Logs from "@/pages/Logs";
 import { Toaster } from 'react-hot-toast';
 
 const App = () => {
