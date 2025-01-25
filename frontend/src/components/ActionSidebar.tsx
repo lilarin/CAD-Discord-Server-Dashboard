@@ -24,12 +24,13 @@ interface ActionSidebarProps {
   onDeleteRole?: (id: number) => void;
   onCreateCategory?: (name: string) => void;
   onCreateChannel?: (name: string, type: 'text' | 'voice') => void;
+  onCreateRole?: (name: string) => void;
   onRenameCategory?: (id: number, newName: string) => void;
   onRenameChannel?: (id: number, newName: string) => void;
   onRenameRole?: (id: number, newName: string) => void;
 }
 
-function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDeleteChannel, onCreateCategory, onCreateChannel, onRenameCategory, onRenameChannel, onDeleteRole, onRenameRole }: ActionSidebarProps) {
+function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDeleteChannel, onDeleteRole, onCreateCategory, onCreateChannel, onCreateRole, onRenameCategory, onRenameChannel, onRenameRole }: ActionSidebarProps) {
   const [newCategoryName, setNewCategoryName] = useState('');
   const [newChannelName, setNewChannelName] = useState('');
   const [newChannelType, setNewChannelType] = useState<'text' | 'voice'>('text');
@@ -177,6 +178,9 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
     }
     if (target === 'channel') {
       onCreateChannel?.(newChannelName, newChannelType);
+    }
+    if (target === 'role') {
+      onCreateRole?.(newRoleName);
     }
    };
 

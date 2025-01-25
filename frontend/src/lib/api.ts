@@ -116,10 +116,14 @@ export async function getEditableRoles(): Promise<Role[]> {
   return handleRequest(api.get<ApiResponse<Role[]>>(`/api/v1/roles/editable`));
 }
 
+export async function createRole(name: string): Promise<Role[]> {
+  return handleRequest(api.post<ApiResponse<Role[]>>(`/api/v1/roles/${name}`));
+}
+
 export async function renameRole(roleId: number, name: string): Promise<Role[]> {
   return handleRequest(api.patch<ApiResponse<Role[]>>(`/api/v1/roles/${roleId}/rename/${name}`));
 }
 
 export async function deleteRole(roleId: number): Promise<Role[]> {
-  return handleRequest(api.patch<ApiResponse<Role[]>>(`/api/v1/roles/${roleId}`));
+  return handleRequest(api.delete<ApiResponse<Role[]>>(`/api/v1/roles/${roleId}`));
 }

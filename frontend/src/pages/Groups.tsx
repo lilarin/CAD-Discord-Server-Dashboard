@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { getEditableRoles } from '@/lib/api';
+import {getEditableRoles, createRole, renameRole, deleteRole} from '@/lib/api';
 import { ComponentLoadingSpinner } from '@/components/LoadingSpinner';
 import toast from 'react-hot-toast';
 import { PaginationControl } from "@/hooks/PaginationControl.tsx";
@@ -12,29 +12,16 @@ import {Role} from "@/lib/types.ts";
 
 const ITEMS_PER_PAGE = 12;
 
-const usePaginatedRoles = (itemsPerPage: number = ITEMS_PER_PAGE) => {
-    const [roles, setRoles] = useState<Role[]>([]);
+const usePaginatedRoles = (roles: Role[], setRoles: React.Dispatch<React.SetStateAction<Role[]>>, itemsPerPage: number = ITEMS_PER_PAGE) => {
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        const fetchRoles = async () => {
-            try {
-                const response = await getEditableRoles();
-                setRoles(response);
-            } catch (error) {
-                toast.error(error.message, {
-                    position: "bottom-right",
-                    duration: 10000
-                });
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchRoles().then(r => { });
-    }, []);
+      if(roles.length) {
+        setIsLoading(false);
+      }
+    }, [roles]);
 
     const handleSearch = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -68,6 +55,8 @@ const usePaginatedRoles = (itemsPerPage: number = ITEMS_PER_PAGE) => {
 };
 
 export default function Groups({ itemsPerPage = ITEMS_PER_PAGE }: { itemsPerPage?: number }) {
+    const [roles, setRoles] = useState<Role[]>([]);
+
     const {
         rolesOnPage,
         isLoading,
@@ -77,13 +66,30 @@ export default function Groups({ itemsPerPage = ITEMS_PER_PAGE }: { itemsPerPage
         handleSearch,
         handlePageChange,
         filteredRoles
-    } = usePaginatedRoles(itemsPerPage);
+    } = usePaginatedRoles(roles, setRoles, itemsPerPage);
+
+    useEffect(() => {
+        const fetchRoles = async () => {
+            try {
+                const response = await getEditableRoles();
+                setRoles(response);
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "bottom-right",
+                    duration: 10000
+                });
+            }
+        };
+
+        fetchRoles().then(r => { });
+    }, []);
 
     const [actionSidebar, setActionSidebar] = useState<{
         action: ActionType;
         target: ActionTarget;
         item: Role | null;
     }>({ action: null, target: null, item: null });
+
 
     const handleActionTriggered = (action: ActionType, target: ActionTarget, item: Role | null) => {
         setActionSidebar({ action, target, item });
@@ -92,6 +98,70 @@ export default function Groups({ itemsPerPage = ITEMS_PER_PAGE }: { itemsPerPage
     const handleCancelAction = () => {
         setActionSidebar({ action: null, target: null, item: null });
     };
+
+    const handleCreateRole = useCallback(
+        async (roleName: string) => {
+          const tempId = Date.now();
+          const newRole: Role = { id: tempId, name: roleName };
+          setRoles((prevRoles) => [...prevRoles, newRole]);
+          setActionSidebar({ action: null, target: null, item: null });
+
+          try {
+            const roles = await createRole(roleName);
+            setRoles(roles);
+          } catch (error) {
+            toast.error(error.message, {
+              position: "bottom-right",
+              duration: 10000
+            });
+            const fetchedRoles = await getEditableRoles();
+            setRoles(fetchedRoles);
+          }
+        },
+        [setRoles]
+      );
+
+      const handleRenameRole = useCallback(
+        async (roleId: number, roleName: string) => {
+          setRoles((prevRoles) =>
+            prevRoles.map((role) =>
+              role.id === roleId ? { ...role, name: roleName } : role
+            )
+          );
+          setActionSidebar({ action: null, target: null, item: null });
+          try {
+            const roles = await renameRole(roleId, roleName);
+            setRoles(roles);
+          } catch (error) {
+            toast.error(error.message, {
+              position: "bottom-right",
+              duration: 10000
+            });
+            const fetchedRoles = await getEditableRoles();
+            setRoles(fetchedRoles);
+          }
+        },
+        [setRoles]
+      );
+
+      const handleDeleteRole = useCallback(
+        async (roleId: number) => {
+            setRoles((prevRoles) => prevRoles.filter((role) => role.id !== roleId));
+            setActionSidebar({action: null, target: null, item: null});
+          try {
+            const roles = await deleteRole(roleId);
+            setRoles(roles);
+          } catch (error) {
+            toast.error(error.message, {
+              position: "bottom-right",
+              duration: 10000
+            });
+            const fetchedRoles = await getEditableRoles();
+            setRoles(fetchedRoles);
+          }
+        },
+        [setRoles]
+      );
 
 
     return (
@@ -155,6 +225,9 @@ export default function Groups({ itemsPerPage = ITEMS_PER_PAGE }: { itemsPerPage
                     target={actionSidebar.target}
                     item={actionSidebar.item}
                     onCancel={handleCancelAction}
+                    onCreateRole={handleCreateRole}
+                    onRenameRole={handleRenameRole}
+                    onDeleteRole={handleDeleteRole}
                 />
             </div>
         )}
