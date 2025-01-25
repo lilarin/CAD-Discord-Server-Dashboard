@@ -8,6 +8,7 @@ import RenameIcon from '@/assets/icons/rename.svg';
 import DeleteIcon from '@/assets/icons/delete.svg';
 import CreateRoleIcon from '@/assets/icons/create_role.svg';
 import {Role} from "@/lib/types.ts";
+import SearchIcon from "@/assets/icons/search.svg";
 
 
 const ITEMS_PER_PAGE = 12;
@@ -166,16 +167,23 @@ export default function Groups({ itemsPerPage = ITEMS_PER_PAGE }: { itemsPerPage
 
     return (
       <div className="flex w-full h-full p-5">
-        <div className="w-2/3 h-full flex flex-col pr-5">
+        <div className="w-2/3 h-full flex flex-col">
           {!isLoading && (
             <div className="mb-5 flex justify-between items-center">
-              <input
-                type="text"
-                placeholder="Пошук за назвою групи..."
-                className="w-2/3 p-2 rounded bg-[#292B2F] text-white focus:outline-none"
-                value={searchTerm}
-                onChange={handleSearch}
-              />
+              <div className="w-full flex flex-row relative">
+                <input
+                  type="text"
+                  placeholder="Пошук за назвою групи..."
+                  className="w-full p-2 rounded bg-[#292B2F] focus:outline-none pr-8"
+                  value={searchTerm}
+                  onChange={handleSearch}
+                />
+                <img
+                  src={SearchIcon}
+                  alt="Пошук"
+                  className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none"
+                />
+              </div>
               <div
                 className="flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer w-1/3 ml-5 transition-all duration-300"
                 onClick={() => handleActionTriggered('create', 'role', null)}>
@@ -186,24 +194,28 @@ export default function Groups({ itemsPerPage = ITEMS_PER_PAGE }: { itemsPerPage
 
 
           {isLoading ? (
-            <ComponentLoadingSpinner />
+            <ComponentLoadingSpinner/>
           ) : (
             <div className="flex-grow">
               {filteredRoles.length === 0 ? (
                 <div className="text-gray-400">Груп немає</div>
               ) : (
-                <ul className="list-none p-0">
+                <ul className="list-none p-0 space-y-2">
                   {rolesOnPage.map((role) => (
                     <li key={role.id}
-                      className="py-2 px-4 rounded bg-[#2f3136] text-white mb-2 flex justify-between items-center">
+                      className="py-2 px-3 rounded bg-[#2f3136] text-white flex justify-between items-center">
                       {role.name}
                       <div className="flex items-center space-x-2">
                         <button onClick={() => handleActionTriggered('rename', 'role', role)}>
-                          <img src={RenameIcon} alt="Перейменувати"
+                          <img
+                            src={RenameIcon}
+                            alt="Перейменувати"
                             className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"/>
                         </button>
                         <button onClick={() => handleActionTriggered('delete', 'role', role)}>
-                          <img src={DeleteIcon} alt="Видалити"
+                          <img
+                            src={DeleteIcon}
+                            alt="Перейменувати"
                             className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"/>
                         </button>
                       </div>
@@ -214,12 +226,12 @@ export default function Groups({ itemsPerPage = ITEMS_PER_PAGE }: { itemsPerPage
             </div>
           )}
 
-         {!isLoading && (
-          <PaginationControl currentPage={currentPage} pageCount={pageCount} handlePageChange={handlePageChange} />
-         )}
+          {!isLoading && (
+            <PaginationControl currentPage={currentPage} pageCount={pageCount} handlePageChange={handlePageChange}/>
+          )}
         </div>
         {actionSidebar.action && actionSidebar.target && (
-          <div className="w-1/3">
+          <div className="pl-5 w-1/3">
             <ActionSidebar
               action={actionSidebar.action}
               target={actionSidebar.target}

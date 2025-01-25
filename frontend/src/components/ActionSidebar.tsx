@@ -10,9 +10,10 @@ import AddRoleIcon from "@/assets/icons/add_role.svg";
 import { ChannelLoadingSpinner } from '@/components/LoadingSpinner';
 import toast from "react-hot-toast";
 import {Category, Channel, Role} from "@/lib/types.ts";
+import SearchIcon from "@/assets/icons/search.svg";
 
 export type ActionType = 'create' | 'rename' | 'edit' | 'delete' | null;
-export type ActionTarget = 'category' | 'channel' | 'role' | null;
+export type ActionTarget = 'category' | 'channel' | 'role' | 'user' | null;
 
 interface ActionSidebarProps {
   action: ActionType;
@@ -632,39 +633,44 @@ function ActionSidebar({ action, target, item, onCancel, onDeleteCategory, onDel
       {isRoleListOpen && availableRoles.length > 0 && (
         <div ref={dropdownRef} className="w-full pt-5 relative">
           <div className="bg-[#2F3136] rounded p-4">
-            <div className="border-gray-500">
+            <div className="w-full flex flex-row relative">
               <input
                 type="text"
                 placeholder="Пошук за назвою ролі..."
-                className="w-full mb-1 p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+                className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
                 value={roleSearchTerm}
                 onChange={(e) => setRoleSearchTerm(e.target.value)}
+              />
+              <img
+                src={SearchIcon}
+                alt="Пошук"
+                className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none"
               />
             </div>
             <ul className="space-y-2 mt-2 max-h-32 overflow-y-auto">
               {filteredAvailableRoles.length > 0 ? (
                 filteredAvailableRoles.map(role => (
                   <li key={role.id}
-                     onClick={() => handleSelectAvailableRole(role)}
-                     className="bg-[#36393F] rounded pl-2 p-1.5 flex items-center hover:bg-[#3e4147] cursor-pointer">
+                      onClick={() => handleSelectAvailableRole(role)}
+                      className="bg-[#36393F] rounded pl-2 p-1.5 flex items-center hover:bg-[#3e4147] cursor-pointer">
                     {role.name}
                   </li>
                 ))
               ) : (
-                  <li className="text-gray-400 p-2">Немає ролей</li>
+                <li className="text-gray-400 p-2">Немає ролей</li>
               )}
             </ul>
           </div>
         </div>
-    )}
-    {isRoleListOpen && availableRoles.length === 0 && (
-      <div ref={dropdownRef} className="w-full pt-5 relative">
-        <div className="bg-[#2F3136] rounded p-4 text-gray-400">
-          <h3 className="font-semibold mb-2">Доступні ролі</h3>
-          <div className="mt-2">Немає ролей для додавання</div>
+      )}
+      {isRoleListOpen && availableRoles.length === 0 && (
+        <div ref={dropdownRef} className="w-full pt-5 relative">
+          <div className="bg-[#2F3136] rounded p-4 text-gray-400">
+            <h3 className="font-semibold mb-2">Доступні ролі</h3>
+            <div className="mt-2">Немає ролей для додавання</div>
+          </div>
         </div>
-      </div>
-    )}
+      )}
     </div>
   );
 }
