@@ -17,7 +17,6 @@ export interface Channel {
 
 export interface User {
     id: number;
-    position: number;
     name: string;
-    type: string
+    group?: string | null;
 }
