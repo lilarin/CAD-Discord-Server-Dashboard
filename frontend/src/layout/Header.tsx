@@ -35,7 +35,7 @@ export const Header = () => {
     };
 
     fetchUserDetails();
-  }, [user]);
+  }, [isInitiated, user, userDetails]);
 
   const userName = () => {
     if (userDetails?.name) {
