@@ -141,7 +141,11 @@ export async function kickUser(userId: number): Promise<User[]> {
 }
 
 export async function getUserRoles(userId: number): Promise<Role[]> {
-	return handleRequest(api.get<ApiResponse<Role[]>>(`/api/v1/users/${userId}`));
+	return handleRequest(api.get<ApiResponse<Role[]>>(`/api/v1/users/${userId}/roles`));
+}
+
+export async function getUser(userId: number): Promise<User> {
+	return handleRequest(api.get<ApiResponse<User>>(`/api/v1/users/${userId}`));
 }
 
 export async function editUserRoles(userId: number, roles: number[]): Promise<User[]> {
