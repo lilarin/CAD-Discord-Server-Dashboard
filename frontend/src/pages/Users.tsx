@@ -164,7 +164,7 @@ export default function Users({ itemsPerPage = ITEMS_PER_PAGE }: { itemsPerPage?
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const filterRef = useRef<HTMLDivElement>(null);
   const [showHint, setShowHint] = useState(false);
-  const hintText = "Фільтри дозволяються відобразити лише користувачів з конкретної групи"
+  const hintText = "Фільтри дозволяють відобразити лише користувачів з конкретної групи"
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
