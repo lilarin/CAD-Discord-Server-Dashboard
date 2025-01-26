@@ -8,6 +8,8 @@ from supabase import create_client, Client
 from backend.common.variables import variables
 from backend.config import config
 from backend.middlewares.schemas import ResponseWrapper
+from backend.services.fetch import fetch_user
+from backend.services.utils import get_user_group
 
 supabase: Client = create_client(variables.SUPABASE_URL, config.supabase_key)
 
@@ -24,15 +26,21 @@ class AuthMiddleware(BaseHTTPMiddleware):
                 raise HTTPException(status_code=401, detail="Missing or invalid Authorization header")
 
             token = authorization.split(" ")[1]
-
             user_data = supabase.auth.get_user(token)
-            if user_data.user:
-                request.state.user = user_data.user
-                response = await call_next(request)
-                return response
+
+            if user_data.user and user_data.user.user_metadata:
+                user = await fetch_user(user_data.user.user_metadata["provider_id"])
+                user_group = await get_user_group(user)
+                if user_group == "staff":
+                    request.state.user = user_data.user
+                    response = await call_next(request)
+                    return response
+                else:
+                    raise HTTPException(status_code=403, detail="Forbidden")
             else:
                 raise HTTPException(status_code=401, detail="Invalid token")
         except Exception as exception:
+            print(exception)
             response = ResponseWrapper(data=None, success=False, error=str(exception))
             if isinstance(exception, HTTPException):
                 return JSONResponse(content=response.model_dump(), status_code=exception.status_code)
