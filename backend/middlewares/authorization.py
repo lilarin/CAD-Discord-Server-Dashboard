@@ -1,5 +1,6 @@
 from typing import Optional
 
+import disnake
 from fastapi import HTTPException, Request
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -43,4 +44,6 @@ class AuthMiddleware(BaseHTTPMiddleware):
             response = ResponseWrapper(data=None, success=False, error=str(exception))
             if isinstance(exception, HTTPException):
                 return JSONResponse(content=response.model_dump(), status_code=exception.status_code)
+            elif isinstance(exception, disnake.errors.HTTPException):
+                return JSONResponse(content=response.model_dump(), status_code=exception.status)
             return JSONResponse(content=response.model_dump(), status_code=500)
