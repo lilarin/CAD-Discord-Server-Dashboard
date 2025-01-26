@@ -5,15 +5,16 @@ from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from supabase import create_client, Client
 
+from backend.common.variables import variables
 from backend.config import config
 from backend.middlewares.schemas import ResponseWrapper
 
-supabase: Client = create_client(config.supabase_url, config.supabase_key)
+supabase: Client = create_client(variables.SUPABASE_URL, config.supabase_key)
 
 
 class AuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-        if request.method == "OPTIONS":
+        if request.method == "OPTIONS" or request.url.path == "/":
             response = await call_next(request)
             return response
 
