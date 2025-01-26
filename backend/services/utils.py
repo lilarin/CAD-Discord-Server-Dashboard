@@ -78,3 +78,11 @@ async def rename_target_user(user: Member, name: str) -> Member:
 async def kick_target_user(user: Member) -> None:
     guild = await fetch_guild()
     await guild.kick(user)
+
+
+async def get_user_group(user: Member) -> str | None:
+    for role in user.roles:
+        if role.id == variables.TEACHER_ROLE_ID or role.id == variables.ADMINISTRATOR_ROLE_ID:
+            return "staff"
+        elif role.id == variables.STUDENT_ROLE_ID:
+            return "student"

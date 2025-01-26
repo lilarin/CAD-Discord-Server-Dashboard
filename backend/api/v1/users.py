@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException, Body
 from backend.middlewares.uniform_response import uniform_response_middleware
 from backend.schemas import User
 from backend.services.fetch import fetch_roles_by_ids, fetch_user, fetch_user_roles, fetch_guild_default_role
-from backend.services.format import format_users_response, format_roles_response
+from backend.services.format import format_users_response, format_roles_response, format_user_response
 from backend.services.utils import kick_target_user, rename_target_user
 
 router = APIRouter()
@@ -35,6 +35,18 @@ async def rename_user(user_id: int, name: str):
 
 
 @router.get("/users/{user_id}", response_model=list[User])
+@uniform_response_middleware
+async def get_user(user_id: int):
+    try:
+        user = await fetch_user(user_id)
+        return await format_user_response(user)
+    except disnake.errors.HTTPException as exception:
+        raise HTTPException(status_code=exception.status, detail=str(exception.text))
+    except Exception as exception:
+        raise HTTPException(status_code=500, detail=str(exception))
+
+
+@router.get("/users/{user_id}/roles", response_model=list[User])
 @uniform_response_middleware
 async def get_user_roles(user_id: int):
     try:

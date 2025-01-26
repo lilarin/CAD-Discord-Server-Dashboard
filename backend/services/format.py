@@ -1,5 +1,5 @@
 import disnake
-from disnake import CategoryChannel, VoiceChannel, TextChannel
+from disnake import CategoryChannel, VoiceChannel, TextChannel, Member
 
 from backend.common.variables import variables
 from backend.schemas import Channel, BaseChannel, Category, Role, User
@@ -10,6 +10,7 @@ from backend.services.fetch import (
     fetch_roles,
     fetch_users
 )
+from backend.services.utils import get_user_group
 
 
 async def format_categories_response() -> list[Category]:
@@ -107,20 +108,22 @@ async def format_editable_roles_response() -> list[Role]:
 async def format_users_response() -> list[User]:
     users = []
     for member in await fetch_users():
-        user_type = None
-        for role in member.roles:
-            if role.id == variables.TEACHER_ROLE_ID or role.id == variables.ADMINISTRATOR_ROLE_ID:
-                user_type = "staff"
-                break
-            elif role.id == variables.STUDENT_ROLE_ID:
-                user_type = "student"
-                break
+        user_group = await get_user_group(member)
         users.append(
             User(
                 id=str(member.id),
                 name=member.display_name,
-                group=user_type
+                group=user_group
             )
         )
     users.sort(key=lambda user: user.name)
     return users
+
+
+async def format_user_response(user: Member) -> User:
+    user_group = await get_user_group(user)
+    return User(
+        id=str(user.id),
+        name=user.display_name,
+        group=user_group
+    )
