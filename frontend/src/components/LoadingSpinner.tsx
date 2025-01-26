@@ -9,7 +9,7 @@ export const ChannelLoadingSpinner = () => {
 
 export const ComponentLoadingSpinner = () => {
   return (
-    <div className="absolute top-1/2 left-1/2">
+    <div className="absolute top-[calc(50%-50px)] left-1/2">
       <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-gray-500"></div>
     </div>
   );

@@ -324,12 +324,13 @@ export default function Categories() {
   const voiceChannels = channels.filter((channel) => channel.type === 'voice');
 
   return (
-    <div className="flex w-full h-full p-5">
+    <div className="relative flex w-full h-full p-5">
+      {isLoading && (
+					<ComponentLoadingSpinner/>
+			)}
       <DndContext collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd} sensors={sensors}>
         <div className="w-2/3">
-          {isLoading ? (
-              <ComponentLoadingSpinner/>
-          ) : (
+          {!isLoading && (
             <div className="sticky top-5">
               <div className="mb-5 flex justify-between items-center">
                 <div className="w-full flex flex-row relative">

@@ -166,7 +166,10 @@ export default function Groups({ itemsPerPage = ITEMS_PER_PAGE }: { itemsPerPage
 
 
   return (
-    <div className="flex w-full h-full p-5">
+    <div className="relative flex w-full h-full p-5">
+      {isLoading && (
+          <ComponentLoadingSpinner/>
+      )}
       <div className="w-2/3 h-full flex flex-col">
         {!isLoading && (
           <div className="mb-5 flex justify-between items-center">
@@ -193,9 +196,7 @@ export default function Groups({ itemsPerPage = ITEMS_PER_PAGE }: { itemsPerPage
         )}
 
 
-        {isLoading ? (
-          <ComponentLoadingSpinner/>
-        ) : (
+        {!isLoading && (
           <div className="flex-grow">
             {filteredRoles.length === 0 ? (
               <div className="text-gray-400">Груп немає</div>
