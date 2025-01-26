@@ -16,7 +16,7 @@ supabase: Client = create_client(variables.SUPABASE_URL, config.supabase_key)
 
 class AuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-        if request.method == "OPTIONS" or request.url.path == "/":
+        if request.method == "OPTIONS" or request.url.path in ["/", "/docs", "/openapi.json"]:
             response = await call_next(request)
             return response
 
@@ -40,7 +40,6 @@ class AuthMiddleware(BaseHTTPMiddleware):
             else:
                 raise HTTPException(status_code=401, detail="Invalid token")
         except Exception as exception:
-            print(exception)
             response = ResponseWrapper(data=None, success=False, error=str(exception))
             if isinstance(exception, HTTPException):
                 return JSONResponse(content=response.model_dump(), status_code=exception.status_code)
