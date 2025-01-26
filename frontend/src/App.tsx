@@ -10,6 +10,7 @@ import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from '@/contexts/AuthContext';
 import LoginPage from '@/pages/LoginPage';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import NotFoundPage from "@/pages/NotFoundPage";
 
 const App = () => {
   return (
@@ -17,7 +18,7 @@ const App = () => {
       <AuthProvider>
         <Toaster />
         <Routes>
-          <Route path="/login" element={<LoginPage />} /> {/* Сторінка логіна без ProtectedRoute */}
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<ProtectedRoute><Navigate to="/disciplines" replace /></ProtectedRoute> } />
           <Route path="/disciplines" element={<ProtectedRoute><Categories /></ProtectedRoute>} />
           <Route path="/groups" element={<ProtectedRoute><Groups /></ProtectedRoute>} />
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/events" element={<ProtectedRoute><Events /></ProtectedRoute>} />
           <Route path="/archivation" element={<ProtectedRoute><Archivation /></ProtectedRoute>} />
           <Route path="/logs" element={<ProtectedRoute><Logs /></ProtectedRoute>} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
