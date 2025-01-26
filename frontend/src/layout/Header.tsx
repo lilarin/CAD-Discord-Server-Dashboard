@@ -10,6 +10,7 @@ export const Header = () => {
   const { signOut, loading, user } = useAuth();
   const [userDetails, setUserDetails] = useState<User | null>(null);
   const [isLoadingUserDetails, setIsLoadingUserDetails] = useState<boolean>(false);
+  const [isInitiated, setIsInitiated] = useState(false);
 
   const handleSignOut = async () => {
     await signOut();
@@ -18,14 +19,17 @@ export const Header = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       if (user?.user_metadata?.provider_id) {
-        setIsLoadingUserDetails(true);
-        try {
-          const fetchedUser = await getUser(user.user_metadata.provider_id);
-          setUserDetails(fetchedUser);
-        } catch (error) {
-          console.error("Error fetching user details:", error);
-        } finally {
-          setIsLoadingUserDetails(false);
+        if (!userDetails && !isInitiated) {
+          setIsLoadingUserDetails(true);
+          try {
+            const fetchedUser = await getUser(user.user_metadata.provider_id);
+            setUserDetails(fetchedUser);
+          } catch (error) {
+            console.error("Error fetching user details:", error);
+          } finally {
+            setIsLoadingUserDetails(false);
+            setIsInitiated(true);
+          }
         }
       }
     };
