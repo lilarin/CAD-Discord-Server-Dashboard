@@ -1,5 +1,5 @@
 import axios, {AxiosError, AxiosResponse, InternalAxiosRequestConfig} from 'axios';
-import {Category, Channel, Role, User} from "@/lib/types.ts";
+import {Category, Channel, RenameRequest, ReorderRequest, Role, User} from "@/lib/types.ts";
 import {supabase} from "@/lib/supabaseClient";
 
 if (!import.meta.env.VITE_API_URL) {
@@ -90,32 +90,37 @@ export async function deleteChannel(channelId: number): Promise<Channel[]> {
 	return handleRequest(api.delete<ApiResponse<Channel[]>>(`/api/v1/channels/${channelId}`));
 }
 
-export async function updateCategoryPosition(categoryId: number, newPosition: number): Promise<Category[]> {
-	return handleRequest(api.patch<ApiResponse<Category[]>>(`/api/v1/categories/${categoryId}/position/${newPosition}`));
+export async function updateCategoryPosition(categoryId: number, position: number): Promise<Category[]> {
+	const requestBody: ReorderRequest = { position };
+	return handleRequest(api.patch<ApiResponse<Category[]>>(`/api/v1/categories/${categoryId}/reorder`, requestBody));
 }
 
-export async function updateChannelPosition(channelId: number, newPosition: number): Promise<Channel[]> {
-	return handleRequest(api.patch<ApiResponse<Channel[]>>(`/api/v1/channels/${channelId}/position/${newPosition}`));
+export async function updateChannelPosition(channelId: number, position: number): Promise<Channel[]> {
+	const requestBody: ReorderRequest = { position };
+	return handleRequest(api.patch<ApiResponse<Channel[]>>(`/api/v1/channels/${channelId}/reorder`, requestBody));
 }
 
 export async function createCategory(name: string): Promise<Category[]> {
 	return handleRequest(api.post<ApiResponse<Category[]>>(`/api/v1/categories/${name}`));
 }
 
-export async function createChannel(categoryId: number, name: string, channel_type: string): Promise<Channel[]> {
+export async function createChannel(channelId: number, name: string, channel_type: string): Promise<Channel[]> {
 	const allowedChannelTypes = ["text", "voice"];
 	if (allowedChannelTypes.includes(channel_type)) {
-		return handleRequest(api.post<ApiResponse<Channel[]>>(`/api/v1/channels/${categoryId}/channel_name/${name}/${channel_type}`));
+		const requestBody: RenameRequest = { name };
+		return handleRequest(api.post<ApiResponse<Channel[]>>(`/api/v1/channels/${channelId}/${channel_type}`, requestBody));
 	}
 	return Promise.reject(new ClientError('Invalid channel type'));
 }
 
 export async function renameChannel(channelId: number, name: string): Promise<Channel[]> {
-	return handleRequest(api.patch<ApiResponse<Channel[]>>(`/api/v1/channels/${channelId}/rename/${name}`));
+	const requestBody: RenameRequest = { name };
+	return handleRequest(api.patch<ApiResponse<Channel[]>>(`/api/v1/channels/${channelId}`, requestBody));
 }
 
 export async function renameCategory(channelId: number, name: string): Promise<Category[]> {
-	return handleRequest(api.patch<ApiResponse<Category[]>>(`/api/v1/categories/${channelId}/rename/${name}`));
+	const requestBody: RenameRequest = { name };
+	return handleRequest(api.patch<ApiResponse<Category[]>>(`/api/v1/categories/${channelId}`, requestBody));
 }
 
 export async function getCategoryAccessRoles(categoryId: number): Promise<Role[]> {
@@ -139,7 +144,9 @@ export async function createRole(name: string): Promise<Role[]> {
 }
 
 export async function renameRole(roleId: number, name: string): Promise<Role[]> {
-	return handleRequest(api.patch<ApiResponse<Role[]>>(`/api/v1/roles/${roleId}/rename/${name}`));
+  const requestBody: RenameRequest = { name };
+  return handleRequest(
+    api.patch<ApiResponse<Role[]>>(`/api/v1/roles/${roleId}`, requestBody));
 }
 
 export async function deleteRole(roleId: number): Promise<Role[]> {
@@ -151,7 +158,8 @@ export async function getUsers(): Promise<User[]> {
 }
 
 export async function renameUser(userId: number, name: string): Promise<User[]> {
-	return handleRequest(api.patch<ApiResponse<User[]>>(`/api/v1/users/${userId}/rename/${name}`));
+	const requestBody: RenameRequest = { name };
+	return handleRequest(api.patch<ApiResponse<User[]>>(`/api/v1/users/${userId}`, requestBody));
 }
 
 export async function kickUser(userId: number): Promise<User[]> {
