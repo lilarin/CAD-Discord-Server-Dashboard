@@ -364,6 +364,7 @@ export default function Categories() {
                         category={category}
                         handleCategoryClick={handleCategoryClick}
                         onActionTriggered={handleActionTriggered}
+                        isDraggingCategoryFromParent={isDraggingCategory}
                         />
                         {openCategoryId === category.id && !isDraggingCategory && (
                         <div

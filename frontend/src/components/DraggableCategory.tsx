@@ -10,6 +10,7 @@ function DraggableCategory({
   category,
   handleCategoryClick,
   onActionTriggered,
+  isDraggingCategoryFromParent,
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: category.id,
@@ -21,11 +22,18 @@ function DraggableCategory({
     ...(isDragging ? { border: 'dashed 2px #6b727f' } : {}),
   };
 
+  const shouldApplyHover = !isDraggingCategoryFromParent || isDragging;
+  const baseClassName = "w-full text-left p-2 bg-[#2F3136] rounded flex items-center justify-between";
+  const hoverClassName = shouldApplyHover ? "hover:bg-[#292b2f] cursor-pointer" : "";
+  const draggingClassName = isDragging ? "bg-[#292b2f]" : "";
+  const finalClassName = `${baseClassName} ${hoverClassName} ${draggingClassName}`;
+
+
   return (
     <div
       ref={setNodeRef}
       style={style}
-      className="w-full text-left p-2 bg-[#2F3136] hover:bg-[#292b2f] rounded flex items-center justify-between cursor-pointer"
+      className={finalClassName}
     >
       <div
         className="flex justify-start items-center w-4/5"
