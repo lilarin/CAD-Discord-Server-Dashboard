@@ -29,3 +29,11 @@ class BaseRole(BaseModel):
 
 class Role(BaseRole):
     name: str
+
+
+class NameRequestBody(BaseModel):
+    name: str
+
+
+class PositionRequestBody(BaseModel):
+    position: int
