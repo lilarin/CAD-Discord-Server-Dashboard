@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button} from "@/components/ui/button.tsx";
+import {Button} from "@/components/Button.tsx";
 import LogOutIcon from "@/assets/icons/logout.svg";
 import {useAuth} from "@/contexts/AuthContext.tsx";
 

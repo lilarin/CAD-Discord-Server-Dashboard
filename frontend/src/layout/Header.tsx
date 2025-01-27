@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { UserCircle } from "lucide-react";
-import { Button } from "@/components/ui/button.tsx";
+import { Button } from "@/components/Button.tsx";
 import LogOutIcon from "@/assets/icons/logout.svg";
 import { useAuth } from "@/contexts/AuthContext";
 import { getUser } from "@/lib/api";
