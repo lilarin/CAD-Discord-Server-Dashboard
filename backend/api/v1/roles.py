@@ -1,8 +1,8 @@
 import disnake
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Body
 
 from backend.middlewares.uniform_response import uniform_response_middleware
-from backend.schemas import Role
+from backend.schemas import Role, NameRequestBody
 from backend.services.fetch import fetch_role
 from backend.services.format import format_editable_roles_response, format_non_editable_roles_response
 from backend.services.utils import create_target_role, rename_target_role, delete_target_role
@@ -44,12 +44,12 @@ async def create_role(name: str):
         raise HTTPException(status_code=500, detail=str(exception))
 
 
-@router.patch("/roles/{role_id}/rename/{name}", response_model=list[Role])
+@router.patch("/roles/{role_id}", response_model=list[Role])
 @uniform_response_middleware
-async def rename_role(role_id: int, name: str):
+async def rename_role(role_id: int, request_body: NameRequestBody = Body(...)):
     try:
         role = await fetch_role(role_id)
-        await rename_target_role(role, name)
+        await rename_target_role(role, request_body.name)
         return await format_editable_roles_response()
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))

@@ -2,7 +2,7 @@ import disnake
 from fastapi import APIRouter, HTTPException, Body
 
 from backend.middlewares.uniform_response import uniform_response_middleware
-from backend.schemas import User
+from backend.schemas import User, NameRequestBody
 from backend.services.fetch import fetch_roles_by_ids, fetch_user, fetch_user_roles, fetch_guild_default_role
 from backend.services.format import format_users_response, format_roles_response, format_user_response
 from backend.services.utils import kick_target_user, rename_target_user
@@ -21,15 +21,15 @@ async def get_users():
         raise HTTPException(status_code=500, detail=str(exception))
 
 
-@router.patch("/users/{user_id}/rename/{name}", response_model=list[User])
+@router.patch("/users/{user_id}", response_model=list[User])
 @uniform_response_middleware
-async def rename_user(user_id: int, name: str):
+async def rename_user(user_id: int, request_body: NameRequestBody = Body(...)):
     try:
         user = await fetch_user(user_id)
-        await rename_target_user(user, name)
+        await rename_target_user(user, request_body.name)
         return await format_users_response()
-    except disnake.errors.HTTPException as exception:
-        raise HTTPException(status_code=exception.status, detail=str(exception.text))
+    except HTTPException as http_exception:
+        raise http_exception
     except Exception as exception:
         raise HTTPException(status_code=500, detail=str(exception))
 

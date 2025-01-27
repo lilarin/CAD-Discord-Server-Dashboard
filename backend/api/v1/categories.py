@@ -2,7 +2,7 @@ import disnake
 from fastapi import APIRouter, HTTPException, Body
 
 from backend.middlewares.uniform_response import uniform_response_middleware
-from backend.schemas import Category, Role
+from backend.schemas import Category, Role, NameRequestBody, PositionRequestBody
 from backend.services.requests import update_channel_order
 from backend.services.fetch import (
     fetch_channel,
@@ -35,18 +35,18 @@ async def get_categories():
         raise HTTPException(status_code=500, detail=str(exception))
 
 
-@router.patch("/categories/{channel_id}/rename/{name}", response_model=list[Category])
+@router.patch("/categories/{channel_id}", response_model=list[Category])
 @uniform_response_middleware
-async def rename_channel(channel_id: int, name: str):
+async def rename_channel(channel_id: int, request_body: NameRequestBody = Body(...)):
     try:
         channel = await fetch_channel(channel_id)
         if channel.type not in [disnake.ChannelType.category]:
             raise ValueError("Incorrect channel type")
 
-        if channel.name.lower() == name.lower():
+        if channel.name.lower() == request_body.name.lower():
             raise ValueError("Name cannot be the same")
 
-        await rename_target_channel(channel, name)
+        await rename_target_channel(channel, request_body.name)
         return await format_categories_response()
     except disnake.errors.HTTPException as exception:
         raise HTTPException(status_code=exception.status, detail=str(exception.text))
@@ -70,9 +70,9 @@ async def create_category(name: str):
         raise HTTPException(status_code=500, detail=str(exception))
 
 
-@router.patch("/categories/{category_id}/position/{position_id}", response_model=list[Category])
+@router.patch("/categories/{category_id}/reorder", response_model=list[Category])
 @uniform_response_middleware
-async def reorder_category_position(category_id: int, position_id: int):
+async def reorder_category_position(category_id: int, request_body: PositionRequestBody = Body(...)):
     try:
         channel = await fetch_channel(category_id)
         if channel.type != disnake.ChannelType.category:
@@ -82,7 +82,7 @@ async def reorder_category_position(category_id: int, position_id: int):
         channels.sort(key=lambda c: (c.position, c.id))
 
         channels.remove(channel)
-        channels.insert(position_id, channel)
+        channels.insert(request_body.position, channel)
 
         payload = [
             await format_base_channel_response(channel, ch_index)
