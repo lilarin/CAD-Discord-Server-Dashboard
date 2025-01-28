@@ -305,6 +305,13 @@ function ActionSidebar(
 		return [...roles].sort((a, b) => a.name.localeCompare(b.name));
 	}, [roles]);
 
+	const noRolesText = useMemo(() => {
+		if (action === 'edit' && target === 'user' && sortedRoles.length === 0) {
+			return "Користувач не має ролей";
+		}
+		return "Немає ролей з доступом до цієї категорії";
+	}, [action, target, sortedRoles]);
+
 	return (
 		<div className="sticky top-5">
 			<div className="bg-[#2F3136] rounded p-4">
@@ -415,7 +422,7 @@ function ActionSidebar(
 								))}
 							</ul>
 						) : (
-							<div className="text-gray-400 mt-2 mb-2">Немає ролей з доступом до цієї категорії</div>
+							<div className="font-light mt-2 mb-2">{noRolesText}</div>
 						)}
 						{!isLoadingPermissions && (
 							<div
