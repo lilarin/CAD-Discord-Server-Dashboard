@@ -10,7 +10,7 @@ from backend.services.utils import kick_target_user, rename_target_user
 router = APIRouter()
 
 
-@router.get("/users/", response_model=list[User])
+@router.get("/users", response_model=list[User])
 @uniform_response_middleware
 async def get_users():
     try:
@@ -28,8 +28,8 @@ async def rename_user(user_id: int, request_body: NameRequestBody = Body(...)):
         user = await fetch_user(user_id)
         await rename_target_user(user, request_body.name)
         return await format_users_response()
-    except HTTPException as http_exception:
-        raise http_exception
+    except disnake.errors.HTTPException as exception:
+        raise HTTPException(status_code=exception.status, detail=str(exception.text))
     except Exception as exception:
         raise HTTPException(status_code=500, detail=str(exception))
 
