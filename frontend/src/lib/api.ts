@@ -175,5 +175,5 @@ export async function getUser(userId: number): Promise<User> {
 }
 
 export async function editUserRoles(userId: number, roles: number[]): Promise<User[]> {
-	return handleRequest(api.put<ApiResponse<User[]>>(`/api/v1/users/${userId}/`, roles));
+	return handleRequest(api.put<ApiResponse<User[]>>(`/api/v1/users/${userId}`, roles));
 }
