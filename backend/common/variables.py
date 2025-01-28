@@ -7,7 +7,5 @@ class Variables:
 
     GUILD_ID = 1296199433058386021
 
-    SUPABASE_URL = "https://yjumgvinrznejlkotlkh.supabase.co"
-
 
 variables = Variables()
