@@ -77,7 +77,7 @@ async def format_non_editable_roles_response() -> list[Role]:
             name=role.name
         )
         for role in await fetch_roles()
-        if role != default_role
+        if role != default_role and not role.is_bot_managed()
     ]
     roles = sorted(roles, key=lambda role: (
         0 if int(role.id) == variables.TEACHER_ROLE_ID else
@@ -91,14 +91,21 @@ async def format_non_editable_roles_response() -> list[Role]:
 
 async def format_editable_roles_response() -> list[Role]:
     default_role = await fetch_guild_default_role()
+    excluded_roles_ids = [
+        default_role.id,
+        variables.ADMINISTRATOR_ROLE_ID,
+        variables.TEACHER_ROLE_ID,
+        variables.STUDENT_ROLE_ID
+    ]
     roles = [
         Role(
             id=str(role.id),
             name=role.name
         )
         for role in await fetch_roles()
-        if role != default_role and role.id != variables.ADMINISTRATOR_ROLE_ID and
-           role.id != variables.TEACHER_ROLE_ID and role.id != variables.STUDENT_ROLE_ID
+        if (
+            role.id not in excluded_roles_ids and not role.is_bot_managed()
+        )
     ]
     roles = sorted(roles, key=lambda role: role.name.lower())
 
