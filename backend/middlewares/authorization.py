@@ -6,13 +6,12 @@ from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from supabase import create_client, Client
 
-from backend.common.variables import variables
 from backend.config import config
 from backend.middlewares.schemas import ResponseWrapper
 from backend.services.fetch import fetch_user
 from backend.services.utils import get_user_group
 
-supabase: Client = create_client(variables.SUPABASE_URL, config.supabase_key)
+supabase: Client = create_client(config.supabase_url, config.supabase_key)
 
 
 class AuthMiddleware(BaseHTTPMiddleware):

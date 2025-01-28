@@ -9,7 +9,8 @@ load_dotenv()
 class Config:
     def __init__(self):
         self.discord_bot_token = self._get_env_variable("DISCORD_BOT_TOKEN")
-        self.supabase_key = self._get_env_variable("SUPABASE_ANON_KEY")
+        self.supabase_key = self._get_env_variable("VITE_SUPABASE_ANON_KEY")
+        self.supabase_url = self._get_env_variable("VITE_SUPABASE_URL")
 
     @staticmethod
     def _get_env_variable(var_name: str) -> str | None:
