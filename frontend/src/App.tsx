@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Categories from "@/pages/Categories.tsx";
 import Groups from "@/pages/Groups";
@@ -11,8 +11,23 @@ import { AuthProvider } from '@/contexts/AuthContext';
 import LoginPage from '@/pages/LoginPage';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import NotFoundPage from "@/pages/NotFoundPage";
+import PCViewOnlyPage from "@/components/PCViewOnly";
 
 const App = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const mobileKeywords = ['android', 'iphone', 'ipad', 'ipod', 'blackberry', 'windows phone'];
+
+    const isMobileDevice = mobileKeywords.some(keyword => userAgent.includes(keyword));
+    setIsMobile(isMobileDevice);
+  }, []);
+
+  if (isMobile) {
+    return <PCViewOnlyPage />;
+  }
+
   return (
     <BrowserRouter>
       <AuthProvider>
