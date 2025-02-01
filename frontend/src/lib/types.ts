@@ -28,3 +28,10 @@ export interface User {
     name: string;
     group?: string | null;
 }
+
+export interface Log {
+    user_name: string;
+    user_avatar: string;
+    action: string;
+    created_at: string
+}
