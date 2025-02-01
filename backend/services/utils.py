@@ -84,5 +84,3 @@ async def get_user_group(user: Member) -> str | None:
     for role in user.roles:
         if role.id == variables.TEACHER_ROLE_ID or role.id == variables.ADMINISTRATOR_ROLE_ID:
             return "staff"
-        elif role.id == variables.STUDENT_ROLE_ID:
-            return "student"
