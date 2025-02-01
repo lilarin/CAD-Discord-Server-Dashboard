@@ -333,7 +333,7 @@ function ActionSidebar(
 							</button>
 						</div>
 						{hintText && (
-							<div className="hover:brightness-200 transition-all duration-300">
+							<div className="pt-2 hover:brightness-200 transition-all duration-300">
 								<button
 									onMouseEnter={() => setShowHint(true)}
 									onMouseLeave={() => setShowHint(false)}
@@ -385,7 +385,7 @@ function ActionSidebar(
 								</button>
 							</div>
 							{hintText && (
-								<div className="hover:brightness-200 transition-all duration-300">
+								<div className="pt-2 hover:brightness-200 transition-all duration-300">
 									<button
 										onMouseEnter={() => setShowHint(true)}
 										onMouseLeave={() => setShowHint(false)}
@@ -450,7 +450,7 @@ function ActionSidebar(
 								</button>
 							</div>
 							{hintText && (
-								<div className="hover:brightness-200 transition-all duration-300">
+								<div className="pt-2 hover:brightness-200 transition-all duration-300">
 									<button
 										onMouseEnter={() => setShowHint(true)}
 										onMouseLeave={() => setShowHint(false)}
