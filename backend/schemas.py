@@ -37,3 +37,10 @@ class NameRequestBody(BaseModel):
 
 class PositionRequestBody(BaseModel):
     position: int
+
+
+class LogSchema(BaseModel):
+    user_name: str
+    user_avatar: str
+    action: str
+    created_at: str
