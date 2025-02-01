@@ -5,7 +5,6 @@ import DisciplinesIcon from "@/assets/icons/disciplines.svg";
 import GroupsIcon from "@/assets/icons/groups.svg";
 import UsersIconIcon from "@/assets/icons/users.svg";
 import EventsIcon from "@/assets/icons/events.svg";
-import ArchivationIcon from "@/assets/icons/archivation.svg";
 import LogsIcon from "@/assets/icons/logs.svg";
 
 const navigation = [
@@ -13,7 +12,6 @@ const navigation = [
   { name: "Групи", href: "/groups", icon: GroupsIcon },
   { name: "Користувачі", href: "/users", icon: UsersIconIcon },
   { name: "Заходи", href: "/events", icon: EventsIcon },
-  { name: "Архівація", href: "/archivation", icon: ArchivationIcon },
   { name: "Логи", href: "/logs", icon: LogsIcon },
 ];
 
