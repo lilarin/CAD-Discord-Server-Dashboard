@@ -313,7 +313,7 @@ export default function Logs() {
 								</button>
 							</div>
 							{hintText && (
-								<div className="pt-2 over:brightness-200 transition-all duration-300 align-center">
+								<div className="pt-2 hover:brightness-200 transition-all duration-300 align-center">
 									<button
 										onMouseEnter={() => setShowHint(true)}
 										onMouseLeave={() => setShowHint(false)}
