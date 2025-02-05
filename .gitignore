@@ -1,3 +1,5 @@
 .idea/
 .env
 node_modules
+qodana.yaml
+.flake8
