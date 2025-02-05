@@ -36,7 +36,7 @@ async def format_channels_by_category_response(category: CategoryChannel) -> lis
         for channel in await fetch_channels()
         if channel.category_id == category.id
     ]
-    channels.sort(key=lambda channel: (channel.type != 'text', channel.position))
+    channels.sort(key=lambda channel: (channel.type != "text", channel.position))
     return channels
 
 

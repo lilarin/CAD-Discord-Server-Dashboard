@@ -3,7 +3,6 @@ from fastapi import APIRouter, HTTPException, Body
 
 from backend.middlewares.uniform_response import uniform_response_middleware
 from backend.schemas import Category, Role, NameRequestBody, PositionRequestBody
-from backend.services.requests import update_channel_order
 from backend.services.fetch import (
     fetch_channel,
     fetch_channels_by_type,
@@ -16,6 +15,7 @@ from backend.services.format import (
     format_roles_with_access_response,
     format_roles_response
 )
+from backend.services.requests import update_channel_order
 from backend.services.utils import (
     create_template_category,
     delete_target_category, rename_target_channel

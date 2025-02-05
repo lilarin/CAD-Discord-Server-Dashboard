@@ -1,6 +1,7 @@
+from functools import wraps
+
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
-from functools import wraps
 
 from backend.middlewares.schemas import ResponseWrapper
 
@@ -18,4 +19,5 @@ def uniform_response_middleware(func):
             if isinstance(exception, HTTPException):
                 return JSONResponse(content=response.model_dump(), status_code=exception.status_code)
             return JSONResponse(content=response.model_dump(), status_code=500)
+
     return wrapper

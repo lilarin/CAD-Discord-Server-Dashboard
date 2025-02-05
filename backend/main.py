@@ -1,12 +1,13 @@
 import asyncio
 from contextlib import asynccontextmanager
 
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Response
+from fastapi.middleware.cors import CORSMiddleware
 
 from backend.api.v1.router import router as router_v1
 from backend.middlewares.authorization import AuthMiddleware
 from backend.services.bot import bot, run_bot
+
 
 @asynccontextmanager
 async def lifespan(*args, **kwargs):
@@ -16,6 +17,7 @@ async def lifespan(*args, **kwargs):
     finally:
         await bot.close()
         bot_task.cancel()
+
 
 app = FastAPI(lifespan=lifespan)
 
@@ -29,6 +31,7 @@ app.add_middleware(
 )
 
 app.include_router(router_v1, prefix="/api")
+
 
 @app.get("/", tags=["Health"])
 async def index():
