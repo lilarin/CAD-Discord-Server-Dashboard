@@ -1,9 +1,8 @@
-import postgrest
 import datetime
 
+import postgrest
 from disnake import Member
 from fastapi import HTTPException
-
 from supabase import create_client, Client
 
 from backend.config import config
@@ -38,14 +37,6 @@ async def read_logs_from_supabase() -> list[LogSchema]:
             .select("*")
             .execute()
         )
-        # logs = []
-        # for log in response.data[::-1]:
-        #     data = LogSchema(**log)
-        #     created_at_datetime = datetime.datetime.fromisoformat(data.created_at.replace('Z', '+00:00'))
-        #     data.created_at = created_at_datetime.strftime("%H:%M %d-%m-%Y")
-        #     logs.append(data)
-        #
-        # return logs
         return [LogSchema(**log) for log in response.data[::-1]]
 
     except postgrest.exceptions.APIError as e:

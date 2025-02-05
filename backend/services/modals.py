@@ -5,7 +5,6 @@ import disnake
 
 from backend.services.responses import send_ephemeral_response
 
-
 USER_REGISTER_DATA = {}
 
 

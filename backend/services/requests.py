@@ -1,5 +1,5 @@
-import disnake
 import aiohttp
+import disnake
 
 from backend.common.variables import variables
 from backend.config import config
