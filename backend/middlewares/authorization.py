@@ -14,7 +14,7 @@ from backend.services.utils import get_user_group
 
 class AuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-        if request.method == "OPTIONS" or request.url.path in ["/", "/docs", "/openapi.json", "/api/v1/logs"]:
+        if request.method == "OPTIONS" or request.url.path in ["/", "/docs", "/openapi.json"]:
             response = await call_next(request)
             return response
 
