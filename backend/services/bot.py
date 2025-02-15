@@ -1,10 +1,17 @@
+from datetime import datetime
+
 import disnake
 from disnake.ext import commands
 
 from backend.common.variables import variables
 from backend.config import config
-from backend.services.modals import RegisterModal, USER_REGISTER_DATA, init_register_buttons, init_group_confirm_button, \
-    init_group_select
+from backend.services.modals import (
+    RegisterModal,
+    USER_REGISTER_DATA,
+    init_register_buttons,
+    init_group_confirm_button,
+    init_group_select, init_queue_buttons
+)
 from backend.services.responses import send_ephemeral_response
 
 bot = commands.InteractionBot(intents=disnake.Intents.all())
@@ -48,6 +55,34 @@ async def create_register_message(
     embed.set_image(url="https://imgur.com/uG2M5wK.png")
 
     action_row = await init_register_buttons()
+    await interaction.channel.send(embed=embed, components=action_row)
+
+    await send_ephemeral_response(interaction, "Повідомлення створено")
+
+
+@bot.slash_command(
+    name="створити-чергу-захисту",
+    description="Створити повідомлення для запису у чергу на захист в поточному каналі"
+)
+@commands.has_any_role(variables.ADMINISTRATOR_ROLE_ID)
+async def create_queue_message(
+        interaction: disnake.ApplicationCommandInteraction
+) -> None:
+    title = "Черга на захист 1 лабораторної роботи ШІ"
+    event_time_str = '02/14/25 13:55'
+    event_time = datetime.strptime(event_time_str, '%m/%d/%y %H:%M')
+    # users = [354638720600768522, 729432775110819960, 920697666416046082]
+    # content = "\n".join(f"{index + 1}. <@{user}>" for index, user in enumerate(users))
+
+    embed = disnake.Embed(
+        title=title,
+        # description=content,
+        color=0xFFFFFF,
+        timestamp=event_time,
+    )
+    embed.set_footer(text="Початок")
+    action_row = await init_queue_buttons()
+
     await interaction.channel.send(embed=embed, components=action_row)
 
     await send_ephemeral_response(interaction, "Повідомлення створено")
@@ -114,3 +149,30 @@ async def on_button_click(interaction: disnake.MessageInteraction) -> None:
                 )
             except disnake.Forbidden:
                 pass
+
+    elif interaction_component_id == "join_queue_button":
+        embed = interaction.message.embeds[0]
+        if not embed.description:
+            await send_ephemeral_response(interaction, "Ви доєднались до черги")
+            embed.description = f"\n1. {interaction.user.mention}"
+            await interaction.message.edit(embed=embed)
+        elif not str(interaction.user.id) in embed.description:
+            await send_ephemeral_response(interaction, "Ви доєднались до черги")
+            embed.description += f"\n1. {interaction.user.mention}"
+            await interaction.message.edit(embed=embed)
+        else:
+            await send_ephemeral_response(interaction, "Ви вже у черзі")
+
+    elif interaction_component_id == "leave_queue_button":
+        embed = interaction.message.embeds[0]
+        if not embed.description or not str(interaction.user.id) in embed.description:
+            await send_ephemeral_response(interaction, "Ви не в черзі")
+        else:
+            await send_ephemeral_response(interaction, "Ви вийшли з черги")
+            new_description = ""
+            users = embed.description.split("\n")
+            for user in users:
+                if not str(interaction.user.id) in user:
+                    new_description += f"\n{user}"
+            embed.description = new_description
+            await interaction.message.edit(embed=embed)

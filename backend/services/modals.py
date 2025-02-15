@@ -29,6 +29,20 @@ async def init_register_buttons() -> disnake.ui.ActionRow:
     return disnake.ui.ActionRow(register, inactive)
 
 
+async def init_queue_buttons() -> disnake.ui.ActionRow:
+    register = disnake.ui.Button(
+        style=disnake.ButtonStyle.primary,
+        label="🚀 Стати в чергу",
+        custom_id="join_queue_button",
+    )
+    inactive = disnake.ui.Button(
+        style=disnake.ButtonStyle.grey,
+        label="👋 Вийти з черги",
+        custom_id="leave_queue_button",
+    )
+    return disnake.ui.ActionRow(register, inactive)
+
+
 async def init_name_confirm_button() -> disnake.ui.ActionRow:
     name_confirm = disnake.ui.Button(
         style=disnake.ButtonStyle.primary,
@@ -51,6 +65,21 @@ async def init_group_select(roles) -> disnake.ui.ActionRow:
         custom_id="role_select_option"
     )
     return disnake.ui.ActionRow(role_select)
+
+
+async def init_user_select(users) -> disnake.ui.ActionRow:
+    options = [
+        disnake.SelectOption(
+            label=user.display_name,
+            value=user
+        ) for user in users
+    ]
+    user_select = disnake.ui.Select(
+        placeholder="...",
+        options=options,
+        custom_id="role_select_option"
+    )
+    return disnake.ui.ActionRow(user_select)
 
 
 async def init_group_confirm_button() -> disnake.ui.ActionRow:
