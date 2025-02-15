@@ -2,21 +2,22 @@ import {useState, useRef, useCallback, useEffect} from 'react';
 
 export const useHintAnimation = () => {
     const [isVisible, setIsVisible] = useState(false);
-    const [opacity, setOpacity] = useState(isVisible ? 1 : 0);
+    const [opacity, setOpacity] = useState(0);
     const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
     useEffect(() => {
-        setOpacity(isVisible ? 1 : 0);
+        if (isVisible) {
+            requestAnimationFrame(() => setOpacity(1));
+        } else {
+            setOpacity(0);
+        }
     }, [isVisible]);
 
 
     const open = useCallback(() => {
         clearTimeout(timeoutRef.current);
         if (!isVisible) {
-            timeoutRef.current = setTimeout(() => {
-                setIsVisible(true);
-                requestAnimationFrame(() => setOpacity(1));
-            }, 150);
+            setIsVisible(true);
         }
     }, [isVisible]);
 
@@ -27,7 +28,6 @@ export const useHintAnimation = () => {
             timeoutRef.current = setTimeout(() => setIsVisible(false), 300);
         }
     }, [isVisible]);
-
     const toggle = useCallback(() => {
         if (isVisible) {
             close();
