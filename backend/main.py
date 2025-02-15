@@ -19,7 +19,12 @@ async def lifespan(*args, **kwargs):
         bot_task.cancel()
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(
+    lifespan=lifespan,
+    title="Campus Discord Control Panel API",
+    description="An API for web control panel for Discord servers, offering server management features",
+    version="1.0.0"
+)
 
 app.add_middleware(AuthMiddleware)
 app.add_middleware(
