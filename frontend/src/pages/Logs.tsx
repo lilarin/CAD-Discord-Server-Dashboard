@@ -10,6 +10,7 @@ import {Log} from "@/lib/types.ts";
 import DatePicker, {registerLocale} from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {uk} from "date-fns/locale/uk";
+import {useItemFadeAnimation} from "@/hooks/useItemFadeAnimation.tsx";
 
 registerLocale("uk", uk);
 
@@ -130,11 +131,19 @@ const usePaginatedLogs = (logs: Log[], itemsPerPage: number = ITEMS_PER_PAGE) =>
 export default function Logs() {
 	const [logs, setLogs] = useState<Log[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
-
-	const [isFilterOpen, setIsFilterOpen] = useState(false);
 	const filterRef = useRef<HTMLDivElement>(null);
-	const [showHint, setShowHint] = useState(false);
-	const hintText = "Фільтри дозволяють відобразити логи за вибраний період часу. Перший клік визначає початок періоду пошуку, а другий його кінець"
+	const hintText = "Фільтри дозволяють відобразити логи за вибраний період часу. Перший клік визначає початок періоду пошуку, а другий його кінець";
+
+	const filterAnimation = useItemFadeAnimation();
+	const hintAnimation = useItemFadeAnimation();
+
+	const {
+		isVisible: isFilterOpen,
+		opacity: filterOpacity,
+		toggle: toggleFilter
+	} = filterAnimation;
+	const {isVisible: showHint, opacity: hintOpacity, open: openHint, close: closeHint} = hintAnimation;
+
 
 	const {
 		logsOnPage,
@@ -170,172 +179,160 @@ export default function Logs() {
 		});
 	}, []);
 
-	useEffect(() => {
-		function handleClickOutside(event: MouseEvent) {
-			if (isFilterOpen && filterRef.current && !filterRef.current.contains(event.target as Node)) {
-				setIsFilterOpen(false);
-			}
-		}
 
-		if (isFilterOpen) {
-			document.addEventListener("mousedown", handleClickOutside);
-		} else {
-			document.removeEventListener("mousedown", handleClickOutside);
-		}
+	const handleFilterClick = useCallback(() => {
+		toggleFilter();
+	}, [toggleFilter]);
 
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, [isFilterOpen]);
-
-	const handleFilterClick = () => {
-		setIsFilterOpen(prev => !prev);
-	};
+	const handleMouseEnterHint = useCallback(openHint, [openHint]);
+	const handleMouseLeaveHint = useCallback(closeHint, [closeHint]);
 
 
 	return (
 		<div className="relative flex w-full h-full p-5">
-			{isLoading && (
+			{isLoading ? (
 				<ComponentLoadingSpinner/>
-			)}
-			<div className="w-2/3 h-full flex flex-col">
-				{!isLoading && (
-					<div className="mb-5 flex justify-between items-center">
-						<div className="w-full flex flex-row relative">
-							<input
-								type="text"
-								placeholder="Пошук по логам..."
-								className="w-full p-2 rounded bg-[#292B2F] focus:outline-none pr-8 text-white"
-								value={searchTerm}
-								onChange={handleSearch}
-							/>
-							<img
-								src={SearchIcon}
-								alt="Пошук"
-								className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-500"
-							/>
+			) : (
+				<>
+					<div className="w-2/3 h-full flex flex-col">
+						<div className="mb-5 flex justify-between items-center">
+							<div className="w-full flex flex-row relative">
+								<input
+									type="text"
+									placeholder="Пошук по логам..."
+									className="w-full p-2 rounded bg-[#292B2F] focus:outline-none pr-8 text-white"
+									value={searchTerm}
+									onChange={handleSearch}
+								/>
+								<img
+									src={SearchIcon}
+									alt="Пошук"
+									className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-500"
+								/>
+							</div>
+							<div
+								onClick={handleFilterClick}
+								className={`flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer w-1/3 ml-5 relative transition-all duration-300`}>
+								<img src={FilterSearchIcon} alt="Фільтри пошуку" className="w-5 h-5"/>
+							</div>
 						</div>
-						<div
-							onClick={handleFilterClick}
-							className={`flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer w-1/3 ml-5 relative transition-all duration-300 ${isFilterOpen ? 'pointer-events-none' : ''}`}>
-							<img src={FilterSearchIcon} alt="Фільтри пошуку" className="w-5 h-5"/>
-						</div>
-					</div>
-				)}
 
-				{!isLoading && (
-					<div className="flex-grow">
-						{filteredLogs.length === 0 ? (
-							<div className="text-gray-400">Логів не знайдено</div>
-						) : (
-							<div className="overflow-x-auto">
-								<table className="min-w-full divide-y divide-gray-700 bg-[#2f3136] rounded table-fixed">
-									<thead className="bg-[#292B2F] w-full">
-									<tr className="text-center text-xs text-gray-300 uppercase font-medium">
-										<th scope="col" className="w-1/3 px-6 py-3">
-											Користувач
-										</th>
-										<th scope="col" className="w-1/3 px-6 py-3">
-											Виконана дія
-										</th>
-										<th scope="col" className="w-1/3 px-6 py-3">
-											Час виконання
-										</th>
-									</tr>
-									</thead>
-									<tbody className="divide-y divide-gray-800">
-									{logsOnPage.map((log, index) => (
-										<tr key={index}>
-											<td className="px-6 py-4 whitespace-nowrap w-1/3">
-												<div className="flex items-center">
-													<div className="flex-shrink-0 h-10 w-10">
-														<img className="h-10 w-10 rounded-full" src={log.user_avatar}
-														     alt={`Аватар ${log.user_name}`}/>
-													</div>
-													<div className="ml-4">
-														<div className="text-sm font-medium text-white">
-															{log.user_name}
+						<div className="flex-grow">
+							{filteredLogs.length === 0 ? (
+								<div className="text-gray-400">Логів не знайдено</div>
+							) : (
+								<div className="overflow-x-auto">
+									<table className="min-w-full divide-y divide-gray-700 bg-[#2f3136] rounded table-fixed">
+										<thead className="bg-[#292B2F] w-full">
+										<tr className="text-center text-xs text-gray-300 uppercase font-medium">
+											<th scope="col" className="w-1/3 px-6 py-3">
+												Користувач
+											</th>
+											<th scope="col" className="w-1/3 px-6 py-3">
+												Виконана дія
+											</th>
+											<th scope="col" className="w-1/3 px-6 py-3">
+												Час виконання
+											</th>
+										</tr>
+										</thead>
+										<tbody className="divide-y divide-gray-800">
+										{logsOnPage.map((log, index) => (
+											<tr key={index}>
+												<td className="px-6 py-4 whitespace-nowrap w-1/3">
+													<div className="flex items-center">
+														<div className="flex-shrink-0 h-10 w-10">
+															<img className="h-10 w-10 rounded-full" src={log.user_avatar}
+															     alt={`Аватар ${log.user_name}`}/>
+														</div>
+														<div className="ml-4">
+															<div className="text-sm font-medium text-white">
+																{log.user_name}
+															</div>
 														</div>
 													</div>
-												</div>
-											</td>
-											<td
-												className="px-6 py-4 whitespace-normal text-sm text-gray-200 w-1/3 text-center">{log.action}</td>
-											<td
-												className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 w-1/3 text-center">
-												{formatDate(log.created_at)}
-											</td>
-										</tr>
-									))}
-									</tbody>
-								</table>
-							</div>
-						)}
-					</div>
-				)}
-
-				{pageCount > 1 && (
-					<PaginationControl currentPage={currentPage} pageCount={pageCount} handlePageChange={handlePageChange}/>
-				)}
-			</div>
-			{isFilterOpen && (
-				<div ref={filterRef} className="pl-5 w-1/3 sticky top-5">
-					<div className="bg-[#2F3136] rounded p-4">
-						<span className="text-lg font-semibold mb-2 text-white">Налаштування фільтрації</span>
-						<div className="mt-4 datepicker-container w-full">
-							<DatePicker
-								selectsRange
-								startDate={dateRange[0]}
-								endDate={dateRange[1]}
-								onChange={handleDateChange}
-								monthsShown={1}
-								locale="uk"
-								open={true}
-								inline
-								className="custom-datepicker w-full"
-								dateFormat="dd/MM/yyyy"
-								wrapperClassName="datepicker-wrapper"
-							/>
-						</div>
-						<div className="flex justify-between items-center pt-4 pb-1">
-							<div className="flex justify-start space-x-3">
-								<button
-									onClick={() => setIsFilterOpen(false)}
-									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
-								>
-									Закрити
-								</button>
-								<button
-									onClick={handleResetFilters}
-									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
-								>
-									Скинути фільтри
-								</button>
-							</div>
-							{hintText && (
-								<div className="pt-2 hover:brightness-200 transition-all duration-300 align-center">
-									<button
-										onMouseEnter={() => setShowHint(true)}
-										onMouseLeave={() => setShowHint(false)}
-										className="focus:outline-none"
-									>
-										<img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
-									</button>
+												</td>
+												<td
+													className="px-6 py-4 whitespace-normal text-sm text-gray-200 w-1/3 text-center">{log.action}</td>
+												<td
+													className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 w-1/3 text-center">
+													{formatDate(log.created_at)}
+												</td>
+											</tr>
+										))}
+										</tbody>
+									</table>
 								</div>
 							)}
 						</div>
+
+						{pageCount > 1 && (
+							<PaginationControl currentPage={currentPage} pageCount={pageCount}
+							                   handlePageChange={handlePageChange}/>
+						)}
 					</div>
-					{showHint && hintText && (
-						<div className="w-full pt-5">
+					{isFilterOpen && (
+						<div ref={filterRef} className="pl-5 w-1/3 sticky top-5" style={{
+							opacity: filterOpacity,
+							transition: `opacity 300ms ease-in-out`
+						}}>
 							<div className="bg-[#2F3136] rounded p-4">
-								<h3 className="font-semibold mb-2 text-white">Підказка</h3>
-								<h3 className="font-light text-gray-300">{hintText}</h3>
+								<span className="text-lg font-semibold mb-2 text-white">Налаштування фільтрації</span>
+								<div className="mt-4 datepicker-container w-full">
+									<DatePicker
+										selectsRange
+										startDate={dateRange[0]}
+										endDate={dateRange[1]}
+										onChange={handleDateChange}
+										monthsShown={1}
+										locale="uk"
+										open={true}
+										inline
+										className="custom-datepicker w-full"
+										dateFormat="dd/MM/yyyy"
+										wrapperClassName="datepicker-wrapper"
+									/>
+								</div>
+								<div className="flex justify-between items-center pt-4 pb-1">
+									<div className="flex justify-start space-x-3">
+										<button
+											onClick={toggleFilter}
+											className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
+										>
+											Закрити
+										</button>
+										<button
+											onClick={handleResetFilters}
+											className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
+										>
+											Скинути фільтри
+										</button>
+									</div>
+									{hintText && (
+										<div className="pt-2 hover:brightness-200 transition-all duration-500 align-center">
+											<button
+												onMouseEnter={handleMouseEnterHint}
+												onMouseLeave={handleMouseLeaveHint}
+												className="focus:outline-none"
+											>
+												<img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
+											</button>
+										</div>
+									)}
+								</div>
 							</div>
+							{showHint && hintText && (
+								<div className="w-full pt-5"
+								     style={{opacity: hintOpacity, transition: `opacity 300ms ease-in-out`}}>
+									<div className="bg-[#2F3136] rounded p-4">
+										<h3 className="font-semibold mb-2 text-white">Підказка</h3>
+										<h3 className="font-light text-gray-300">{hintText}</h3>
+									</div>
+								</div>
+							)}
 						</div>
 					)}
-				</div>
-			)}
-			<style>{`
+					<style>{`
           .datepicker-wrapper {
               width: 100%;
           }
@@ -361,7 +358,9 @@ export default function Logs() {
               padding-top: 0.8rem;
               padding-bottom: 0.8rem;
           }
-			`}</style>
+					`}</style>
+				</>
+			)}
 		</div>
 	);
 }
