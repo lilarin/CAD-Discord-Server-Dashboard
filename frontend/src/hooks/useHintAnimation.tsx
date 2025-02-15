@@ -1,6 +1,6 @@
 import {useState, useRef, useCallback, useEffect} from 'react';
 
-export const useItemFadeAnimation = () => {
+export const useHintAnimation = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [opacity, setOpacity] = useState(isVisible ? 1 : 0);
     const timeoutRef = useRef<ReturnType<typeof setTimeout>>();

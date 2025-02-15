@@ -10,7 +10,7 @@ import {Log} from "@/lib/types.ts";
 import DatePicker, {registerLocale} from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {uk} from "date-fns/locale/uk";
-import {useItemFadeAnimation} from "@/hooks/useItemFadeAnimation.tsx";
+import {useHintAnimation} from "@/hooks/useHintAnimation.tsx";
 
 registerLocale("uk", uk);
 
@@ -135,7 +135,7 @@ export default function Logs() {
 	const hintText = "Фільтри дозволяють відобразити логи за вибраний період часу. Перший клік визначає початок періоду пошуку, а другий його кінець";
 
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
-	const hintAnimation = useItemFadeAnimation();
+	const hintAnimation = useHintAnimation();
 
 	const {isVisible: showHint, opacity: hintOpacity, open: openHint, close: closeHint} = hintAnimation;
 
