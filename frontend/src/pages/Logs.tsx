@@ -134,14 +134,9 @@ export default function Logs() {
 	const filterRef = useRef<HTMLDivElement>(null);
 	const hintText = "Фільтри дозволяють відобразити логи за вибраний період часу. Перший клік визначає початок періоду пошуку, а другий його кінець";
 
-	const filterAnimation = useItemFadeAnimation();
+	const [isFilterOpen, setIsFilterOpen] = useState(false);
 	const hintAnimation = useItemFadeAnimation();
 
-	const {
-		isVisible: isFilterOpen,
-		opacity: filterOpacity,
-		toggle: toggleFilter
-	} = filterAnimation;
 	const {isVisible: showHint, opacity: hintOpacity, open: openHint, close: closeHint} = hintAnimation;
 
 
@@ -181,8 +176,8 @@ export default function Logs() {
 
 
 	const handleFilterClick = useCallback(() => {
-		toggleFilter();
-	}, [toggleFilter]);
+		setIsFilterOpen(!isFilterOpen);
+	}, [setIsFilterOpen, isFilterOpen]);
 
 	const handleMouseEnterHint = useCallback(openHint, [openHint]);
 	const handleMouseLeaveHint = useCallback(closeHint, [closeHint]);
@@ -272,10 +267,7 @@ export default function Logs() {
 						)}
 					</div>
 					{isFilterOpen && (
-						<div ref={filterRef} className="pl-5 w-1/3 sticky top-5" style={{
-							opacity: filterOpacity,
-							transition: `opacity 300ms ease-in-out`
-						}}>
+						<div ref={filterRef} className="pl-5 w-1/3 sticky top-5">
 							<div className="bg-[#2F3136] rounded p-4">
 								<span className="text-lg font-semibold mb-2 text-white">Налаштування фільтрації</span>
 								<div className="mt-4 datepicker-container w-full">
@@ -296,7 +288,7 @@ export default function Logs() {
 								<div className="flex justify-between items-center pt-4 pb-1">
 									<div className="flex justify-start space-x-3">
 										<button
-											onClick={toggleFilter}
+											onClick={() => setIsFilterOpen(false)}
 											className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
 										>
 											Закрити
