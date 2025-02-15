@@ -166,24 +166,6 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 	const [showHint, setShowHint] = useState(false);
 	const hintText = "Фільтри дозволяють відобразити лише користувачів з конкретної групи"
 
-	useEffect(() => {
-		function handleClickOutside(event: MouseEvent) {
-			if (isFilterOpen && filterRef.current && !filterRef.current.contains(event.target as Node)) {
-				setIsFilterOpen(false);
-			}
-		}
-
-		if (isFilterOpen) {
-			document.addEventListener("mousedown", handleClickOutside);
-		} else {
-			document.removeEventListener("mousedown", handleClickOutside);
-		}
-
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, [isFilterOpen]);
-
 	const handleFilterClick = () => {
 		if (!isFilterOpen) {
 			setActionSidebar({action: null, target: null, item: null});
@@ -212,7 +194,7 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 	return (
 		<div className="relative flex w-full h-full p-5">
 			{isLoading && (
-					<ComponentLoadingSpinner/>
+				<ComponentLoadingSpinner/>
 			)}
 			<div className="w-2/3 h-full flex flex-col">
 				{!isLoading && (
@@ -233,7 +215,7 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 						</div>
 						<div
 							onClick={handleFilterClick}
-							className={`flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer w-1/3 ml-5 relative transition-all duration-300 ${isFilterOpen ? 'pointer-events-none' : ''}`}>
+							className={`flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer w-1/3 ml-5 relative transition-all duration-300`}> {/* Removed conditional class here */}
 							<img src={FilterSearchIcon} alt="Фільтри пошуку" className="w-5 h-5"/>
 						</div>
 					</div>
@@ -303,7 +285,7 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 							<button
 								key={`staff-button-${filterKey}`}
 								onClick={() => handleFilterGroupChange('staff')}
-								className={`w-full p-2 rounded text-white transition-all duration-300 
+								className={`w-full p-2 rounded text-white transition-all duration-300
                  ${filterGroup === 'staff'
 									? 'outline-dashed outline-gray-500 bg-[#36393F] hover:bg-[#3e4147] outline-1'
 									: 'bg-[#36393F] hover:bg-[#3e4147]'
@@ -318,7 +300,7 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 							<button
 								key={`student-button-${filterKey}`}
 								onClick={() => handleFilterGroupChange('student')}
-								className={`w-full p-2 rounded text-white transition-all duration-300 
+								className={`w-full p-2 rounded text-white transition-all duration-300
                  ${filterGroup === 'student'
 									? 'outline-dashed outline-gray-500 bg-[#36393F] hover:bg-[#3e4147] outline-1'
 									: 'bg-[#36393F] hover:bg-[#3e4147]'
@@ -333,7 +315,7 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 							<button
 								key={`null-button-${filterKey}`}
 								onClick={() => handleFilterGroupChange('null')}
-								className={`w-full p-2 rounded text-white transition-all duration-300 
+								className={`w-full p-2 rounded text-white transition-all duration-300
                  ${filterGroup === 'null'
 									? 'outline-dashed outline-gray-500 bg-[#36393F] hover:bg-[#3e4147] outline-1'
 									: 'bg-[#36393F] hover:bg-[#3e4147]'
