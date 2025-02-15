@@ -150,16 +150,17 @@ async def edit_category_permissions(category_id: int, roles_with_access: list[st
 
         actual_roles_with_access = fetch_roles_with_access(category)
 
+        permissions_overwrites_to_remove = {}
+        permissions_overwrites_to_add = {}
+
         for role in await actual_roles_with_access:
             if role not in fetched_roles_with_access:
-                await category.set_permissions(role, overwrite=None)
+                permissions_overwrites_to_remove[role] = disnake.PermissionOverwrite()
+        await category.edit(overwrites=permissions_overwrites_to_remove)
 
-        permissions_overwrites = {}
         for role in fetched_roles_with_access:
-            permissions_overwrites[role] = disnake.PermissionOverwrite(view_channel=True)
-
-        if permissions_overwrites is not None:
-            await category.edit(overwrites=permissions_overwrites)
+            permissions_overwrites_to_add[role] = disnake.PermissionOverwrite(view_channel=True)
+        await category.edit(overwrites=permissions_overwrites_to_add)
 
         return await format_roles_response(fetched_roles_with_access)
     except disnake.errors.HTTPException as exception:
