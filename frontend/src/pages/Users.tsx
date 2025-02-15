@@ -11,6 +11,7 @@ import EditIcon from "@/assets/icons/edit.svg";
 import KickUserIcon from "@/assets/icons/logout.svg";
 import ActionSidebar, {ActionTarget, ActionType} from "@/components/ActionSidebar.tsx";
 import HintIcon from "@/assets/icons/hint.svg";
+import {useHintAnimation} from "@/hooks/useHintAnimation.tsx"; // Import the hook
 
 const ITEMS_PER_PAGE = 12;
 
@@ -163,8 +164,11 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 	const filterRef = useRef<HTMLDivElement>(null);
-	const [showHint, setShowHint] = useState(false);
-	const hintText = "Фільтри дозволяють відобразити лише користувачів з конкретної групи"
+	const hintText = "Фільтри дозволяють відобразити лише користувачів з конкретної групи";
+
+	const hintAnimation = useHintAnimation();
+	const {isVisible: showHint, opacity: hintOpacity, open: openHint, close: closeHint} = hintAnimation;
+
 
 	const handleFilterClick = () => {
 		if (!isFilterOpen) {
@@ -189,6 +193,9 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 			setIsFilterOpen(false)
 		}
 	}, [actionSidebar])
+
+	const handleMouseEnterHint = useCallback(openHint, [openHint]);
+	const handleMouseLeaveHint = useCallback(closeHint, [closeHint]);
 
 
 	return (
@@ -215,7 +222,7 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 						</div>
 						<div
 							onClick={handleFilterClick}
-							className={`flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer w-1/3 ml-5 relative transition-all duration-300`}> {/* Removed conditional class here */}
+							className={`flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer w-1/3 ml-5 relative transition-all duration-300`}>
 							<img src={FilterSearchIcon} alt="Фільтри пошуку" className="w-5 h-5"/>
 						</div>
 					</div>
@@ -340,8 +347,8 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 							{hintText && (
 								<div className="pt-2 hover:brightness-200 transition-all duration-300 align-center">
 									<button
-										onMouseEnter={() => setShowHint(true)}
-										onMouseLeave={() => setShowHint(false)}
+										onMouseEnter={handleMouseEnterHint}
+										onMouseLeave={handleMouseLeaveHint}
 										className="focus:outline-none"
 									>
 										<img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
@@ -351,7 +358,7 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 						</div>
 					</div>
 					{showHint && hintText && (
-						<div className="w-full pt-5">
+						<div className="w-full pt-5" style={{opacity: hintOpacity, transition: `opacity 300ms ease-in-out`}}>
 							<div className="bg-[#2F3136] rounded p-4">
 								<h3 className="font-semibold mb-2">Підказка</h3>
 								<h3 className="font-light">{hintText}</h3>
