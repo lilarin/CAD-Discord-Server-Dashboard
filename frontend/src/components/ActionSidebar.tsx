@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {editCategoryPermissions, editUserRoles, getAllRoles, getCategoryAccessRoles, getUserRoles} from "@/lib/api.ts";
 import HintIcon from "@/assets/icons/hint.svg";
 import DeleteIcon from "@/assets/icons/delete.svg";
@@ -7,6 +7,7 @@ import {ChannelLoadingSpinner} from '@/components/LoadingSpinner';
 import toast from "react-hot-toast";
 import {Category, Channel, Role, User} from "@/lib/types.ts";
 import SearchIcon from "@/assets/icons/search.svg";
+import {useHintAnimation} from "@/hooks/useHintAnimation.tsx";
 
 export type ActionType = 'create' | 'rename' | 'edit' | 'delete' | null;
 export type ActionTarget = 'category' | 'channel' | 'role' | 'user' | null;
@@ -49,7 +50,6 @@ function ActionSidebar(
 	}: ActionSidebarProps) {
 	const [itemName, setItemName] = useState('');
 	const [newChannelType, setNewChannelType] = useState<'text' | 'voice'>('text');
-	const [showHint, setShowHint] = useState(false);
 	const [roles, setRoles] = useState<Role[]>([]);
 	const [initialRoles, setInitialRoles] = useState<Role[]>([]);
 	const [isLoadingPermissions, setIsLoadingPermissions] = useState(false);
@@ -58,6 +58,10 @@ function ActionSidebar(
 	const [allRolesList, setAllRolesList] = useState<Role[]>([]);
 	const [roleSearchTerm, setRoleSearchTerm] = useState('');
 	const dropdownRef = useRef<HTMLDivElement>(null);
+
+	const hintAnimation = useHintAnimation();
+	const {isVisible: showHint, opacity: hintOpacity, open: openHint, close: closeHint} = hintAnimation;
+
 
 	useEffect(() => {
 		if (action === 'rename' && item) {
@@ -275,7 +279,7 @@ function ActionSidebar(
 			const available = allRolesList.filter(allRole => !roles.some(selectedRole => selectedRole.id === allRole.id));
 			setAvailableRoles(available);
 			setIsRoleListOpen(true);
-			setShowHint(false);
+			openHint();
 			setRoleSearchTerm('');
 		}
 	};
@@ -284,6 +288,7 @@ function ActionSidebar(
 		setRoles([...roles, roleToAdd]);
 		setAvailableRoles(availableRoles.filter(role => role.id !== roleToAdd.id));
 		setIsRoleListOpen(false);
+		closeHint();
 	};
 
 	const filteredAvailableRoles = useMemo(() => {
@@ -312,6 +317,10 @@ function ActionSidebar(
 		return "Немає ролей з доступом до цієї категорії";
 	}, [action, target, sortedRoles]);
 
+	const handleMouseEnterHint = useCallback(openHint, [openHint]);
+	const handleMouseLeaveHint = useCallback(closeHint, [closeHint]);
+
+
 	return (
 		<div className="sticky top-5">
 			<div className="bg-[#2F3136] rounded p-4">
@@ -335,8 +344,8 @@ function ActionSidebar(
 						{hintText && (
 							<div className="pt-2 hover:brightness-200 transition-all duration-300">
 								<button
-									onMouseEnter={() => setShowHint(true)}
-									onMouseLeave={() => setShowHint(false)}
+									onMouseEnter={handleMouseEnterHint}
+									onMouseLeave={handleMouseLeaveHint}
 									className="focus:outline-none"
 								>
 									<img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
@@ -387,8 +396,8 @@ function ActionSidebar(
 							{hintText && (
 								<div className="pt-2 hover:brightness-200 transition-all duration-300">
 									<button
-										onMouseEnter={() => setShowHint(true)}
-										onMouseLeave={() => setShowHint(false)}
+										onMouseEnter={handleMouseEnterHint}
+										onMouseLeave={handleMouseLeaveHint}
 										className="focus:outline-none"
 									>
 										<img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
@@ -452,8 +461,8 @@ function ActionSidebar(
 							{hintText && (
 								<div className="pt-2 hover:brightness-200 transition-all duration-300">
 									<button
-										onMouseEnter={() => setShowHint(true)}
-										onMouseLeave={() => setShowHint(false)}
+										onMouseEnter={handleMouseEnterHint}
+										onMouseLeave={handleMouseLeaveHint}
 										className="focus:outline-none"
 									>
 										<img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
@@ -465,7 +474,7 @@ function ActionSidebar(
 				)}
 			</div>
 			{showHint && hintText && (
-				<div className="w-full pt-5">
+				<div className="w-full pt-5" style={{opacity: hintOpacity, transition: `opacity 300ms ease-in-out`}}>
 					<div className="bg-[#2F3136] rounded p-4">
 						<h3 className="font-semibold mb-2">Підказка</h3>
 						<h3 className="font-light">{hintText}</h3>
