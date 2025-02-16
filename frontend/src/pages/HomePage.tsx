@@ -14,13 +14,13 @@ import EventsIcon from "@/assets/icons/events.svg";
 import UsersIcon from "@/assets/icons/users.svg";
 import GroupsIcon from "@/assets/icons/groups.svg";
 import DisciplinesIcon from "@/assets/icons/disciplines.svg";
-
+import {Link} from "react-router-dom";
 
 const HomePage = () => {
 	return (
 		<div className="container mx-auto px-5 py-5 ">
 			<section className="mb-5">
-				<h2 className="text-2xl font-semibold text-white mb-4">Основні Положення</h2>
+				<h2 className="text-2xl font-semibold text-white mb-4">Основні положення</h2>
 				<div className="text-gray-300 space-y-3 text-justify">
 					<p>
 						Ця панель розроблена для зручного управління сервером, включаючи категорії (дисципліни), канали, групи
@@ -38,92 +38,102 @@ const HomePage = () => {
 			</section>
 
 			<section className="mb-5">
-				<h2 className="text-2xl font-semibold text-white mb-4">Розділи Панелі</h2>
+				<h2 className="text-2xl font-semibold text-white mb-4">Розділи панелі</h2>
 
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-					<div className="bg-[#2F3136] rounded-lg p-6 hover:bg-[#292b2f] transition-all duration-200">
+					<div className="bg-[#2F3136] rounded p-6 hover:bg-[#292b2f] transition-all duration-200">
 						<div className="flex items-center mb-4">
-							<img src={HomePageIcon} alt="Категорії" className="w-8 h-8 mr-3"/>
+							<img src={HomePageIcon} alt="Головна" className="w-8 h-8 mr-3"/>
 							<h3 className="text-xl font-semibold text-white">Головна</h3>
 						</div>
 						<div className="text-gray-300 space-y-2">
 							<p>
-								Головна сторінка панелі адміністратора з описом призначення панелі, оглядом та пояснення загальних дій, що доступні в інтерфейсі
+								Головна сторінка панелі керування сервером з описом призначення, оглядом та поясненням загальних дій, що доступні в інтерфейсі
 							</p>
 						</div>
 					</div>
 
-					<div className="bg-[#2F3136] rounded-lg p-6 hover:bg-[#292b2f]">
-						<div className="flex items-center mb-4">
-							<img src={DisciplinesIcon} alt="Категорії" className="w-8 h-8 mr-3"/>
-							<h3 className="text-xl font-semibold text-white">Категорії</h3>
+					<Link to="/categories" className="block">
+						<div className="bg-[#2F3136] rounded p-6 hover:bg-[#292b2f] transition-all duration-200 cursor-pointer">
+							<div className="flex items-center mb-4">
+								<img src={DisciplinesIcon} alt="Категорії" className="w-8 h-8 mr-3"/>
+								<h3 className="text-xl font-semibold text-white">Категорії</h3>
+							</div>
+							<div className="text-gray-300 space-y-2">
+								<p>
+									Розділ дозволяє керувати категоріями (дисциплінами) на сервері.
+									Категорії використовуються для структурування каналів та управління доступом до них
+								</p>
+							</div>
 						</div>
-						<div className="text-gray-300 space-y-2">
-							<p>
-								Розділ дозволяє керувати категоріями (дисциплінами) на сервері.
-								Категорії використовуються для структурування каналів та управління доступом до них
-							</p>
-						</div>
-					</div>
+					</Link>
 
-					<div className="bg-[#2F3136] rounded-lg p-6 hover:bg-[#292b2f] transition-all duration-200">
-						<div className="flex items-center mb-4">
-							<img src={GroupsIcon} alt="Групи" className="w-8 h-8 mr-3"/>
-							<h3 className="text-xl font-semibold text-white">Групи</h3>
+					<Link to="/groups" className="block">
+						<div className="bg-[#2F3136] rounded p-6 hover:bg-[#292b2f] transition-all duration-200 cursor-pointer">
+							<div className="flex items-center mb-4">
+								<img src={GroupsIcon} alt="Групи" className="w-8 h-8 mr-3"/>
+								<h3 className="text-xl font-semibold text-white">Групи</h3>
+							</div>
+							<div className="text-gray-300 space-y-2">
+								<p>
+									Розділ дозволяє керувати ролями (групами) для користувачів на сервері.
+									Групи використовуються для призначення прав доступу до певної категорії
+								</p>
+							</div>
 						</div>
-						<div className="text-gray-300 space-y-2">
-							<p>
-								Розділ дозволяє керувати ролями (групами) для користувачів на сервері.
-								Групи використовуються для призначення прав доступу до певної категорії
-							</p>
-						</div>
-					</div>
+					</Link>
 
-					<div className="bg-[#2F3136] rounded-lg p-6 hover:bg-[#292b2f] transition-all duration-200">
-						<div className="flex items-center mb-4">
-							<img src={UsersIcon} alt="Користувачі" className="w-8 h-8 mr-3"/>
-							<h3 className="text-xl font-semibold text-white">Користувачі</h3>
+					<Link to="/users" className="block">
+						<div className="bg-[#2F3136] rounded p-6 hover:bg-[#292b2f] transition-all duration-200 cursor-pointer">
+							<div className="flex items-center mb-4">
+								<img src={UsersIcon} alt="Користувачі" className="w-8 h-8 mr-3"/>
+								<h3 className="text-xl font-semibold text-white">Користувачі</h3>
+							</div>
+							<div className="text-gray-300 space-y-2">
+								<p>
+									Розділ призначений для управління користувачами сервера.
+									Тут ви можете переглядати, редагувати та виключати користувачів
+								</p>
+							</div>
 						</div>
-						<div className="text-gray-300 space-y-2">
-							<p>
-								Розділ призначений для управління користувачами сервера.
-								Тут ви можете переглядати, редагувати та виключати користувачів
-							</p>
-						</div>
-					</div>
+					</Link>
 
-					<div className="bg-[#2F3136] rounded-lg p-6 hover:bg-[#292b2f] transition-all duration-200">
-						<div className="flex items-center mb-4">
-							<img src={EventsIcon} alt="Події" className="w-8 h-8 mr-3"/>
-							<h3 className="text-xl font-semibold text-white">Захисти</h3>
+					<Link to="/events" className="block">
+						<div className="bg-[#2F3136] rounded p-6 hover:bg-[#292b2f] transition-all duration-200 cursor-pointer">
+							<div className="flex items-center mb-4">
+								<img src={EventsIcon} alt="Захисти" className="w-8 h-8 mr-3"/>
+								<h3 className="text-xl font-semibold text-white">Захисти</h3>
+							</div>
+							<div className="text-gray-300 space-y-2">
+								<p>
+									Розділ дозволяє створити черги захисту робіт студентами.
+									Черги доступні у вигляді інтерактивного списку, в який студенти можуть записатись та вийти з нього
+								</p>
+							</div>
 						</div>
-						<div className="text-gray-300 space-y-2">
-							<p>
-								Розділ дозволяє створити черги для захист робіт студентами.
-								Ці черги доступні у каналі у вигляді інтерактивного списку, в який студенти можуть записатись
-							</p>
-						</div>
-					</div>
+					</Link>
 
-					<div className="bg-[#2F3136] rounded-lg p-6 hover:bg-[#292b2f] transition-all duration-200">
-						<div className="flex items-center mb-4">
-							<img src={LogsIcon} alt="Журнали" className="w-8 h-8 mr-3"/>
-							<h3 className="text-xl font-semibold text-white">Логи</h3>
+					<Link to="/logs" className="block">
+						<div className="bg-[#2F3136] rounded p-6 hover:bg-[#292b2f] transition-all duration-200 cursor-pointer">
+							<div className="flex items-center mb-4">
+								<img src={LogsIcon} alt="Журнали" className="w-8 h-8 mr-3"/>
+								<h3 className="text-xl font-semibold text-white">Логи</h3>
+							</div>
+							<div className="text-gray-300 space-y-2">
+								<p>
+									Розділ надає доступ до журналу взаємодії з панеллю керування
+									Відстежує дії користувачів панелі та дозволяє переглянути їх
+								</p>
+							</div>
 						</div>
-						<div className="text-gray-300 space-y-2">
-							<p>
-								Розділ надає доступ до журналу взаємодії з панеллю керування
-								Використовуйте цей розділ для відстеження дій адміністраторів
-							</p>
-						</div>
-					</div>
+					</Link>
 				</div>
 			</section>
 
 			<section>
-				<h2 className="text-2xl font-semibold text-white mb-4">Загальні Іконки Дій</h2>
+				<h2 className="text-2xl font-semibold text-white mb-4">Іконки та їх пояснення</h2>
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-					<div className="bg-[#2F3136] rounded-lg p-6">
+					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
 							<img src={HintIcon} alt="Підказка" className="w-6 h-6 mr-3"/>
 							<h3 className="text-lg font-semibold text-white">Підказка</h3>
@@ -133,7 +143,7 @@ const HomePage = () => {
 						</p>
 					</div>
 
-					<div className="bg-[#2F3136] rounded-lg p-6">
+					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
 							<img src={FilterSearchIcon} alt="Фільтри пошуку" className="w-6 h-6 mr-3"/>
 							<h3 className="text-lg font-semibold text-white">Фільтрація</h3>
@@ -144,7 +154,7 @@ const HomePage = () => {
 					</div>
 
 
-					<div className="bg-[#2F3136] rounded-lg p-6">
+					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
 							<img src={CreateChannelIcon} alt="Створити канал" className="w-6 h-6 mr-3"/>
 							<h3 className="text-lg font-semibold text-white">Створити канал</h3>
@@ -154,7 +164,7 @@ const HomePage = () => {
 						</p>
 					</div>
 
-					<div className="bg-[#2F3136] rounded-lg p-6">
+					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
 							<img src={CreateCategoryIcon} alt="Створити категорію" className="w-6 h-6 mr-3"/>
 							<h3 className="text-lg font-semibold text-white">Створити категорію</h3>
@@ -164,7 +174,7 @@ const HomePage = () => {
 						</p>
 					</div>
 
-					<div className="bg-[#2F3136] rounded-lg p-6">
+					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
 							<img src={EditIcon} alt="Редагувати" className="w-6 h-6 mr-3"/>
 							<h3 className="text-lg font-semibold text-white">Редагувати</h3>
@@ -174,7 +184,7 @@ const HomePage = () => {
 						</p>
 					</div>
 
-					<div className="bg-[#2F3136] rounded-lg p-6">
+					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
 							<img src={CreateRoleIcon} alt="Створити (призначити) групу" className="w-6 h-6 mr-3"/>
 							<h3 className="text-lg font-semibold text-white">Створити (призначити) групу</h3>
@@ -184,7 +194,7 @@ const HomePage = () => {
 						</p>
 					</div>
 
-					<div className="bg-[#2F3136] rounded-lg p-6">
+					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
 							<img src={RenameIcon} alt="Перейменувати" className="w-6 h-6 mr-3"/>
 							<h3 className="text-lg font-semibold text-white">Перейменувати</h3>
@@ -194,7 +204,7 @@ const HomePage = () => {
 						</p>
 					</div>
 
-					<div className="bg-[#2F3136] rounded-lg p-6">
+					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
 							<img src={DeleteIcon} alt="Видалити" className="w-6 h-6 mr-3"/>
 							<h3 className="text-lg font-semibold text-white">Видалити</h3>
@@ -204,7 +214,7 @@ const HomePage = () => {
 						</p>
 					</div>
 
-					<div className="bg-[#2F3136] rounded-lg p-6">
+					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
 							<img src={KickUserIcon} alt="Вигнати користувача" className="w-6 h-6 mr-3"/>
 							<h3 className="text-lg font-semibold text-white">Вигнати користувача</h3>
