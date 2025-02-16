@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class BaseChannel(BaseModel):
@@ -19,7 +19,7 @@ class Channel(BaseChannel):
 
 class User(BaseModel):
     id: str
-    name: str
+    name: str = Field(max_length=32)
     group: Optional[str] = None
 
 

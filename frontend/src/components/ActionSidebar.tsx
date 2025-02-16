@@ -363,6 +363,7 @@ function ActionSidebar(
 								className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
 								value={itemName}
 								onChange={(e) => setItemName(e.target.value)}
+								maxLength={32}
 							/>
 							{action === 'create' && target === 'channel' && (
 								<select
