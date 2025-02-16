@@ -35,3 +35,10 @@ export interface Log {
     action: string;
     created_at: string
 }
+
+export interface Queue {
+    channel_id: string;
+    message_id?: string | null;
+    title: string;
+    event_time: string;
+}
