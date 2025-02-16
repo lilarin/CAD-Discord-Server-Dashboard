@@ -148,7 +148,7 @@ async def on_button_click(interaction: disnake.MessageInteraction) -> None:
 
             if new_description == "":
                 new_description = None
-                embed.add_field("", "-# Черга поки що порожня")
+                embed.add_field("", "-# Черга порожня")
 
             embed.description = new_description
             await interaction.message.edit(embed=embed)

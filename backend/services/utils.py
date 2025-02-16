@@ -112,7 +112,7 @@ async def create_queue_message(
         color=0xFFFFFF,
         timestamp=timestamp,
     )
-    embed.add_field("", "-# Черга поки що порожня")
+    embed.add_field("", "-# Черга порожня")
     embed.set_footer(text="Початок")
     action_row = await init_queue_buttons()
 
