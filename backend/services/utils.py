@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 import disnake
 from disnake import (
@@ -105,13 +105,14 @@ async def create_queue_message(
         event_time: str,
 ) -> None:
     channel = await fetch_channel(int(channel_id))
-    event_time = datetime.fromisoformat(event_time)
+    timestamp = datetime.datetime.fromisoformat(event_time)
 
     embed = disnake.Embed(
         title=title,
         color=0xFFFFFF,
-        timestamp=event_time,
+        timestamp=timestamp,
     )
+    embed.add_field("", "-# Черга поки що порожня")
     embed.set_footer(text="Початок")
     action_row = await init_queue_buttons()
 
