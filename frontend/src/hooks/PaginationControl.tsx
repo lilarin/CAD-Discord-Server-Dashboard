@@ -12,16 +12,16 @@ export const PaginationControl = ({
   if (pageCount <= 1) return null;
 
   const getVisiblePages = () => {
-    if (pageCount <= 3) {
+    if (pageCount <= 5) {
       return Array.from({ length: pageCount }, (_, i) => i + 1);
     }
 
     let pages: (number | string)[] = [];
 
     if (currentPage <= 2) {
-        pages = [1, 2, '...', pageCount];
+        pages = [1, 2, '...', pageCount - 1, pageCount];
     } else if (currentPage >= pageCount - 1) {
-       pages = [1, '...', pageCount - 1, pageCount];
+       pages = [1, '...', pageCount - 2, pageCount - 1, pageCount];
     } else {
         pages = [1, '...', currentPage, '...', pageCount];
     }
