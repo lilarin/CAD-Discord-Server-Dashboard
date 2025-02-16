@@ -131,7 +131,7 @@ export default function Groups({ itemsPerPage = ITEMS_PER_PAGE }: { itemsPerPage
       );
       setActionSidebar({ action: null, target: null, item: null });
       try {
-        const roles = await renameRole(roleId, roleName);
+        const roles = await renameRole(roleId.toString(), roleName);
         setRoles(roles);
       } catch (error) {
         toast.error(error.message, {
@@ -150,7 +150,7 @@ export default function Groups({ itemsPerPage = ITEMS_PER_PAGE }: { itemsPerPage
         setRoles((prevRoles) => prevRoles.filter((role) => role.id !== roleId));
         setActionSidebar({action: null, target: null, item: null});
       try {
-        const roles = await deleteRole(roleId);
+        const roles = await deleteRole(roleId.toString());
         setRoles(roles);
       } catch (error) {
         toast.error(error.message, {

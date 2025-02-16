@@ -129,7 +129,7 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 			);
 			setActionSidebar({action: null, target: null, item: null});
 			try {
-				const users = await renameUser(userId, userName);
+				const users = await renameUser(userId.toString(), userName);
 				setUsers(users);
 			} catch (error) {
 				toast.error(error.message, {
@@ -148,7 +148,7 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 			setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
 			setActionSidebar({action: null, target: null, item: null});
 			try {
-				const users = await kickUser(userId);
+				const users = await kickUser(userId.toString());
 				setUsers(users);
 			} catch (error) {
 				toast.error(error.message, {

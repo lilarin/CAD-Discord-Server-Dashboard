@@ -89,7 +89,7 @@ export default function Categories() {
       setIsChannelsLoading(true);
 
       try {
-        const fetchedChannels = await getChannels(categoryId);
+        const fetchedChannels = await getChannels(categoryId.toString());
         setChannels(fetchedChannels);
       } catch (error) {
         toast.error(error.message, {
@@ -133,14 +133,14 @@ export default function Categories() {
       setActionSidebar({ action: null, target: null, item: null });
 
       try {
-        const channels = await createChannel(openCategoryId, channelName, channelType);
+        const channels = await createChannel(openCategoryId.toString(), channelName, channelType);
         setChannels(channels);
       } catch (error) {
         toast.error(error.message, {
           position: "bottom-right",
           duration: 10000,
         });
-        const channels = await getChannels(openCategoryId)
+        const channels = await getChannels(openCategoryId.toString())
         setChannels(channels);
       }
     },
@@ -157,7 +157,7 @@ export default function Categories() {
       setActionSidebar({ action: null, target: null, item: null });
 
       try {
-          const updatedCategories = await renameCategory(categoryId, newName);
+          const updatedCategories = await renameCategory(categoryId.toString(), newName);
           setCategories(updatedCategories);
       } catch (error) {
           toast.error(error.message, {
@@ -181,14 +181,14 @@ export default function Categories() {
           setActionSidebar({ action: null, target: null, item: null });
 
           try {
-              const updatedChannels = await renameChannel(channelId, newName);
+              const updatedChannels = await renameChannel(channelId.toString(), newName);
               setChannels(updatedChannels);
           } catch (error) {
               toast.error(error.message, {
                   position: "bottom-right",
                   duration: 10000,
               });
-              const fetchedChannels = await getChannels(openCategoryId);
+              const fetchedChannels = await getChannels(openCategoryId.toString());
               setChannels(fetchedChannels);
           }
       },
@@ -207,7 +207,7 @@ export default function Categories() {
       setActionSidebar({ action: null, target: null, item: null });
 
       try {
-        const categories = await deleteCategory(categoryId);
+        const categories = await deleteCategory(categoryId.toString());
         setCategories(categories);
       } catch (error) {
         toast.error(error.message, {
@@ -230,14 +230,14 @@ export default function Categories() {
       setActionSidebar({ action: null, target: null, item: null });
 
       try {
-        const channels = await deleteChannel(channelId);
+        const channels = await deleteChannel(channelId.toString());
         setChannels(channels);
       } catch (error) {
         toast.error(error.message, {
           position: "bottom-right",
           duration: 10000
         });
-        const fetchedChannels = await getChannels(openCategoryId);
+        const fetchedChannels = await getChannels(openCategoryId.toString());
         setChannels(fetchedChannels);
       }
     },
@@ -304,15 +304,15 @@ export default function Categories() {
         setChannels(newChannels);
 
         try {
-          await updateChannelPosition(activeChannel.id, overChannel.position);
-          const fetchedChannels = await getChannels(openCategoryId);
+          await updateChannelPosition(activeChannel.id.toString(), overChannel.position);
+          const fetchedChannels = await getChannels(openCategoryId.toString());
           setChannels(fetchedChannels);
         } catch (error) {
           toast.error(error.message, {
             position: "bottom-right",
             duration: 10000
           });
-          const fetchedChannels = await getChannels(openCategoryId);
+          const fetchedChannels = await getChannels(openCategoryId.toString());
           setChannels(fetchedChannels);
         }
       }

@@ -78,11 +78,11 @@ export async function getCategories(): Promise<Category[]> {
 	return handleRequest(api.get<ApiResponse<Category[]>>('/api/v1/categories'));
 }
 
-export async function getChannels(categoryId: number): Promise<Channel[]> {
+export async function getChannels(categoryId: string): Promise<Channel[]> {
 	return handleRequest(api.get<ApiResponse<Channel[]>>(`/api/v1/channels/${categoryId}`));
 }
 
-export async function deleteCategory(categoryId: number): Promise<Category[]> {
+export async function deleteCategory(categoryId: string): Promise<Category[]> {
 	return handleRequest(api.delete<ApiResponse<Category[]>>(`/api/v1/categories/${categoryId}`, {
 		headers: {
 			'X-Request-Source-Method': encodeURI('Видалення категорії')
@@ -90,7 +90,7 @@ export async function deleteCategory(categoryId: number): Promise<Category[]> {
 	}));
 }
 
-export async function deleteChannel(channelId: number): Promise<Channel[]> {
+export async function deleteChannel(channelId: string): Promise<Channel[]> {
 	return handleRequest(api.delete<ApiResponse<Channel[]>>(`/api/v1/channels/${channelId}`, {
 		headers: {
 			'X-Request-Source-Method': encodeURI('Видалення каналу')
@@ -98,7 +98,7 @@ export async function deleteChannel(channelId: number): Promise<Channel[]> {
 	}));
 }
 
-export async function updateCategoryPosition(categoryId: number, position: number): Promise<Category[]> {
+export async function updateCategoryPosition(categoryId: string, position: number): Promise<Category[]> {
 	const requestBody: ReorderRequest = {position};
 	return handleRequest(api.patch<ApiResponse<Category[]>>(`/api/v1/categories/${categoryId}/reorder`, requestBody, {
 		headers: {
@@ -107,7 +107,7 @@ export async function updateCategoryPosition(categoryId: number, position: numbe
 	}));
 }
 
-export async function updateChannelPosition(channelId: number, position: number): Promise<Channel[]> {
+export async function updateChannelPosition(channelId: string, position: number): Promise<Channel[]> {
 	const requestBody: ReorderRequest = {position};
 	return handleRequest(api.patch<ApiResponse<Channel[]>>(`/api/v1/channels/${channelId}/reorder`, requestBody, {
 		headers: {
@@ -124,11 +124,11 @@ export async function createCategory(name: string): Promise<Category[]> {
 	}));
 }
 
-export async function createChannel(channelId: number, name: string, channel_type: string): Promise<Channel[]> {
+export async function createChannel(categoryId: string, name: string, channel_type: string): Promise<Channel[]> {
 	const allowedChannelTypes = ["text", "voice"];
 	if (allowedChannelTypes.includes(channel_type)) {
 		const requestBody: RenameRequest = {name};
-		return handleRequest(api.post<ApiResponse<Channel[]>>(`/api/v1/channels/${channelId}/${channel_type}`, requestBody, {
+		return handleRequest(api.post<ApiResponse<Channel[]>>(`/api/v1/channels/${categoryId}/${channel_type}`, requestBody, {
 			headers: {
 				'X-Request-Source-Method': encodeURI('Створення каналу')
 			}
@@ -137,7 +137,7 @@ export async function createChannel(channelId: number, name: string, channel_typ
 	return Promise.reject(new ClientError('Invalid channel type'));
 }
 
-export async function renameChannel(channelId: number, name: string): Promise<Channel[]> {
+export async function renameChannel(channelId: string, name: string): Promise<Channel[]> {
 	const requestBody: RenameRequest = {name};
 	return handleRequest(api.patch<ApiResponse<Channel[]>>(`/api/v1/channels/${channelId}`, requestBody, {
 		headers: {
@@ -146,20 +146,20 @@ export async function renameChannel(channelId: number, name: string): Promise<Ch
 	}));
 }
 
-export async function renameCategory(channelId: number, name: string): Promise<Category[]> {
+export async function renameCategory(categoryId: string, name: string): Promise<Category[]> {
 	const requestBody: RenameRequest = {name};
-	return handleRequest(api.patch<ApiResponse<Category[]>>(`/api/v1/categories/${channelId}`, requestBody, {
+	return handleRequest(api.patch<ApiResponse<Category[]>>(`/api/v1/categories/${categoryId}`, requestBody, {
 		headers: {
 			'X-Request-Source-Method': encodeURI('Перейменування категорії')
 		}
 	}));
 }
 
-export async function getCategoryAccessRoles(categoryId: number): Promise<Role[]> {
+export async function getCategoryAccessRoles(categoryId: string): Promise<Role[]> {
 	return handleRequest(api.get<ApiResponse<Role[]>>(`/api/v1/categories/${categoryId}/permissions`));
 }
 
-export async function editCategoryPermissions(categoryId: number, rolesWithAccess: number[]): Promise<Role[]> {
+export async function editCategoryPermissions(categoryId: string, rolesWithAccess: number[]): Promise<Role[]> {
 	return handleRequest(api.put<ApiResponse<Role[]>>(`/api/v1/categories/${categoryId}/permissions`, rolesWithAccess, {
 		headers: {
 			'X-Request-Source-Method': encodeURI('Зміна доступу до категорії')
@@ -183,7 +183,7 @@ export async function createRole(name: string): Promise<Role[]> {
 	}));
 }
 
-export async function renameRole(roleId: number, name: string): Promise<Role[]> {
+export async function renameRole(roleId: string, name: string): Promise<Role[]> {
 	const requestBody: RenameRequest = {name};
 	return handleRequest(
 		api.patch<ApiResponse<Role[]>>(`/api/v1/roles/${roleId}`, requestBody, {
@@ -193,7 +193,7 @@ export async function renameRole(roleId: number, name: string): Promise<Role[]> 
 		}));
 }
 
-export async function deleteRole(roleId: number): Promise<Role[]> {
+export async function deleteRole(roleId: string): Promise<Role[]> {
 	return handleRequest(api.delete<ApiResponse<Role[]>>(`/api/v1/roles/${roleId}`, {
 		headers: {
 			'X-Request-Source-Method': encodeURI('Видалення ролі')
@@ -205,7 +205,7 @@ export async function getUsers(): Promise<User[]> {
 	return handleRequest(api.get<ApiResponse<User[]>>(`/api/v1/users`));
 }
 
-export async function renameUser(userId: number, name: string): Promise<User[]> {
+export async function renameUser(userId: string, name: string): Promise<User[]> {
 	const requestBody: RenameRequest = {name};
 	return handleRequest(api.patch<ApiResponse<User[]>>(`/api/v1/users/${userId}`, requestBody, {
 		headers: {
@@ -214,7 +214,7 @@ export async function renameUser(userId: number, name: string): Promise<User[]> 
 	}));
 }
 
-export async function kickUser(userId: number): Promise<User[]> {
+export async function kickUser(userId: string): Promise<User[]> {
 	return handleRequest(api.delete<ApiResponse<User[]>>(`/api/v1/users/${userId}`, {
 		headers: {
 			'X-Request-Source-Method': encodeURI('Вигон користувача з серверу')
@@ -222,15 +222,15 @@ export async function kickUser(userId: number): Promise<User[]> {
 	}));
 }
 
-export async function getUserRoles(userId: number): Promise<Role[]> {
+export async function getUserRoles(userId: string): Promise<Role[]> {
 	return handleRequest(api.get<ApiResponse<Role[]>>(`/api/v1/users/${userId}/roles`));
 }
 
-export async function getUser(userId: number): Promise<User> {
+export async function getUser(userId: string): Promise<User> {
 	return handleRequest(api.get<ApiResponse<User>>(`/api/v1/users/${userId}`));
 }
 
-export async function editUserRoles(userId: number, roles: number[]): Promise<User[]> {
+export async function editUserRoles(userId: string, roles: number[]): Promise<User[]> {
 	return handleRequest(api.put<ApiResponse<User[]>>(`/api/v1/users/${userId}`, roles, {
 		headers: {
 			'X-Request-Source-Method': encodeURI('Зміна ролей користувача')

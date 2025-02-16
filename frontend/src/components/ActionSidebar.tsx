@@ -90,7 +90,7 @@ function ActionSidebar(
 			const fetchRoles = async () => {
 				setIsLoadingPermissions(true);
 				try {
-					const fetchedRoles = await getCategoryAccessRoles(item.id);
+					const fetchedRoles = await getCategoryAccessRoles(item.id.toString());
 					setRoles(fetchedRoles);
 					setInitialRoles([...fetchedRoles]);
 				} catch (error) {
@@ -111,7 +111,7 @@ function ActionSidebar(
 			const fetchRoles = async () => {
 				setIsLoadingPermissions(true);
 				try {
-					const fetchedRoles = await getUserRoles(item.id);
+					const fetchedRoles = await getUserRoles(item.id.toString());
 					setRoles(fetchedRoles);
 					setInitialRoles([...fetchedRoles]);
 				} catch (error) {
@@ -240,7 +240,7 @@ function ActionSidebar(
 			try {
 				const roleIds = roles.map(role => role.id);
 				if (!isEditCategoryDisabled) {
-					await editCategoryPermissions(item.id, roleIds);
+					await editCategoryPermissions(item.id.toString(), roleIds);
 					setInitialRoles([...roles]);
 				}
 			} catch (error) {
@@ -248,7 +248,7 @@ function ActionSidebar(
 					position: "bottom-right",
 					duration: 10000
 				});
-				const fetchedRoles = await getCategoryAccessRoles(item.id);
+				const fetchedRoles = await getCategoryAccessRoles(item.id.toString());
 				setRoles(fetchedRoles);
 			}
 		} else if (action === 'edit' && target === 'user' && item) {
@@ -256,7 +256,7 @@ function ActionSidebar(
 			try {
 				const roleIds = roles.map(role => role.id);
 				if (!isEditCategoryDisabled) {
-					await editUserRoles(item.id, roleIds);
+					await editUserRoles(item.id.toString(), roleIds);
 					setInitialRoles([...roles]);
 				}
 			} catch (error) {
@@ -264,7 +264,7 @@ function ActionSidebar(
 					position: "bottom-right",
 					duration: 10000
 				});
-				const fetchedRoles = await getUserRoles(item.id);
+				const fetchedRoles = await getUserRoles(item.id.toString());
 				setRoles(fetchedRoles);
 			}
 		}
