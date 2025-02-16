@@ -238,6 +238,7 @@ export default function Events() {
 										style={{backgroundColor: '#292B2F', color: '#d1d5db'}}
 										value={eventTitle}
 										onChange={handleTitleChange}
+										autoComplete="off"
 									/>
 								</div>
 
