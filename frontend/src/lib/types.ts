@@ -1,44 +1,44 @@
 export interface Category {
-    id: number;
-    name: string;
+	id: number;
+	name: string;
 }
 
 export interface Channel {
-    id: number;
-    position: number;
-    name: string;
-    type: string
+	id: number;
+	position: number;
+	name: string;
+	type: string
 }
 
 export interface Role {
-    id: number;
-    name: string;
+	id: number;
+	name: string;
 }
 
 export interface RenameRequest {
-  name: string;
+	name: string;
 }
 
 export interface ReorderRequest {
-  position: number;
+	position: number;
 }
 
 export interface User {
-    id: number;
-    name: string;
-    group?: string | null;
+	id: number;
+	name: string;
+	group?: string | null;
 }
 
 export interface Log {
-    user_name: string;
-    user_avatar: string;
-    action: string;
-    created_at: string
+	user_name: string;
+	user_avatar: string;
+	action: string;
+	createdAt: string
 }
 
 export interface Queue {
-    channel_id: string;
-    message_id?: string | null;
-    title: string;
-    event_time: string;
+	channelId: string;
+	messageId?: string | null;
+	title: string;
+	eventTime: string;
 }
