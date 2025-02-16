@@ -43,7 +43,7 @@ class LogSchema(BaseModel):
     user_name: str
     user_avatar: str
     action: str
-    created_at: str
+    event_time: str
 
 
 class QueueRequestBody(BaseModel):

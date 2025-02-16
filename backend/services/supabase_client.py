@@ -23,7 +23,7 @@ async def save_log_to_supabase(user: Member, action: str) -> None:
             "user_name": name,
             "user_avatar": avatar,
             "action": action,
-            "created_at": timestamp,
+            "event_time": timestamp,
         }
         supabase.table("logs").insert(log_data).execute()
 

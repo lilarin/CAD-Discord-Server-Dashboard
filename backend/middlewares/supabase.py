@@ -23,7 +23,7 @@ def logs_table_exists(func):
                     user_name TEXT,
                     user_avatar TEXT,
                     action TEXT,
-                    created_at TIMESTAMPTZ
+                    event_time TIMESTAMPTZ
                 );
                 """
                 cur.execute(create_table_sql)
