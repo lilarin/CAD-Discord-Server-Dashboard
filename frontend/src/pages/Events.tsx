@@ -36,7 +36,6 @@ export default function Events() {
 	const [categorySearchTerm, setCategorySearchTerm] = useState<string>('');
 	const [channelSearchTerm, setChannelSearchTerm] = useState<string>('');
 
-
 	useEffect(() => {
 		const fetchCategories = async () => {
 			setIsCategoriesLoading(true);
@@ -106,28 +105,6 @@ export default function Events() {
 	const handleSubmit = useCallback(async (event: React.FormEvent) => {
 		event.preventDefault();
 
-		if (!selectedChannel) {
-			toast.error("Будь ласка, оберіть канал", {
-				position: "bottom-right",
-				duration: 5000
-			});
-			return;
-		}
-		if (!eventTitle.trim()) {
-			toast.error("Будь ласка, введіть назву події", {
-				position: "bottom-right",
-				duration: 5000
-			});
-			return;
-		}
-		if (!eventDateTime) {
-			toast.error("Будь ласка, оберіть дату та час події", {
-				position: "bottom-right",
-				duration: 5000
-			});
-			return;
-		}
-
 		setIsCategoryActionOpen(false);
 		setIsChannelActionOpen(false);
 		setIsDateTimeActionOpen(false);
@@ -186,6 +163,10 @@ export default function Events() {
 		const term = channelSearchTerm.toLowerCase();
 		return channels.filter(channel => channel.name.toLowerCase().includes(term));
 	}, [channels, channelSearchTerm]);
+
+	const isSubmitButtonActive = useMemo(() => {
+		return !!selectedCategoryId && !!selectedChannel && !!eventTitle.trim() && !!eventDateTime;
+	}, [selectedCategoryId, selectedChannel, eventTitle, eventDateTime]);
 
 
 	return (
@@ -291,9 +272,9 @@ export default function Events() {
 
 								<div className="flex items-center justify-between mt-4">
 									<button
-										className={`bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${isSubmitting ? 'opacity-50 cursor-wait' : ''}`}
+										className={`transition-all duration-300 bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${isSubmitting ? 'opacity-50' : ''} ${!isSubmitButtonActive ? 'opacity-50 hover:bg-green-600' : 'hover:bg-green-700'}`}
 										type="submit"
-										disabled={isSubmitting}
+										disabled={isSubmitting || !isSubmitButtonActive}
 									>
 										Створити
 									</button>
