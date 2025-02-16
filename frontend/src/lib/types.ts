@@ -30,8 +30,8 @@ export interface User {
 }
 
 export interface Log {
-	user_name: string;
-	user_avatar: string;
+	userName: string;
+	userAvatar: string;
 	action: string;
 	createdAt: string
 }

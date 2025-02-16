@@ -67,7 +67,7 @@ const usePaginatedLogs = (logs: Log[], itemsPerPage: number = ITEMS_PER_PAGE) =>
 
 		if (dateRange[0] && dateRange[1]) {
 			filtered = filtered.filter(log => {
-				const logDate = new Date(log.created_at);
+				const logDate = new Date(log.createdAt);
 				return logDate >= dateRange[0] && logDate <= dateRange[1];
 			});
 		}
@@ -237,12 +237,12 @@ export default function Logs() {
 												<td className="px-6 py-4 whitespace-nowrap w-1/3">
 													<div className="flex items-center">
 														<div className="flex-shrink-0 h-10 w-10">
-															<img className="h-10 w-10 rounded-full" src={log.user_avatar}
-															     alt={`Аватар ${log.user_name}`}/>
+															<img className="h-10 w-10 rounded-full" src={log.userAvatar}
+															     alt={`Аватар ${log.userName}`}/>
 														</div>
 														<div className="ml-4">
 															<div className="text-sm font-medium text-white">
-																{log.user_name}
+																{log.userName}
 															</div>
 														</div>
 													</div>
@@ -251,7 +251,7 @@ export default function Logs() {
 													className="px-6 py-4 whitespace-normal text-sm text-gray-200 w-1/3 text-center">{log.action}</td>
 												<td
 													className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 w-1/3 text-center">
-													{formatDate(log.created_at)}
+													{formatDate(log.createdAt)}
 												</td>
 											</tr>
 										))}
