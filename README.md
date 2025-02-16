@@ -49,7 +49,7 @@ a template
 - `ADMINISTRATOR_ROLE_ID`: Staff role id for the Discord server managers
 - `TEACHER_ROLE_ID`: Staff role id for the teacher
 - `STUDENT_ROLE_ID`: General role id for all students
-- `GUILD_ID`:Guild id where the system is used
+- `GUILD_ID`: Discord server id of the Discord server on which the system is used
 - `SUPABASE_DIRECT_URL`: Supabase Direct Connection URL. This is used for direct database operations, specifically for
   checking and creating the logs table
 - `VITE_SUPABASE_URL`: Supabase API URL. Used by both frontend and backend to connect to your Supabase project
