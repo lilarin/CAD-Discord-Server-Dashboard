@@ -58,7 +58,7 @@ a template
 - `VITE_SUPABASE_URL`: Supabase API URL. Used by both frontend and backend to connect to your Supabase project
 - `VITE_SUPABASE_SERVICE_ROLE_KEY`: Supabase API Key. Used by both frontend and backend for secure access to
   Supabase
-- `VITE_API_URL`: The URL where your backend API is running. If you are running the backend locally with Docker Compose,
+- `VITE_API_URL`: The URL where your backend API is running. If you are running locally with Docker Compose,
   this will be `http://127.0.0.1:8000`
 
 > **Important:** See [Supabase Setup](#supabase-setup) for instructions how to obtain Supabase environment variables
@@ -114,11 +114,10 @@ these steps to set up your Supabase project and obtain the necessary credentials
       ```bash
       docker-compose up --build
       ```
-    > This will build both the backend and frontend Docker images and start the services
 
 Once the installation is complete, and Docker Compose is running:
 
-1. **Access the Frontend:** Open your web browser and go to the URL where your frontend is running. If you are running the backend locally with Docker Compose,
+1. **Access the Frontend:** Open your web browser and go to the URL where your frontend is running. If you are running locally with Docker Compose,
   this will be `http://127.0.0.1:8080`
 2. **Login:** Click on the **"Login via Discord"** button to authenticate with your Discord account. Ensure you are logged
    into the correct Discord account in your browser
