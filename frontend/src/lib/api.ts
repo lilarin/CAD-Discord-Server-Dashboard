@@ -243,6 +243,10 @@ export async function getLogs(): Promise<Log[]> {
 }
 
 export async function createQueueMessage(channelId: string, title: string, eventTime: string): Promise<void> {
-	const requestBody: Queue = {channelId, title, eventTime};
-	return handleRequest(api.post<ApiResponse<void>>('/queue', requestBody));
+	const requestBody: Queue = {
+		channel_id: channelId,
+		title: title,
+		event_time: eventTime
+	};
+	return handleRequest(api.post<ApiResponse<void>>('/api/v1/queue', requestBody));
 }
