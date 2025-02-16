@@ -248,5 +248,9 @@ export async function createQueueMessage(channelId: string, title: string, event
 		title: title,
 		event_time: eventTime
 	};
-	return handleRequest(api.post<ApiResponse<void>>('/api/v1/queue', requestBody));
+	return handleRequest(api.post<ApiResponse<void>>('/api/v1/queue', requestBody, {
+		headers: {
+			'X-Request-Source-Method': encodeURI('Створення черги на захист')
+		}
+	}));
 }
