@@ -107,21 +107,21 @@ export default function Events() {
 		event.preventDefault();
 
 		if (!selectedChannel) {
-			toast.error("Будь ласка, виберіть канал.", {
+			toast.error("Будь ласка, оберіть канал", {
 				position: "bottom-right",
 				duration: 5000
 			});
 			return;
 		}
 		if (!eventTitle.trim()) {
-			toast.error("Будь ласка, введіть назву події.", {
+			toast.error("Будь ласка, введіть назву події", {
 				position: "bottom-right",
 				duration: 5000
 			});
 			return;
 		}
 		if (!eventDateTime) {
-			toast.error("Будь ласка, виберіть дату та час події.", {
+			toast.error("Будь ласка, оберіть дату та час події", {
 				position: "bottom-right",
 				duration: 5000
 			});
@@ -136,7 +136,7 @@ export default function Events() {
 			if (selectedChannel) {
 				const eventTimeISO = eventDateTime.toISOString();
 				await createQueueMessage(selectedChannel, eventTitle, eventTimeISO);
-				toast.success("Подія успішно створена!", {
+				toast.success("Черга успішно створена!", {
 					position: "bottom-right",
 					duration: 5000
 				});
@@ -209,7 +209,7 @@ export default function Events() {
 											ref={categoryRef}
 											className={`cursor-pointer block appearance-none w-full bg-[#292B2F] py-2 px-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline ${!selectedCategoryId ? 'text-gray-500' : 'text-gray-300'}`}
 										>
-											{selectedCategoryId ? categories.find(cat => String(cat.id) === selectedCategoryId)?.name.charAt(0).toUpperCase() + categories.find(cat => String(cat.id) === selectedCategoryId)?.name.slice(1) : "Виберіть категорію"}
+											{selectedCategoryId ? categories.find(cat => String(cat.id) === selectedCategoryId)?.name.charAt(0).toUpperCase() + categories.find(cat => String(cat.id) === selectedCategoryId)?.name.slice(1) : "Оберіть категорію"}
 										</div>
 										<div
 											className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-300">
@@ -232,7 +232,7 @@ export default function Events() {
 											ref={channelRef}
 											className={`cursor-pointer block appearance-none w-full bg-[#292B2F] py-2 px-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline ${!selectedChannel && selectedCategoryId ? 'text-gray-500' : !selectedChannel && !selectedCategoryId ? 'text-gray-500' : 'text-gray-300'}`}
 										>
-											{selectedChannel ? channels.find(chan => String(chan.id) === selectedChannel)?.name.charAt(0).toUpperCase() + channels.find(chan => String(chan.id) === selectedChannel)?.name.slice(1) : (selectedCategoryId ? "Виберіть канал" : "Спочатку оберіть категорію")}
+											{selectedChannel ? channels.find(chan => String(chan.id) === selectedChannel)?.name.charAt(0).toUpperCase() + channels.find(chan => String(chan.id) === selectedChannel)?.name.slice(1) : (selectedCategoryId ? "Оберіть канал" : "Спочатку оберіть категорію")}
 										</div>
 										<div
 											className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-300">
@@ -276,7 +276,7 @@ export default function Events() {
 												year: 'numeric',
 												hour: '2-digit',
 												minute: '2-digit'
-											}) : "Виберіть дату та час"}
+											}) : "Оберіть дату та час"}
 										</div>
 										<div
 											className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-300">
@@ -304,7 +304,7 @@ export default function Events() {
 					{isCategoryActionOpen && (
 						<div ref={categoryActionRef} className="pl-5 w-1/3 sticky top-5">
 							<div className="bg-[#2F3136] rounded p-4">
-								<span className="text-lg font-semibold mb-2 text-white">Виберіть категорію</span>
+								<span className="text-lg font-semibold mb-2 text-white">Оберіть категорію</span>
 								<div className="w-full flex flex-row relative mt-2">
 									<input
 										type="text"
@@ -347,7 +347,7 @@ export default function Events() {
 					{isChannelActionOpen && (
 						<div ref={channelActionRef} className="pl-5 w-1/3 sticky top-5">
 							<div className="bg-[#2F3136] rounded p-4">
-								<span className="text-lg font-semibold mb-2 text-white">Виберіть канал</span>
+								<span className="text-lg font-semibold mb-2 text-white">Оберіть канал</span>
 
 								<div className="w-full flex flex-row relative mt-2">
 									<input
@@ -396,7 +396,7 @@ export default function Events() {
 					{isDateTimeActionOpen && (
 						<div ref={dateTimeRef} className="pl-5 w-1/3 sticky top-5">
 							<div className="bg-[#2F3136] rounded p-4">
-								<span className="text-lg font-semibold mb-2 text-white">Виберіть дату та час</span>
+								<span className="text-lg font-semibold mb-2 text-white">Оберіть дату та час</span>
 								<div className="mt-4 datepicker-container w-full">
 									<DatePicker
 										selected={eventDateTime}
@@ -407,7 +407,7 @@ export default function Events() {
 										timeCaption="Час"
 										dateFormat="dd.MM.yyyy HH:mm"
 										className="custom-datepicker w-full"
-										placeholderText="Виберіть дату та час"
+										placeholderText="Оберіть дату та час"
 										locale="uk"
 										minDate={new Date()}
 										inline
