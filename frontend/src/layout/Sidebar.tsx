@@ -24,7 +24,7 @@ export const Sidebar = () => {
             <h1 className="text-lg font-semibold text-gray-200 text-center pb-2">Панель керування</h1>
             <div className="mt-3 border-t border-gray-600"></div>
         </div>
-        <div className="sticky top-2 flex flex-1 flex-col gap-3 p-3 ">
+        <div className="sticky top-2 flex flex-1 flex-col gap-3 pl-4 pr-4">
         {navigation.map((item) => (
           <Link
             key={item.name}

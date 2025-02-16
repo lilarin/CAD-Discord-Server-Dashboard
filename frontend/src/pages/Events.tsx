@@ -195,7 +195,7 @@ export default function Events() {
 			) : (
 				<>
 					<div className="w-2/3 h-full flex flex-col">
-						<div className="bg-[#2F3136] rounded p-3">
+						<div className="bg-[#2F3136] rounded p-4">
 							<h2 className="text-2xl font-bold mb-4 text-white">Створити чергу на захист</h2>
 
 							<form onSubmit={handleSubmit} className="w-full">
