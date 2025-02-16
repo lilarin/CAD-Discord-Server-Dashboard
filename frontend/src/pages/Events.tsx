@@ -199,7 +199,7 @@ export default function Events() {
 							<h2 className="text-2xl font-bold mb-4 text-white">Створити чергу на захист</h2>
 
 							<form onSubmit={handleSubmit} className="w-full">
-								<div className="mb-4">
+								<div className="mb-3">
 									<label htmlFor="category" className="block text-gray-300 text-sm font-bold mb-2">
 										Категорія:
 									</label>
@@ -222,7 +222,7 @@ export default function Events() {
 									</div>
 								</div>
 
-								<div className="mb-4">
+								<div className="mb-3">
 									<label htmlFor="channel" className="block text-gray-300 text-sm font-bold mb-2">
 										Канал:
 									</label>
@@ -245,7 +245,7 @@ export default function Events() {
 									</div>
 								</div>
 
-								<div className="mb-4">
+								<div className="mb-3">
 									<label htmlFor="eventTitle" className="block text-gray-300 text-sm font-bold mb-2">
 										Назва події:
 									</label>
@@ -260,7 +260,7 @@ export default function Events() {
 									/>
 								</div>
 
-								<div className="mb-4">
+								<div className="mb-3">
 									<label htmlFor="eventDateTime" className="block text-gray-300 text-sm font-bold mb-2">
 										Дата та час події:
 									</label>
@@ -289,7 +289,7 @@ export default function Events() {
 									</div>
 								</div>
 
-								<div className="flex items-center justify-between">
+								<div className="flex items-center justify-between mt-4">
 									<button
 										className={`bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${isSubmitting ? 'opacity-50 cursor-wait' : ''}`}
 										type="submit"
