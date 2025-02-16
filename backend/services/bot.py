@@ -125,6 +125,7 @@ async def on_button_click(interaction: disnake.MessageInteraction) -> None:
         if not embed.description:
             await send_ephemeral_response(interaction, "Ви доєднались до черги")
             embed.description = f"\n1. {interaction.user.mention}"
+            embed.clear_fields()
             await interaction.message.edit(embed=embed)
         elif not str(interaction.user.id) in embed.description:
             await send_ephemeral_response(interaction, "Ви доєднались до черги")
@@ -144,5 +145,10 @@ async def on_button_click(interaction: disnake.MessageInteraction) -> None:
             for user in users:
                 if not str(interaction.user.id) in user:
                     new_description += f"\n{user}"
+
+            if new_description == "":
+                new_description = None
+                embed.add_field("", "-# Черга поки що порожня")
+
             embed.description = new_description
             await interaction.message.edit(embed=embed)
