@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {getUsers, kickUser, renameUser} from '@/lib/api';
 import {ComponentLoadingSpinner} from '@/components/LoadingSpinner';
 import toast from 'react-hot-toast';
@@ -10,8 +10,6 @@ import RenameIcon from "@/assets/icons/rename.svg";
 import EditIcon from "@/assets/icons/edit.svg";
 import KickUserIcon from "@/assets/icons/logout.svg";
 import ActionSidebar, {ActionTarget, ActionType} from "@/components/ActionSidebar.tsx";
-import HintIcon from "@/assets/icons/hint.svg";
-import {useHintAnimation} from "@/hooks/useHintAnimation.tsx"; // Import the hook
 
 const ITEMS_PER_PAGE = 12;
 
@@ -72,6 +70,9 @@ const usePaginatedUsers = (users: User[], setUsers: React.Dispatch<React.SetStat
 
 export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: number }) {
 	const [users, setUsers] = useState<User[]>([]);
+	const [isFilterOpen, setIsFilterOpen] = useState(false);
+	const [filterKey, setFilterKey] = useState(0)
+
 
 	const {
 		usersOnPage,
@@ -94,8 +95,8 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 
 
 	const handleActionTriggered = (action: ActionType, target: ActionTarget, item: Role | null) => {
-		setIsFilterOpen(false);
 		setActionSidebar({action, target, item});
+		setIsFilterOpen(false);
 	};
 
 	const handleCancelAction = () => {
@@ -162,22 +163,12 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 		[setUsers]
 	);
 
-	const [isFilterOpen, setIsFilterOpen] = useState(false);
-	const filterRef = useRef<HTMLDivElement>(null);
-	const hintText = "Фільтри дозволяють відобразити лише користувачів з конкретної групи";
-
-	const hintAnimation = useHintAnimation();
-	const {isVisible: showHint, opacity: hintOpacity, open: openHint, close: closeHint} = hintAnimation;
-
 
 	const handleFilterClick = () => {
-		if (!isFilterOpen) {
-			setActionSidebar({action: null, target: null, item: null});
-			setIsFilterOpen(prev => !prev);
-		}
+		setActionSidebar({action: null, target: null, item: null});
+		setIsFilterOpen(prev => !prev);
 	};
 
-	const [filterKey, setFilterKey] = useState(0)
 
 	const handleFilterGroupChange = (group: string | null) => {
 		if (filterGroup === group) {
@@ -193,9 +184,6 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 			setIsFilterOpen(false)
 		}
 	}, [actionSidebar])
-
-	const handleMouseEnterHint = useCallback(openHint, [openHint]);
-	const handleMouseLeaveHint = useCallback(closeHint, [closeHint]);
 
 
 	return (
@@ -284,87 +272,14 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 				</div>
 			)}
 			{isFilterOpen && (
-				<div ref={filterRef} className="pl-5 w-1/3 sticky top-5">
-					<div className="bg-[#2F3136] rounded p-4">
-						<span className="text-lg font-semibold mb-2">Налаштування фільтрації</span>
-						<h3 className="font-light mt-2">Фільтрувати користувачів за групою:</h3>
-						<div className="mt-2 space-y-2">
-							<button
-								key={`staff-button-${filterKey}`}
-								onClick={() => handleFilterGroupChange('staff')}
-								className={`w-full p-2 rounded text-white transition-all duration-300
-                 ${filterGroup === 'staff'
-									? 'outline-dashed outline-gray-500 bg-[#36393F] hover:bg-[#3e4147] outline-1'
-									: 'bg-[#36393F] hover:bg-[#3e4147]'
-								}`}
-								style={{
-									backgroundColor: filterGroup === 'staff' ? '#3e4147' : undefined,
-									boxSizing: 'border-box',
-								}}
-							>
-								Викладачі
-							</button>
-							<button
-								key={`student-button-${filterKey}`}
-								onClick={() => handleFilterGroupChange('student')}
-								className={`w-full p-2 rounded text-white transition-all duration-300
-                 ${filterGroup === 'student'
-									? 'outline-dashed outline-gray-500 bg-[#36393F] hover:bg-[#3e4147] outline-1'
-									: 'bg-[#36393F] hover:bg-[#3e4147]'
-								}`}
-								style={{
-									backgroundColor: filterGroup === 'student' ? '#3e4147' : undefined,
-									boxSizing: 'border-box',
-								}}
-							>
-								Студенти
-							</button>
-							<button
-								key={`null-button-${filterKey}`}
-								onClick={() => handleFilterGroupChange('null')}
-								className={`w-full p-2 rounded text-white transition-all duration-300
-                 ${filterGroup === 'null'
-									? 'outline-dashed outline-gray-500 bg-[#36393F] hover:bg-[#3e4147] outline-1'
-									: 'bg-[#36393F] hover:bg-[#3e4147]'
-								}`}
-								style={{
-									backgroundColor: filterGroup === 'null' ? '#3e4147' : undefined,
-									boxSizing: 'border-box',
-								}}
-							>
-								Інші
-							</button>
-						</div>
-						<div className="flex justify-between items-center pt-4 pb-1">
-							<div className="flex justify-start space-x-3">
-								<button
-									onClick={() => setIsFilterOpen(false)}
-									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
-								>
-									Закрити
-								</button>
-							</div>
-							{hintText && (
-								<div className="pt-2 hover:brightness-200 transition-all duration-300 align-center">
-									<button
-										onMouseEnter={handleMouseEnterHint}
-										onMouseLeave={handleMouseLeaveHint}
-										className="focus:outline-none"
-									>
-										<img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
-									</button>
-								</div>
-							)}
-						</div>
-					</div>
-					{showHint && hintText && (
-						<div className="w-full pt-5" style={{opacity: hintOpacity, transition: `opacity 300ms ease-in-out`}}>
-							<div className="bg-[#2F3136] rounded p-4">
-								<h3 className="font-semibold mb-2">Підказка</h3>
-								<h3 className="font-light">{hintText}</h3>
-							</div>
-						</div>
-					)}
+				<div className="pl-5 w-1/3 sticky top-5">
+					<ActionSidebar
+						isFilterOpen={isFilterOpen}
+						onFilterCancel={() => setIsFilterOpen(false)}
+						onFilterGroupChange={handleFilterGroupChange}
+						filterGroup={filterGroup}
+						setFilterKey={setFilterKey}
+					/>
 				</div>
 			)}
 		</div>

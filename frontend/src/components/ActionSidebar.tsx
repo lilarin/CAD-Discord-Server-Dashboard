@@ -6,17 +6,16 @@ import AddRoleIcon from "@/assets/icons/add_role.svg";
 import {ChannelLoadingSpinner} from '@/components/LoadingSpinner';
 import toast from "react-hot-toast";
 import {Category, Channel, Role, User} from "@/lib/types.ts";
-import SearchIcon from "@/assets/icons/search.svg";
 import {useHintAnimation} from "@/hooks/useHintAnimation.tsx";
 
 export type ActionType = 'create' | 'rename' | 'edit' | 'delete' | null;
 export type ActionTarget = 'category' | 'channel' | 'role' | 'user' | null;
 
 interface ActionSidebarProps {
-	action: ActionType;
-	target: ActionTarget;
-	item: Category | Channel | Role | User | null;
-	onCancel: () => void;
+	action?: ActionType;
+	target?: ActionTarget;
+	item?: Category | Channel | Role | User | null;
+	onCancel?: () => void;
 	onDeleteCategory?: (id: number) => void;
 	onDeleteChannel?: (id: number) => void;
 	onDeleteRole?: (id: number) => void;
@@ -28,6 +27,12 @@ interface ActionSidebarProps {
 	onRenameRole?: (id: number, newName: string) => void;
 	onRenameUser?: (id: number, newName: string) => void;
 	onKickUser?: (id: number) => void;
+
+	isFilterOpen?: boolean;
+	onFilterCancel?: () => void;
+	onFilterGroupChange?: (group: string | null) => void;
+	filterGroup?: string | null;
+	setFilterKey?: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function ActionSidebar(
@@ -47,6 +52,12 @@ function ActionSidebar(
 		onRenameRole,
 		onRenameUser,
 		onKickUser,
+
+		isFilterOpen,
+		onFilterCancel,
+		onFilterGroupChange,
+		filterGroup,
+		setFilterKey,
 	}: ActionSidebarProps) {
 	const [itemName, setItemName] = useState('');
 	const [newChannelType, setNewChannelType] = useState<'text' | 'voice'>('text');
@@ -58,6 +69,9 @@ function ActionSidebar(
 	const [allRolesList, setAllRolesList] = useState<Role[]>([]);
 	const [roleSearchTerm, setRoleSearchTerm] = useState('');
 	const dropdownRef = useRef<HTMLDivElement>(null);
+	const filterRef = useRef<HTMLDivElement>(null);
+	const hintText = "Фільтри дозволяють відобразити лише користувачів з конкретної групи";
+
 
 	const hintAnimation = useHintAnimation();
 	const {isVisible: showHint, opacity: hintOpacity, open: openHint, close: closeHint} = hintAnimation;
@@ -198,7 +212,8 @@ function ActionSidebar(
 	};
 
 	const text = action && target ? actionTextMap[action][target] : '';
-	const hintText = action && target ? hintTextMap[action][target] : '';
+	const actionHintText = action && target ? hintTextMap[action][target] : '';
+
 
 	const handleDeleteAction = () => {
 		if (target === 'category' && item) {
@@ -236,7 +251,7 @@ function ActionSidebar(
 
 	const handleSavePermissions = async () => {
 		if (action === 'edit' && target === 'category' && item) {
-			onCancel();
+			onCancel?.();
 			try {
 				const roleIds = roles.map(role => role.id);
 				if (!isEditCategoryDisabled) {
@@ -252,7 +267,7 @@ function ActionSidebar(
 				setRoles(fetchedRoles);
 			}
 		} else if (action === 'edit' && target === 'user' && item) {
-			onCancel();
+			onCancel?.();
 			try {
 				const roleIds = roles.map(role => role.id);
 				if (!isEditCategoryDisabled) {
@@ -320,11 +335,16 @@ function ActionSidebar(
 	const handleMouseEnterHint = useCallback(openHint, [openHint]);
 	const handleMouseLeaveHint = useCallback(closeHint, [closeHint]);
 
+	const handleFilterGroupChange = (group: string | null) => {
+		onFilterGroupChange?.(group);
+		setFilterKey?.(prev => prev + 1)
+	};
+
 
 	return (
 		<div className="sticky top-5">
-			<div className="bg-[#2F3136] rounded p-4">
-				<span className="text-lg font-semibold mb-2">{text}</span>
+			{(action || isFilterOpen) && <div className="bg-[#2F3136] rounded p-4">
+				{action && <span className="text-lg font-semibold mb-2">{text}</span>}
 				{action === 'delete' && (
 					<div className="flex justify-between items-center pt-4 pb-1">
 						<div className="flex justify-start space-x-3">
@@ -341,7 +361,7 @@ function ActionSidebar(
 								Скасувати
 							</button>
 						</div>
-						{hintText && (
+						{actionHintText && (
 							<div className="pt-2 hover:brightness-200 transition-all duration-300">
 								<button
 									onMouseEnter={handleMouseEnterHint}
@@ -394,7 +414,7 @@ function ActionSidebar(
 									Скасувати
 								</button>
 							</div>
-							{hintText && (
+							{actionHintText && (
 								<div className="pt-2 hover:brightness-200 transition-all duration-300">
 									<button
 										onMouseEnter={handleMouseEnterHint}
@@ -459,7 +479,7 @@ function ActionSidebar(
 									Скасувати
 								</button>
 							</div>
-							{hintText && (
+							{actionHintText && (
 								<div className="pt-2 hover:brightness-200 transition-all duration-300">
 									<button
 										onMouseEnter={handleMouseEnterHint}
@@ -473,53 +493,86 @@ function ActionSidebar(
 						</div>
 					</div>
 				)}
-			</div>
+				{isFilterOpen && (
+					<div ref={filterRef} className="">
+						<span className="text-lg font-semibold mb-2">Налаштування фільтрації</span>
+						<h3 className="font-light mt-2">Фільтрувати користувачів за групою:</h3>
+						<div className="mt-2 space-y-2">
+							<button
+								key={`staff-button-${setFilterKey ? Date.now() : 0}`}
+								onClick={() => handleFilterGroupChange('staff')}
+								className={`w-full p-2 rounded text-white transition-all duration-300
+                 ${filterGroup === 'staff'
+									? 'outline-dashed outline-gray-500 bg-[#36393F] hover:bg-[#3e4147] outline-1'
+									: 'bg-[#36393F] hover:bg-[#3e4147]'
+								}`}
+								style={{
+									backgroundColor: filterGroup === 'staff' ? '#3e4147' : undefined,
+									boxSizing: 'border-box',
+								}}
+							>
+								Викладачі
+							</button>
+							<button
+								key={`student-button-${setFilterKey ? Date.now() : 0}`}
+								onClick={() => handleFilterGroupChange('student')}
+								className={`w-full p-2 rounded text-white transition-all duration-300
+                 ${filterGroup === 'student'
+									? 'outline-dashed outline-gray-500 bg-[#36393F] hover:bg-[#3e4147] outline-1'
+									: 'bg-[#36393F] hover:bg-[#3e4147]'
+								}`}
+								style={{
+									backgroundColor: filterGroup === 'student' ? '#3e4147' : undefined,
+									boxSizing: 'border-box',
+								}}
+							>
+								Студенти
+							</button>
+							<button
+								key={`null-button-${setFilterKey ? Date.now() : 0}`}
+								onClick={() => handleFilterGroupChange('null')}
+								className={`w-full p-2 rounded text-white transition-all duration-300
+                 ${filterGroup === 'null'
+									? 'outline-dashed outline-gray-500 bg-[#36393F] hover:bg-[#3e4147] outline-1'
+									: 'bg-[#36393F] hover:bg-[#3e4147]'
+								}`}
+								style={{
+									backgroundColor: filterGroup === 'null' ? '#3e4147' : undefined,
+									boxSizing: 'border-box',
+								}}
+							>
+								Інші
+							</button>
+						</div>
+						<div className="flex justify-between items-center pt-4 pb-1">
+							<div className="flex justify-start space-x-3">
+								<button
+									onClick={onFilterCancel}
+									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
+								>
+									Закрити
+								</button>
+							</div>
+							{hintText && (
+								<div className="pt-2 hover:brightness-200 transition-all duration-300 align-center">
+									<button
+										onMouseEnter={handleMouseEnterHint}
+										onMouseLeave={handleMouseLeaveHint}
+										className="focus:outline-none"
+									>
+										<img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
+									</button>
+								</div>
+							)}
+						</div>
+					</div>
+				)}
+      </div>}
 			{showHint && hintText && (
 				<div className="w-full pt-5" style={{opacity: hintOpacity, transition: `opacity 300ms ease-in-out`}}>
 					<div className="bg-[#2F3136] rounded p-4">
 						<h3 className="font-semibold mb-2">Підказка</h3>
 						<h3 className="font-light">{hintText}</h3>
-					</div>
-				</div>
-			)}
-			{isRoleListOpen && availableRoles.length > 0 && (
-				<div ref={dropdownRef} className="w-full pt-5 relative">
-					<div className="bg-[#2F3136] rounded p-4">
-						<div className="w-full flex flex-row relative">
-							<input
-								type="text"
-								placeholder="Пошук за назвою ролі..."
-								className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
-								value={roleSearchTerm}
-								onChange={(e) => setRoleSearchTerm(e.target.value)}
-							/>
-							<img
-								src={SearchIcon}
-								alt="Пошук"
-								className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none"
-							/>
-						</div>
-						<ul className="space-y-2 mt-2 max-h-32 overflow-y-auto">
-							{filteredAvailableRoles.length > 0 ? (
-								filteredAvailableRoles.map(role => (
-									<li key={role.id}
-									    onClick={() => handleSelectAvailableRole(role)}
-									    className="bg-[#36393F] rounded pl-2 p-1.5 flex items-center hover:bg-[#3e4147] cursor-pointer">
-										{role.name}
-									</li>
-								))
-							) : (
-								<li className="text-gray-400 p-2">Немає ролей</li>
-							)}
-						</ul>
-					</div>
-				</div>
-			)}
-			{isRoleListOpen && availableRoles.length === 0 && (
-				<div ref={dropdownRef} className="w-full pt-5 relative">
-					<div className="bg-[#2F3136] rounded p-4 text-gray-400">
-						<h3 className="font-semibold mb-2">Доступні ролі</h3>
-						<div className="mt-2">Немає ролей для додавання</div>
 					</div>
 				</div>
 			)}
