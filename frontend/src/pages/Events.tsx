@@ -260,7 +260,7 @@ export default function Events() {
 									/>
 								</div>
 
-								<div className="mb-6">
+								<div className="mb-4">
 									<label htmlFor="eventDateTime" className="block text-gray-300 text-sm font-bold mb-2">
 										Дата та час події:
 									</label>
@@ -291,11 +291,11 @@ export default function Events() {
 
 								<div className="flex items-center justify-between">
 									<button
-										className={`bg-[#7289DA] hover:bg-[#677bc4] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${isSubmitting ? 'opacity-50 cursor-wait' : ''}`}
+										className={`bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${isSubmitting ? 'opacity-50 cursor-wait' : ''}`}
 										type="submit"
 										disabled={isSubmitting}
 									>
-										Створити подію
+										Створити
 									</button>
 								</div>
 							</form>
