@@ -10,7 +10,7 @@ from disnake import (
     Member
 )
 
-from backend.common.variables import variables
+from backend.config import config
 from backend.services.fetch import (
     fetch_guild,
     fetch_guild_default_role,
@@ -24,8 +24,8 @@ from backend.services.modals import init_queue_buttons
 async def create_template_category(category_name) -> CategoryChannel:
     guild = await fetch_guild()
     everyone_role = await fetch_guild_default_role()
-    teacher_role = await fetch_role(variables.TEACHER_ROLE_ID)
-    administrator_role = await fetch_role(variables.ADMINISTRATOR_ROLE_ID)
+    teacher_role = await fetch_role(config.teacher_role)
+    administrator_role = await fetch_role(config.administrator_role)
 
     default_overwrites = {
         everyone_role: PermissionOverwrite(view_channel=False),
@@ -93,9 +93,9 @@ async def kick_target_user(user: Member) -> None:
 
 async def get_user_group(user: Member) -> str | None:
     for role in user.roles:
-        if role.id == variables.TEACHER_ROLE_ID or role.id == variables.ADMINISTRATOR_ROLE_ID:
+        if role.id == config.teacher_role_id or role.id == config.administrator_role_id:
             return "staff"
-        elif role.id == variables.STUDENT_ROLE_ID:
+        elif role.id == config.student_role_id:
             return "student"
 
 

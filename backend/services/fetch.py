@@ -1,11 +1,11 @@
 from disnake import Role, Member, VoiceChannel, TextChannel, CategoryChannel, Guild
 
-from backend.common.variables import variables
+from backend.config import config
 from backend.services.bot import bot
 
 
 async def fetch_guild() -> Guild:
-    return await bot.fetch_guild(variables.GUILD_ID)
+    return await bot.fetch_guild(config.guild_id)
 
 
 async def fetch_roles_by_ids(roles: list) -> list[Role]:

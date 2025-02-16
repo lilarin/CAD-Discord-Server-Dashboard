@@ -1,7 +1,7 @@
 import disnake
 from disnake import CategoryChannel, VoiceChannel, TextChannel, Member
 
-from backend.common.variables import variables
+from backend.config import config
 from backend.schemas import Channel, BaseChannel, Category, Role, User
 from backend.services.fetch import (
     fetch_channels,
@@ -80,8 +80,8 @@ async def format_non_editable_roles_response() -> list[Role]:
         if role != default_role and not role.is_bot_managed()
     ]
     roles = sorted(roles, key=lambda role: (
-        0 if int(role.id) == variables.TEACHER_ROLE_ID else
-        1 if int(role.id) == variables.STUDENT_ROLE_ID else
+        0 if int(role.id) == config.teacher_role_id else
+        1 if int(role.id) == config.student_role_id else
         2,
         role.name.lower()
     ))
@@ -93,9 +93,9 @@ async def format_editable_roles_response() -> list[Role]:
     default_role = await fetch_guild_default_role()
     excluded_roles_ids = [
         default_role.id,
-        variables.ADMINISTRATOR_ROLE_ID,
-        variables.TEACHER_ROLE_ID,
-        variables.STUDENT_ROLE_ID
+        config.administrator_role_id,
+        config.teacher_role_id,
+        config.student_role_id,
     ]
     roles = [
         Role(

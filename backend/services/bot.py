@@ -1,7 +1,6 @@
 import disnake
 from disnake.ext import commands
 
-from backend.common.variables import variables
 from backend.config import config
 from backend.services.modals import (
     RegisterModal,
@@ -37,7 +36,7 @@ async def on_slash_command_error(interaction, error):
     name="створити-повідомлення-реєстрації",
     description="Створити повідомлення для реєстрації в поточному каналі"
 )
-@commands.has_any_role(variables.ADMINISTRATOR_ROLE_ID)
+@commands.has_any_role(config.administrator_role_id)
 async def create_register_message(
         interaction: disnake.ApplicationCommandInteraction
 ) -> None:
@@ -103,7 +102,7 @@ async def on_button_click(interaction: disnake.MessageInteraction) -> None:
             group_role = user_info.role
             name = f"{group_role.name} {user_info.full_name}"
             USER_REGISTER_DATA.pop(interaction.user.id)
-            student_role = interaction.guild.get_role(variables.STUDENT_ROLE_ID)
+            student_role = interaction.guild.get_role(config.student_role_id)
             try:
                 await send_ephemeral_response(
                     interaction, "Дякуємо за проходження реєстрації"
