@@ -32,7 +32,7 @@ async def init_register_buttons() -> disnake.ui.ActionRow:
 async def init_queue_buttons() -> disnake.ui.ActionRow:
     register = disnake.ui.Button(
         style=disnake.ButtonStyle.primary,
-        label="🚀 Стати в чергу",
+        label="🚀 Записатись в чергу",
         custom_id="join_queue_button",
     )
     inactive = disnake.ui.Button(
