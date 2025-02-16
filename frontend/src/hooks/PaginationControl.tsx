@@ -19,7 +19,7 @@ export const PaginationControl = ({
     let pages: (number | string)[] = [];
 
     if (currentPage <= 2) {
-        pages = [1, 2, '...', pageCount - 1, pageCount];
+        pages = [1, 2, 3, '...', pageCount];
     } else if (currentPage >= pageCount - 1) {
        pages = [1, '...', pageCount - 2, pageCount - 1, pageCount];
     } else {
