@@ -1,16 +1,18 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
+import HomePageIcon from "@/assets/icons/index.svg"
 import DisciplinesIcon from "@/assets/icons/disciplines.svg";
 import GroupsIcon from "@/assets/icons/groups.svg";
-import UsersIconIcon from "@/assets/icons/users.svg";
+import UsersIcon from "@/assets/icons/users.svg";
 import EventsIcon from "@/assets/icons/events.svg";
 import LogsIcon from "@/assets/icons/logs.svg";
 
 const navigation = [
-  { name: "Категорії", href: "/disciplines", icon: DisciplinesIcon },
+  { name: "Головна", href: "/", icon: HomePageIcon },
+  { name: "Категорії", href: "/categories", icon: DisciplinesIcon },
   { name: "Групи", href: "/groups", icon: GroupsIcon },
-  { name: "Користувачі", href: "/users", icon: UsersIconIcon },
+  { name: "Користувачі", href: "/users", icon: UsersIcon },
   { name: "Захисти", href: "/events", icon: EventsIcon },
   { name: "Логи", href: "/logs", icon: LogsIcon },
 ];
