@@ -233,7 +233,7 @@ export default function Events() {
 									<input
 										type="text"
 										id="eventTitle"
-										className="shadow appearance-none border rounded w-full py-2 px-2 text-gray-300 bg-[#292B2F] leading-tight focus:outline-none focus:shadow-outline placeholder-gray-500"
+										className="appearance-none rounded w-full py-2 px-2 text-gray-300 bg-[#292B2F] leading-tight focus:outline-none focus:shadow-outline placeholder-gray-500"
 										placeholder="Введіть назву події"
 										style={{backgroundColor: '#292B2F', color: '#d1d5db'}}
 										value={eventTitle}
