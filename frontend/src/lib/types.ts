@@ -30,15 +30,15 @@ export interface User {
 }
 
 export interface Log {
-	userName: string;
-	userAvatar: string;
+	user_name: string;
+	user_avatar: string;
 	action: string;
-	createdAt: string
+	event_time: string
 }
 
 export interface Queue {
-	channelId: string;
-	messageId?: string | null;
+	channel_id: string;
+	message_id?: string | null;
 	title: string;
-	eventTime: string;
+	event_time: string;
 }
