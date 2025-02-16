@@ -1,8 +1,7 @@
-# Campus Discord Control Panel
+# CAD Discord Server Dashboard
 
-This project is a comprehensive Discord server control panel designed to simplify server management tasks. Built using
-FastAPI for the backend and Vite React for the frontend, it offers a user-friendly web interface to manage various
-aspects of your Discord server, including categories, channels, roles, users, and events.
+This project is a comprehensive Discord server control panel designed to simplify server management tasks for teachers. Built using FastAPI and Disnake for the backend and Vite React for the frontend, it offers a user-friendly web interface for managing various
+aspects of the Academic Discord server, including categories, channels, roles, users, and events
 
 ## Table of Contents
 
@@ -26,7 +25,7 @@ aspects of your Discord server, including categories, channels, roles, users, an
     - Delete editable roles
 - **User Management:**
     - View a list of server users
-    - Rename users' server nicknames
+    - Change users' server nicknames
     - Kick users from the server
     - Manage user roles
 - **Event Queue Creation:**
@@ -35,8 +34,6 @@ aspects of your Discord server, including categories, channels, roles, users, an
     - Secure user authentication via Discord OAuth2
 - **Role-Based Authorization:**
     - Access to the control panel is restricted to users with 'staff' roles on the Discord server
-- **Filtering and Search:**
-    - Search and filter functionalities for users, roles, and logs
 - **Action Logging:** 
     - Keeps track of administrative actions for better monitoring and accountability
 
@@ -48,7 +45,7 @@ a template
 
 - `DISCORD_BOT_TOKEN`: Your Discord bot token. You can obtain this from
   the [Discord Developer Portal](https://discord.com/developers/applications). Create a bot application and copy the
-  token from the "Bot" tab
+  token from the **"Bot"** tab
 - `ADMINISTRATOR_ROLE_ID`: Staff role id for the Discord server managers
 - `TEACHER_ROLE_ID`: Staff role id for the teacher
 - `STUDENT_ROLE_ID`: General role id for all students
