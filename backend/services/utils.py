@@ -1,4 +1,14 @@
-from disnake import CategoryChannel, VoiceChannel, TextChannel, PermissionOverwrite, Role, Member
+from datetime import datetime
+
+import disnake
+from disnake import (
+    CategoryChannel,
+    VoiceChannel,
+    TextChannel,
+    PermissionOverwrite,
+    Role,
+    Member
+)
 
 from backend.common.variables import variables
 from backend.services.fetch import (
@@ -8,6 +18,7 @@ from backend.services.fetch import (
     fetch_channel,
     fetch_channels_by_category
 )
+from backend.services.modals import init_queue_buttons
 
 
 async def create_template_category(category_name) -> CategoryChannel:
@@ -86,3 +97,22 @@ async def get_user_group(user: Member) -> str | None:
             return "staff"
         elif role.id == variables.STUDENT_ROLE_ID:
             return "student"
+
+
+async def create_queue_message(
+        channel_id: str,
+        title: str,
+        event_time: str,
+) -> None:
+    channel = await fetch_channel(int(channel_id))
+    event_time = datetime.fromisoformat(event_time)
+
+    embed = disnake.Embed(
+        title=title,
+        color=0xFFFFFF,
+        timestamp=event_time,
+    )
+    embed.set_footer(text="Початок")
+    action_row = await init_queue_buttons()
+
+    await channel.send(embed=embed, components=action_row)

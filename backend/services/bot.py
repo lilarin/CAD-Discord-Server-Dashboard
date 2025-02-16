@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import disnake
 from disnake.ext import commands
 
@@ -10,7 +8,7 @@ from backend.services.modals import (
     USER_REGISTER_DATA,
     init_register_buttons,
     init_group_confirm_button,
-    init_group_select, init_queue_buttons
+    init_group_select
 )
 from backend.services.responses import send_ephemeral_response
 
@@ -55,34 +53,6 @@ async def create_register_message(
     embed.set_image(url="https://imgur.com/uG2M5wK.png")
 
     action_row = await init_register_buttons()
-    await interaction.channel.send(embed=embed, components=action_row)
-
-    await send_ephemeral_response(interaction, "Повідомлення створено")
-
-
-@bot.slash_command(
-    name="створити-чергу-захисту",
-    description="Створити повідомлення для запису у чергу на захист в поточному каналі"
-)
-@commands.has_any_role(variables.ADMINISTRATOR_ROLE_ID)
-async def create_queue_message(
-        interaction: disnake.ApplicationCommandInteraction
-) -> None:
-    title = "Черга на захист 1 лабораторної роботи ШІ"
-    event_time_str = '02/14/25 13:55'
-    event_time = datetime.strptime(event_time_str, '%m/%d/%y %H:%M')
-    # users = [354638720600768522, 729432775110819960, 920697666416046082]
-    # content = "\n".join(f"{index + 1}. <@{user}>" for index, user in enumerate(users))
-
-    embed = disnake.Embed(
-        title=title,
-        # description=content,
-        color=0xFFFFFF,
-        timestamp=event_time,
-    )
-    embed.set_footer(text="Початок")
-    action_row = await init_queue_buttons()
-
     await interaction.channel.send(embed=embed, components=action_row)
 
     await send_ephemeral_response(interaction, "Повідомлення створено")
