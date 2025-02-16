@@ -11,7 +11,7 @@ const navigation = [
   { name: "Категорії", href: "/disciplines", icon: DisciplinesIcon },
   { name: "Групи", href: "/groups", icon: GroupsIcon },
   { name: "Користувачі", href: "/users", icon: UsersIconIcon },
-  { name: "Заходи", href: "/events", icon: EventsIcon },
+  { name: "Захисти", href: "/events", icon: EventsIcon },
   { name: "Логи", href: "/logs", icon: LogsIcon },
 ];
 
