@@ -44,3 +44,9 @@ class LogSchema(BaseModel):
     user_avatar: str
     action: str
     created_at: str
+
+
+class QueueRequestBody(BaseModel):
+    channel_id: str
+    title: str
+    event_time: str
