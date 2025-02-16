@@ -1,7 +1,7 @@
 # CAD Discord Server Dashboard
 
 This project is a comprehensive Discord server control panel designed to simplify server management tasks for teachers. Built using FastAPI and Disnake for the backend and Vite React for the frontend, it offers a user-friendly web interface for managing various
-aspects of the Academic Discord server, including categories, channels, roles, users, and events
+aspects of the academic Discord server for both students and teachers, including categories, channels, roles, users, and events
 
 ## Table of Contents
 
