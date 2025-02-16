@@ -159,12 +159,12 @@ function ActionSidebar(
 		create: {
 			category: 'Створення нової категорії',
 			channel: 'Створення нового каналу',
-			role: 'Створення нової ролі',
+			role: 'Створення нової групи',
 		},
 		rename: {
 			category: `Перейменування категорії "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
 			channel: `Перейменування каналу "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
-			role: `Перейменування ролі "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
+			role: `Перейменування групи "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
 			user: `Зміна імені на сервері користувачу "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
 		},
 		edit: {
@@ -174,7 +174,7 @@ function ActionSidebar(
 		delete: {
 			category: `Видалити категорію "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"?`,
 			channel: `Видалити канал "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"?`,
-			role: `Видалити роль "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"?`,
+			role: `Видалити групу "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"?`,
 			user: `Вигнати "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}" з серверу?`,
 		},
 	};
@@ -183,7 +183,7 @@ function ActionSidebar(
 		create: {
 			category: 'Категорію варто сприймати як дисципліну, чи розділ зі своїми каналами та доступом. Після створення категорії вона знаходитиметься внизу списку',
 			channel: 'Введіть назву для каналу та оберіть його тип',
-			role: 'Після створення ролі вона одразу ж буде відсортована у порядку зростання',
+			role: 'Група – це роль на сервері. Після створення групи вона одразу ж буде відсортована у порядку зростання',
 		},
 		rename: {
 			category: 'Регістр для назви каналу не враховується та обробляється автоматично',
@@ -359,7 +359,7 @@ function ActionSidebar(
 						<div className="space-y-2 mt-4">
 							<input
 								type="text"
-								placeholder={`${target === 'category' ? 'Назва категорії' : target === 'channel' ? 'Назва каналу' : target === 'role' ? 'Назва ролі' : 'Ім`я користувача'}`}
+								placeholder={`${target === 'category' ? 'Назва категорії' : target === 'channel' ? 'Назва каналу' : target === 'role' ? 'Назва групи' : 'Ім`я користувача'}`}
 								className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
 								value={itemName}
 								onChange={(e) => setItemName(e.target.value)}
