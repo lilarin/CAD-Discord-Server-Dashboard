@@ -112,11 +112,5 @@ these steps to set up your Supabase project and obtain the necessary credentials
       docker-compose up --build
       ```
 
-Once the installation is complete, and Docker Compose is running:
-
-1. **Access the Frontend:** Open your web browser and go to the URL where your frontend is running. If you are running locally with Docker Compose,
+Once the installation is complete, and Docker Compose is running you can open your web browser and go to the URL where your frontend is running. If you are running locally with Docker Compose,
   this will be `http://127.0.0.1:8080`
-2. **Login:** Click on the **"Login via Discord"** button to authenticate with your Discord account. Ensure you are logged
-   into the correct Discord account in your browser
-   After successful login, you will be redirected to the control panel dashboard and can start managing your Discord
-   server
