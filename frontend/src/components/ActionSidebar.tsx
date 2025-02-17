@@ -439,7 +439,7 @@ function ActionSidebar(
 								<h3 className="font-light">{target === 'category' ? 'Ролі з доступом:' : 'Ролі користувача:'}</h3>
 								{sortedRoles.map(role => (
 									<li key={role.id}
-									    className="bg-[#36393F] rounded pl-2 p-1.5 flex justify-between items-center hover:bg-[#3e4147] pr-1.5">
+									    className="bg-[#36393F] rounded pl-2 p-1.5 flex justify-between items-center pr-1.5">
 										{role.name}
 										<button onClick={() => handleRemoveRole(role.id)}>
 											<img
