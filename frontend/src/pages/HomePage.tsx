@@ -41,7 +41,7 @@ const HomePage = () => {
 				<h2 className="text-2xl font-semibold text-white mb-4">Розділи панелі</h2>
 
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-					<div className="bg-[#2F3136] rounded p-6 hover:bg-[#292b2f] transition-all duration-200">
+					<div className="bg-[#2F3136] rounded p-6 hover:bg-[#292b2f] transition-all duration-200 cursor-pointer">
 						<div className="flex items-center mb-4">
 							<img src={HomePageIcon} alt="Головна" className="w-8 h-8 mr-3"/>
 							<h3 className="text-xl font-semibold text-white">Головна</h3>
@@ -133,7 +133,7 @@ const HomePage = () => {
 
 			<section>
 				<h2 className="text-2xl font-semibold text-white mb-4">Іконки та їх пояснення</h2>
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 cursor-default">
 					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
 							<img src={HintIcon} alt="Підказка" className="w-6 h-6 mr-3"/>
