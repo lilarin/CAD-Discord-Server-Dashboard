@@ -3,6 +3,7 @@ import {editCategoryPermissions, editUserRoles, getAllRoles, getCategoryAccessRo
 import HintIcon from "@/assets/icons/hint.svg";
 import DeleteIcon from "@/assets/icons/delete.svg";
 import AddRoleIcon from "@/assets/icons/add_role.svg";
+import SearchIcon from "@/assets/icons/search.svg";
 import {ChannelLoadingSpinner} from '@/components/LoadingSpinner';
 import toast from "react-hot-toast";
 import {Category, Channel, Role, User} from "@/lib/types.ts";
@@ -294,7 +295,6 @@ function ActionSidebar(
 			const available = allRolesList.filter(allRole => !roles.some(selectedRole => selectedRole.id === allRole.id));
 			setAvailableRoles(available);
 			setIsRoleListOpen(true);
-			openHint();
 			setRoleSearchTerm('');
 		}
 	};
@@ -303,7 +303,6 @@ function ActionSidebar(
 		setRoles([...roles, roleToAdd]);
 		setAvailableRoles(availableRoles.filter(role => role.id !== roleToAdd.id));
 		setIsRoleListOpen(false);
-		closeHint();
 	};
 
 	const filteredAvailableRoles = useMemo(() => {
@@ -573,6 +572,47 @@ function ActionSidebar(
 					<div className="bg-[#2F3136] rounded p-4">
 						<h3 className="font-semibold mb-2">Підказка</h3>
 						<h3 className="font-light">{hintText}</h3>
+					</div>
+				</div>
+			)}
+			{isRoleListOpen && availableRoles.length > 0 && (
+				<div ref={dropdownRef} className="w-full pt-5 relative">
+					<div className="bg-[#2F3136] rounded p-4">
+						<div className="w-full flex flex-row relative">
+							<input
+								type="text"
+								placeholder="Пошук за назвою ролі..."
+								className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+								value={roleSearchTerm}
+								onChange={(e) => setRoleSearchTerm(e.target.value)}
+							/>
+							<img
+								src={SearchIcon}
+								alt="Пошук"
+								className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none"
+							/>
+						</div>
+						<ul className="space-y-2 mt-2 max-h-32 overflow-y-auto">
+							{filteredAvailableRoles.length > 0 ? (
+								filteredAvailableRoles.map(role => (
+									<li key={role.id}
+									    onClick={() => handleSelectAvailableRole(role)}
+									    className="bg-[#36393F] rounded pl-2 p-1.5 flex items-center hover:bg-[#3e4147] cursor-pointer">
+										{role.name}
+									</li>
+								))
+							) : (
+								<li className="text-gray-400 p-2">Немає ролей</li>
+							)}
+						</ul>
+					</div>
+				</div>
+			)}
+			{isRoleListOpen && availableRoles.length === 0 && (
+				<div ref={dropdownRef} className="w-full pt-5 relative">
+					<div className="bg-[#2F3136] rounded p-4 text-gray-400">
+						<h3 className="font-semibold mb-2">Доступні ролі</h3>
+						<div className="mt-2">Немає ролей для додавання</div>
 					</div>
 				</div>
 			)}
