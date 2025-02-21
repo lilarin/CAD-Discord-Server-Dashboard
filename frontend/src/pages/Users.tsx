@@ -237,7 +237,7 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 											<button onClick={() => handleActionTriggered('edit', 'user', user)}>
 												<img
 													src={EditIcon}
-													alt="Видалити"
+													alt="Змінити ролі"
 													className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"/>
 											</button>
 											<button onClick={() => handleActionTriggered('delete', 'user', user)}>
@@ -255,8 +255,11 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 				)}
 
 				{!isLoading && (
-					<PaginationControl currentPage={currentPage} pageCount={pageCount}
-					                   handlePageChange={handlePageChange}/>
+					<PaginationControl
+						currentPage={currentPage}
+						pageCount={pageCount}
+						handlePageChange={handlePageChange}
+					/>
 				)}
 			</div>
 			{actionSidebar.action && actionSidebar.target && (
