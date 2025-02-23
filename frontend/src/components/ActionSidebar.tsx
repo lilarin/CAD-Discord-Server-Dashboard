@@ -72,7 +72,7 @@ function ActionSidebar(
 
 	const hintAnimation = useHintAnimation();
 	const {isVisible: showHint, opacity: hintOpacity, open: openHint, close: closeHint} = hintAnimation;
-	const { t } = useTranslation();
+	const {t} = useTranslation();
 
 
 	useEffect(() => {
@@ -94,7 +94,7 @@ function ActionSidebar(
 					position: "bottom-right",
 					duration: 5000
 				});
-				console.log(error.message)
+				console.error(error)
 				setAllRolesList([]);
 			}
 		};
@@ -111,7 +111,7 @@ function ActionSidebar(
 						position: "bottom-right",
 						duration: 10000
 					});
-					console.log(error.message)
+					console.error(error)
 					setRoles([]);
 				} finally {
 					setIsLoadingPermissions(false);
@@ -133,7 +133,7 @@ function ActionSidebar(
 						position: "bottom-right",
 						duration: 10000
 					});
-					console.log(error.message)
+					console.error(error)
 					setRoles([]);
 				} finally {
 					setIsLoadingPermissions(false);
@@ -267,7 +267,7 @@ function ActionSidebar(
 					position: "bottom-right",
 					duration: 10000
 				});
-				console.log(error.message)
+				console.error(error)
 				const fetchedRoles = await getCategoryAccessRoles(item.id.toString());
 				setRoles(fetchedRoles);
 			}
@@ -284,7 +284,7 @@ function ActionSidebar(
 					position: "bottom-right",
 					duration: 10000
 				});
-				console.log(error.message)
+				console.error(error)
 				const fetchedRoles = await getUserRoles(item.id.toString());
 				setRoles(fetchedRoles);
 			}
@@ -442,7 +442,8 @@ function ActionSidebar(
 							</div>
 						) : sortedRoles.length > 0 ? (
 							<ul className="space-y-2 mt-2">
-								<h3 className="font-light">{target === 'category' ? t("actionSidebar.rolesWithAccess") : t("actionSidebar.userRoles")}</h3>
+								<h3
+									className="font-light">{target === 'category' ? t("actionSidebar.rolesWithAccess") : t("actionSidebar.userRoles")}</h3>
 								{sortedRoles.map(role => (
 									<li key={role.id}
 									    className="bg-[#36393F] rounded pl-2 p-1.5 flex justify-between items-center pr-1.5">
@@ -550,7 +551,10 @@ function ActionSidebar(
 						<div className="flex justify-between items-center pt-4 pb-1">
 							<div className="flex justify-start space-x-3">
 								<button
-									onClick={() => {onFilterCancel?.(); handleFilterGroupChange(null)}}
+									onClick={() => {
+										onFilterCancel?.();
+										handleFilterGroupChange(null)
+									}}
 									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
 								>
 									{t("actionSidebar.closeButton")}
@@ -590,6 +594,14 @@ function ActionSidebar(
 								<li className="text-gray-400 p-2">{t("actionSidebar.noRoles")}</li>
 							)}
 						</ul>
+					</div>
+				</div>
+			)}
+			{showHint && actionHintText && (
+				<div className="w-full pt-5" style={{opacity: hintOpacity, transition: `opacity 300ms ease-in-out`}}>
+					<div className="bg-[#2F3136] rounded p-4">
+						<h3 className="font-semibold mb-2">{t("actionSidebar.hintTitle")}</h3>
+						<h3 className="font-light">{actionHintText}</h3>
 					</div>
 				</div>
 			)}
