@@ -181,14 +181,16 @@
     "fetchEditableRolesError": "Не вдалося завантажити список доступних ролей",
     "createRoleError": "Не вдалося створити роль",
     "renameRoleError": "Не вдалося перейменувати роль" ,
-    "createQueueMessageError": "Не вдалося створити чергу на сервері"
+    "createQueueMessageError": "Не вдалося створити чергу на сервері",
+    "fetchLogsError": "Не вдалося завантажити логи"
   },
   "search": {
     "searchByUsername": "Пошук за іменем користувача...",
     "searchByRole": "Пошук за назвою ролі...",
     "searchByCategory": "Пошук за назвою категорії...",
     "searchByCategoryName": "Пошук за назвою категорії...",
-    "searchByChannelName": "Пошук за назвою каналу..."
+    "searchByChannelName": "Пошук за назвою каналу...",
+    "searchByLogs": "Пошук по логам..."
   },
   "filter": {
     "filterUsersByGroup": "Фільтрувати користувачів за групою",
@@ -196,7 +198,8 @@
       "staff": "Викладачі",
       "student": "Студенти",
       "other": "Інші"
-    }
+    },
+    "filterSettings": "Налаштування фільтрації"
   },
   "input": {
     "category": "Категорія",
@@ -214,7 +217,8 @@
     "noRolesToAdd": "Немає ролей для додавання",
     "noCategory": "Категорій немає",
     "noChannels": "Каналів немає" ,
-    "noEvents": "Черг немає"
+    "noEvents": "Черг немає",
+    "noLogs": "Логів не знайдено"
   },
   "eventsPage": {
     "title": "Створити чергу на захист для студентів",
@@ -236,5 +240,12 @@
     "fillAllFields": "Заповніть всі поля",
     "create": "Створити",
     "closeButton": "Закрити"
+  },
+  "logsPage": {
+    "tableHeaderUser": "Користувач",
+    "tableHeaderAction": "Виконана дія",
+    "tableHeaderTime": "Час виконання",
+    "resetFiltersButton": "Скинути фільтри",
+    "filterHintText": "Фільтри дозволяють відобразити логи за вибраний період часу. Перший клік визначає початок періоду пошуку, а другий його кінець"
   }
 }

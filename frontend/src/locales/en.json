@@ -4,7 +4,7 @@
     "language": "Change language"
   },
   "sidebar": {
-    "dashboard": "Dashboard",
+    "dashboard": "Home",
     "categories": "Categories",
     "groups": "Roles",
     "users": "Users",
@@ -171,14 +171,17 @@
     "updateChannelPositionError": "Failed to change channels order",
     "fetchEditableRolesError": "Failed to load the list of available roles",
     "createRoleError": "Failed to create role",
-    "renameRoleError": "Failed to rename role"
+    "renameRoleError": "Failed to rename role",
+    "createQueueMessageError": "Failed to create queue on server",
+    "fetchLogsError": "Failed to load logs"
   },
   "search": {
     "searchByUsername": "Search by username...",
     "searchByRole": "Search by role name...",
     "searchByCategory": "Search by category name...",
     "searchByCategoryName": "Search by category name...",
-    "searchByChannelName": "Search by channel name..."
+    "searchByChannelName": "Search by channel name...",
+    "searchByLogs": "Search logs..."
   },
   "filter": {
     "filterUsersByGroup": "Filter users by their group",
@@ -186,7 +189,8 @@
       "staff": "Teachers",
       "student": "Students",
       "other": "Other"
-    }
+    },
+    "filterSettings": "Filter settings"
   },
   "input": {
     "category": "Category",
@@ -203,7 +207,9 @@
     "noUserRoles": "User has no roles",
     "noRolesToAdd": "No roles to add",
     "noCategory": "No categories",
-    "noChannels": "No channels"
+    "noChannels": "No channels",
+    "noEvents": "No queues",
+    "noLogs": "No logs found"
   },
   "eventsPage": {
     "title": "Create queue for student defenses",
@@ -225,5 +231,12 @@
     "fillAllFields": "Fill in all fields",
     "create": "Create",
     "closeButton": "Close"
+  },
+  "logsPage": {
+    "tableHeaderUser": "User",
+    "tableHeaderAction": "Action Performed",
+    "tableHeaderTime": "Execution Time",
+    "resetFiltersButton": "Reset filters",
+    "filterHintText": "Filters allow you to display logs for the selected time period. The first click determines the beginning of the search period, and the second determines its end."
   }
 }
