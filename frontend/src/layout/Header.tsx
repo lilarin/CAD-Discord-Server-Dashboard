@@ -4,7 +4,6 @@ import {Button} from "@/components/Button.tsx";
 import LogOutIcon from "@/assets/icons/logout.svg";
 import {useAuth} from "@/contexts/AuthContext";
 import {User} from "@/lib/types";
-import GlobeIcon from "@/assets/icons/globe.svg";
 import {useTranslation} from "react-i18next";
 
 interface HeaderProps {
@@ -68,12 +67,12 @@ export const Header: React.FC<HeaderProps> = ({userDetails}) => {
 				</div>
 				<div className="pr-3 flex justify-end items-center">
 					<Button
-							variant="ghost"
-							size="default"
-							className="text-gray-400 hover:text-gray-200 rounded flex items-center gap-2 transition-all duration-300"
-							onClick={toggleLanguage}
-						>
-							{t(`header.language`)}
+						variant="ghost"
+						size="default"
+						className="text-gray-400 hover:text-gray-200 rounded flex items-center gap-2 transition-all duration-300"
+						onClick={toggleLanguage}
+					>
+						{t(`header.language`)}
 					</Button>
 					<Button
 						variant="ghost"
