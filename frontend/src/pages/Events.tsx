@@ -176,10 +176,28 @@ export default function Events() {
 			) : (
 				<>
 					<div className="w-2/3 h-full flex flex-col">
+						<div className="bg-[#2F3136] rounded p-4 mb-5">
+							<h2 className="text-2xl font-bold text-white">Створити чергу на захист</h2>
+						</div>
 						<div className="bg-[#2F3136] rounded p-4">
-							<h2 className="text-2xl font-bold mb-4 text-white">Створити чергу на захист</h2>
 
 							<form onSubmit={handleSubmit} className="w-full">
+								<div className="mb-3">
+									<label htmlFor="eventTitle" className="block text-gray-300 text-sm font-bold mb-2">
+										Назва події:
+									</label>
+									<input
+										type="text"
+										id="eventTitle"
+										className="appearance-none rounded w-full py-2 px-2 text-gray-300 bg-[#292B2F] leading-tight focus:outline-none focus:shadow-outline placeholder-gray-500"
+										placeholder="Введіть назву події"
+										style={{backgroundColor: '#292B2F', color: '#d1d5db'}}
+										value={eventTitle}
+										onChange={handleTitleChange}
+										autoComplete="off"
+									/>
+								</div>
+
 								<div className="mb-3">
 									<label htmlFor="category" className="block text-gray-300 text-sm font-bold mb-2">
 										Категорія:
@@ -227,22 +245,6 @@ export default function Events() {
 								</div>
 
 								<div className="mb-3">
-									<label htmlFor="eventTitle" className="block text-gray-300 text-sm font-bold mb-2">
-										Назва події:
-									</label>
-									<input
-										type="text"
-										id="eventTitle"
-										className="appearance-none rounded w-full py-2 px-2 text-gray-300 bg-[#292B2F] leading-tight focus:outline-none focus:shadow-outline placeholder-gray-500"
-										placeholder="Введіть назву події"
-										style={{backgroundColor: '#292B2F', color: '#d1d5db'}}
-										value={eventTitle}
-										onChange={handleTitleChange}
-										autoComplete="off"
-									/>
-								</div>
-
-								<div className="mb-3">
 									<label htmlFor="eventDateTime" className="block text-gray-300 text-sm font-bold mb-2">
 										Дата та час події:
 									</label>
@@ -271,13 +273,13 @@ export default function Events() {
 									</div>
 								</div>
 
-								<div className="flex items-center justify-between mt-4">
+								<div className="flex items-center justify-between mt-4 mb-1">
 									<button
 										className={`transition-all duration-300 bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${isSubmitting ? 'opacity-50' : ''} ${!isSubmitButtonActive ? 'opacity-50 hover:bg-green-600' : 'hover:bg-green-700'}`}
 										type="submit"
 										disabled={isSubmitting || !isSubmitButtonActive}
 									>
-										Створити
+										{isSubmitting ? 'Створюється..' : (!isSubmitButtonActive ? 'Заповніть всі поля' : 'Створити')}
 									</button>
 								</div>
 							</form>
