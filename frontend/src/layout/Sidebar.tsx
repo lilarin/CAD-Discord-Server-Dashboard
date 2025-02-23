@@ -7,23 +7,25 @@ import GroupsIcon from "@/assets/icons/groups.svg";
 import UsersIcon from "@/assets/icons/users.svg";
 import EventsIcon from "@/assets/icons/events.svg";
 import LogsIcon from "@/assets/icons/logs.svg";
+import {useTranslation} from "react-i18next";
 
 const navigation = [
-  { name: "Головна", href: "/", icon: HomePageIcon },
-  { name: "Категорії", href: "/categories", icon: DisciplinesIcon },
-  { name: "Групи", href: "/groups", icon: GroupsIcon },
-  { name: "Користувачі", href: "/users", icon: UsersIcon },
-  { name: "Захисти", href: "/events", icon: EventsIcon },
-  { name: "Логи", href: "/logs", icon: LogsIcon },
+  { name: "sidebar.dashboard", href: "/", icon: HomePageIcon },
+  { name: "sidebar.categories", href: "/categories", icon: DisciplinesIcon },
+  { name: "sidebar.groups", href: "/groups", icon: GroupsIcon },
+  { name: "sidebar.users", href: "/users", icon: UsersIcon },
+  { name: "sidebar.events", href: "/events", icon: EventsIcon },
+  { name: "sidebar.logs", href: "/logs", icon: LogsIcon },
 ];
 
 export const Sidebar = () => {
   const location = useLocation();
+  const { t } = useTranslation();
 
   return (
     <div className="w-1/6 bg-[#2F3136]">
         <div className="px-4 pb-5 pt-6">
-            <h1 className="text-lg font-semibold text-gray-200 text-center pb-2">Панель керування</h1>
+            <h1 className="text-lg font-semibold text-gray-200 text-center pb-2">{t("sidebar.controlPanel")}</h1>
             <div className="mt-3 border-t border-gray-600"></div>
         </div>
         <div className="sticky top-2 flex flex-1 flex-col gap-3 pt-3 pl-4 pr-4">
@@ -38,8 +40,8 @@ export const Sidebar = () => {
                 : "text-gray-400 hover:bg-[#36393F] hover:text-gray-200 hover:rounded transition-all duration-200"
             )}
           >
-            <img src={item.icon} alt={item.name} className="h-4 w-4" />
-            {item.name}
+            <img src={item.icon} alt={t(item.name)} className="h-4 w-4" />
+            {t(item.name)}
           </Link>
         ))}
       </div>
