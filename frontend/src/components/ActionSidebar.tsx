@@ -330,9 +330,9 @@ function ActionSidebar(
 
 	const noRolesText = useMemo(() => {
 		if (action === 'edit' && target === 'user' && sortedRoles.length === 0) {
-			return t("actionSidebar.noUserRoles");
+			return t("warnings.noUserRoles");
 		}
-		return t("actionSidebar.noCategoryRoles");
+		return t("warnings.noCategoryRoles");
 	}, [action, target, sortedRoles, t]);
 
 	const handleMouseEnterHint = useCallback(openHint, [openHint]);
@@ -374,7 +374,7 @@ function ActionSidebar(
 									onMouseLeave={handleMouseLeaveHint}
 									className="focus:outline-none"
 								>
-									<img src={HintIcon} alt={t("actionSidebar.hintIconAlt")} className="w-6 h-6"/>
+									<img src={HintIcon} alt={t("iconAltName.hint")} className="w-6 h-6"/>
 								</button>
 							</div>
 						)}
@@ -385,7 +385,7 @@ function ActionSidebar(
 						<div className="space-y-2 mt-4">
 							<input
 								type="text"
-								placeholder={t(`actionSidebar.inputPlaceholder.${target}`)}
+								placeholder={t(`input.${target}`)}
 								className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
 								value={itemName}
 								onChange={(e) => setItemName(e.target.value)}
@@ -397,8 +397,8 @@ function ActionSidebar(
 									value={newChannelType}
 									onChange={(e) => setNewChannelType(e.target.value as 'text' | 'voice')}
 								>
-									<option value="text">{t("draggable.textChannel")}</option>
-									<option value="voice">{t("draggable.voiceChannel")}</option>
+									<option value="text">{t("actionSidebar.textChannel")}</option>
+									<option value="voice">{t("actionSidebar.voiceChannel")}</option>
 								</select>
 							)}
 						</div>
@@ -427,7 +427,7 @@ function ActionSidebar(
 										onMouseLeave={handleMouseLeaveHint}
 										className="focus:outline-none"
 									>
-										<img src={HintIcon} alt={t("actionSidebar.hintIconAlt")} className="w-6 h-6"/>
+										<img src={HintIcon} alt={t("iconAltName.hint")} className="w-6 h-6"/>
 									</button>
 								</div>
 							)}
@@ -450,7 +450,7 @@ function ActionSidebar(
 										<button onClick={() => handleRemoveRole(role.id)}>
 											<img
 												src={DeleteIcon}
-												alt={t("actionSidebar.deleteRoleIconAlt")}
+												alt={t("iconAltName.delete")}
 												className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"
 											/>
 										</button>
@@ -464,7 +464,7 @@ function ActionSidebar(
 							<div
 								className="flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer mt-2  transition-all duration-300"
 								onClick={handleAddRole}>
-								<img src={AddRoleIcon} alt={t("actionSidebar.addRoleIconAlt")} className="w-4 h-4 mr-2"/>
+								<img src={AddRoleIcon} alt={t("iconAltName.add")} className="w-4 h-4 mr-2"/>
 							</div>
 						)}
 						<div className="flex justify-between items-center pt-4 pb-1">
@@ -492,7 +492,7 @@ function ActionSidebar(
 										onMouseLeave={handleMouseLeaveHint}
 										className="focus:outline-none"
 									>
-										<img src={HintIcon} alt={t("actionSidebar.hintIconAlt")} className="w-6 h-6"/>
+										<img src={HintIcon} alt={t("iconAltName.hint")} className="w-6 h-6"/>
 									</button>
 								</div>
 							)}
@@ -502,7 +502,7 @@ function ActionSidebar(
 				{action === 'filter' && target === 'user' && (
 					<div ref={filterRef} className="">
 						<span className="text-lg font-semibold mb-2">{t("actionSidebar.filter.user")}</span>
-						<h3 className="font-light mt-2">{t("actionSidebar.filterUsersByGroup")}:</h3>
+						<h3 className="font-light mt-2">{t("filter.filterUsersByGroup")}:</h3>
 						<div className="mt-2 space-y-2">
 							<button
 								onClick={() => handleFilterGroupChange('staff')}
@@ -516,7 +516,7 @@ function ActionSidebar(
 									boxSizing: 'border-box',
 								}}
 							>
-								{t("actionSidebar.filterGroup.staff")}
+								{t("filter.filterGroup.staff")}
 							</button>
 							<button
 								onClick={() => handleFilterGroupChange('student')}
@@ -530,7 +530,7 @@ function ActionSidebar(
 									boxSizing: 'border-box',
 								}}
 							>
-								{t("actionSidebar.filterGroup.student")}
+								{t("filter.filterGroup.student")}
 							</button>
 							<button
 								onClick={() => handleFilterGroupChange('null')}
@@ -544,7 +544,7 @@ function ActionSidebar(
 									boxSizing: 'border-box',
 								}}
 							>
-								{t("actionSidebar.filterGroup.other")}
+								{t("filter.filterGroup.other")}
 							</button>
 						</div>
 						<div className="flex justify-between items-center pt-4 pb-1">
@@ -566,14 +566,14 @@ function ActionSidebar(
 						<div className="w-full flex flex-row relative">
 							<input
 								type="text"
-								placeholder={t("actionSidebar.searchRolePlaceholder")}
+								placeholder={t("search.searchByRole")}
 								className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
 								value={roleSearchTerm}
 								onChange={(e) => setRoleSearchTerm(e.target.value)}
 							/>
 							<img
 								src={SearchIcon}
-								alt={t("actionSidebar.searchIconAlt")}
+								alt={t("iconAltName.search")}
 								className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none"
 							/>
 						</div>
