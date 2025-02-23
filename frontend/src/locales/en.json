@@ -117,6 +117,9 @@
       "role": "Delete role \"{{itemName}}\"?",
       "user": "Kick \"{{itemName}}\" from server?"
     },
+    "filter": {
+	  "user": "Filter settings"
+	},
     "hint": {
       "create": {
         "category": "A category should be seen as a discipline, or a section with its own channels and access. After creating a category, it will be at the bottom of the list",
@@ -151,7 +154,6 @@
     "addRoleIconAlt": "Add role",
     "noCategoryRoles": "No roles with access to this category",
     "noUserRoles": "User has no roles",
-    "filterSettings": "Filter settings",
     "filterUsersByGroup": "Filter users by their group",
     "filterGroup": {
       "staff": "Teachers",
