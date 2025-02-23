@@ -8,6 +8,7 @@ import {ChannelLoadingSpinner} from '@/components/LoadingSpinner';
 import toast from "react-hot-toast";
 import {Category, Channel, Role, User} from "@/lib/types.ts";
 import {useHintAnimation} from "@/hooks/useHintAnimation.tsx";
+import {useTranslation} from "react-i18next";
 
 export type ActionType = 'create' | 'rename' | 'edit' | 'delete' | null;
 export type ActionTarget = 'category' | 'channel' | 'role' | 'user' | null;
@@ -71,11 +72,11 @@ function ActionSidebar(
 	const [roleSearchTerm, setRoleSearchTerm] = useState('');
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const filterRef = useRef<HTMLDivElement>(null);
-	const filterHintText = "Фільтри дозволяють відобразити лише користувачів з конкретної групи";
 
 
 	const hintAnimation = useHintAnimation();
 	const {isVisible: showHint, opacity: hintOpacity, open: openHint, close: closeHint} = hintAnimation;
+	const { t } = useTranslation();
 
 
 	useEffect(() => {
@@ -93,7 +94,7 @@ function ActionSidebar(
 				const fetchedAllRoles = await getAllRoles();
 				setAllRolesList(fetchedAllRoles);
 			} catch (error) {
-				toast.error("Не вдалося завантажити список ролей на сервері", {
+				toast.error(t("actionSidebar.fetchAllRolesError"), {
 					position: "bottom-right",
 					duration: 5000
 				});
@@ -110,7 +111,7 @@ function ActionSidebar(
 					setRoles(fetchedRoles);
 					setInitialRoles([...fetchedRoles]);
 				} catch (error) {
-					toast.error("Не вдалося змінити список ролей, що мають доступ до категорії", {
+					toast.error(t("actionSidebar.fetchCategoryRolesError"), {
 						position: "bottom-right",
 						duration: 10000
 					});
@@ -132,7 +133,7 @@ function ActionSidebar(
 					setRoles(fetchedRoles);
 					setInitialRoles([...fetchedRoles]);
 				} catch (error) {
-					toast.error("Не вдалося завантажити список ролей користувача", {
+					toast.error(t("actionSidebar.fetchUserRolesError"), {
 						position: "bottom-right",
 						duration: 10000
 					});
@@ -152,7 +153,7 @@ function ActionSidebar(
 			setIsRoleListOpen(false);
 			setAvailableRoles([]);
 		}
-	}, [action, target, item]);
+	}, [action, target, item, t]);
 
 	useEffect(() => {
 		function handleClickOutside(event: MouseEvent) {
@@ -175,43 +176,43 @@ function ActionSidebar(
 
 	const actionTextMap = {
 		create: {
-			category: 'Створення нової категорії',
-			channel: 'Створення нового каналу',
-			role: 'Створення нової групи',
+			category: t("actionSidebar.create.category"),
+			channel: t("actionSidebar.create.channel"),
+			role: t("actionSidebar.create.role"),
 		},
 		rename: {
-			category: `Перейменування категорії "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
-			channel: `Перейменування каналу "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
-			role: `Перейменування групи "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
-			user: `Зміна імені на сервері користувачу "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
+			category: t("actionSidebar.rename.category", {itemName: item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}),
+			channel: t("actionSidebar.rename.channel", {itemName: item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}),
+			role: t("actionSidebar.rename.role", {itemName: item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}),
+			user: t("actionSidebar.rename.user", {itemName: item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}),
 		},
 		edit: {
-			category: `Редагування доступу ролей до категорії "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
-			user: `Редагування ролей користувача "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"`,
+			category: t("actionSidebar.edit.category", {itemName: item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}),
+			user: t("actionSidebar.edit.user", {itemName: item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}),
 		},
 		delete: {
-			category: `Видалити категорію "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"?`,
-			channel: `Видалити канал "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"?`,
-			role: `Видалити групу "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}"?`,
-			user: `Вигнати "${item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}" з серверу?`,
+			category: t("actionSidebar.delete.category", {itemName: item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}),
+			channel: t("actionSidebar.delete.channel", {itemName: item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}),
+			role: t("actionSidebar.delete.role", {itemName: item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}),
+			user: t("actionSidebar.delete.user", {itemName: item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}),
 		},
 	};
 
 	const actionHintTextMap = {
 		create: {
-			category: 'Категорію варто сприймати як дисципліну, чи розділ зі своїми каналами та доступом. Після створення категорії вона знаходитиметься внизу списку',
-			channel: 'Введіть назву для каналу та оберіть його тип',
-			role: 'Група – це роль на сервері. Після створення групи вона одразу ж буде відсортована у порядку зростання',
+			category: t("actionSidebar.hint.create.category"),
+			channel: t("actionSidebar.hint.create.channel"),
+			role: t("actionSidebar.hint.create.role"),
 		},
 		rename: {
-			category: 'Регістр для назви каналу не враховується та обробляється автоматично',
-			channel: 'Регістр для назви категорії не враховується та обробляється автоматично',
+			category: t("actionSidebar.hint.rename.category"),
+			channel: t("actionSidebar.hint.rename.channel"),
 		},
 		edit: {
-			category: 'Оберіть ролі для доступу до категорії та всіх її каналів',
+			category: t("actionSidebar.hint.edit.category"),
 		},
 		delete: {
-			category: 'При видаленні категорії всі канали в ній також будуть видалені',
+			category: t("actionSidebar.hint.delete.category"),
 		},
 	};
 
@@ -263,7 +264,7 @@ function ActionSidebar(
 					setInitialRoles([...roles]);
 				}
 			} catch (error) {
-				toast.error("Не вдалося змінити налаштування доступу ролей до категорії", {
+				toast.error(t("actionSidebar.saveCategoryPermissionsError"), {
 					position: "bottom-right",
 					duration: 10000
 				});
@@ -280,7 +281,7 @@ function ActionSidebar(
 					setInitialRoles([...roles]);
 				}
 			} catch (error) {
-				toast.error("Не вдалося змінити ролі користувачу", {
+				toast.error(t("actionSidebar.saveUserRolesError"), {
 					position: "bottom-right",
 					duration: 10000
 				});
@@ -330,10 +331,10 @@ function ActionSidebar(
 
 	const noRolesText = useMemo(() => {
 		if (action === 'edit' && target === 'user' && sortedRoles.length === 0) {
-			return "Користувач не має ролей";
+			return t("actionSidebar.noUserRoles");
 		}
-		return "Немає ролей з доступом до цієї категорії";
-	}, [action, target, sortedRoles]);
+		return t("actionSidebar.noCategoryRoles");
+	}, [action, target, sortedRoles, t]);
 
 	const handleMouseEnterHint = useCallback(openHint, [openHint]);
 	const handleMouseLeaveHint = useCallback(closeHint, [closeHint]);
@@ -355,13 +356,13 @@ function ActionSidebar(
 								onClick={handleDeleteAction}
 								className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
 							>
-								Видалити
+								{t("actionSidebar.deleteButton")}
 							</button>
 							<button
 								onClick={onCancel}
 								className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
 							>
-								Скасувати
+								{t("actionSidebar.cancelButton")}
 							</button>
 						</div>
 						{actionHintText && (
@@ -371,7 +372,7 @@ function ActionSidebar(
 									onMouseLeave={handleMouseLeaveHint}
 									className="focus:outline-none"
 								>
-									<img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
+									<img src={HintIcon} alt={t("actionSidebar.hintIconAlt")} className="w-6 h-6"/>
 								</button>
 							</div>
 						)}
@@ -382,7 +383,7 @@ function ActionSidebar(
 						<div className="space-y-2 mt-4">
 							<input
 								type="text"
-								placeholder={`${target === 'category' ? 'Назва категорії' : target === 'channel' ? 'Назва каналу' : target === 'role' ? 'Назва групи' : 'Ім`я користувача'}`}
+								placeholder={t(`actionSidebar.inputPlaceholder.${target}`)}
 								className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
 								value={itemName}
 								onChange={(e) => setItemName(e.target.value)}
@@ -394,8 +395,8 @@ function ActionSidebar(
 									value={newChannelType}
 									onChange={(e) => setNewChannelType(e.target.value as 'text' | 'voice')}
 								>
-									<option value="text">Текстовий</option>
-									<option value="voice">Голосовий</option>
+									<option value="text">{t("draggable.textChannel")}</option>
+									<option value="voice">{t("draggable.voiceChannel")}</option>
 								</select>
 							)}
 						</div>
@@ -408,13 +409,13 @@ function ActionSidebar(
 										!isInputDisabled ? 'hover:bg-green-700 transition-all duration-300' : ''
 									} text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40`}
 								>
-									{action === 'create' ? 'Створити' : 'Зберегти'}
+									{action === 'create' ? t("actionSidebar.createButton") : t("actionSidebar.saveButton")}
 								</button>
 								<button
 									onClick={onCancel}
 									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
 								>
-									Скасувати
+									{t("actionSidebar.cancelButton")}
 								</button>
 							</div>
 							{actionHintText && (
@@ -424,7 +425,7 @@ function ActionSidebar(
 										onMouseLeave={handleMouseLeaveHint}
 										className="focus:outline-none"
 									>
-										<img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
+										<img src={HintIcon} alt={t("actionSidebar.hintIconAlt")} className="w-6 h-6"/>
 									</button>
 								</div>
 							)}
@@ -439,7 +440,7 @@ function ActionSidebar(
 							</div>
 						) : sortedRoles.length > 0 ? (
 							<ul className="space-y-2 mt-2">
-								<h3 className="font-light">{target === 'category' ? 'Ролі з доступом:' : 'Ролі користувача:'}</h3>
+								<h3 className="font-light">{target === 'category' ? t("actionSidebar.rolesWithAccess") : t("actionSidebar.userRoles")}</h3>
 								{sortedRoles.map(role => (
 									<li key={role.id}
 									    className="bg-[#36393F] rounded pl-2 p-1.5 flex justify-between items-center pr-1.5">
@@ -447,7 +448,7 @@ function ActionSidebar(
 										<button onClick={() => handleRemoveRole(role.id)}>
 											<img
 												src={DeleteIcon}
-												alt="Видалити"
+												alt={t("actionSidebar.deleteRoleIconAlt")}
 												className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"
 											/>
 										</button>
@@ -461,7 +462,7 @@ function ActionSidebar(
 							<div
 								className="flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer mt-2  transition-all duration-300"
 								onClick={handleAddRole}>
-								<img src={AddRoleIcon} alt="Додати роль" className="w-4 h-4 mr-2"/>
+								<img src={AddRoleIcon} alt={t("actionSidebar.addRoleIconAlt")} className="w-4 h-4 mr-2"/>
 							</div>
 						)}
 						<div className="flex justify-between items-center pt-4 pb-1">
@@ -473,13 +474,13 @@ function ActionSidebar(
 										!isEditCategoryDisabled ? 'hover:bg-green-700 transition-all duration-300' : ''
 									} text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40 transition-all duration-300`}
 								>
-									Зберегти
+									{t("actionSidebar.saveButton")}
 								</button>
 								<button
 									onClick={onCancel}
 									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
 								>
-									Скасувати
+									{t("actionSidebar.cancelButton")}
 								</button>
 							</div>
 							{actionHintText && (
@@ -489,7 +490,7 @@ function ActionSidebar(
 										onMouseLeave={handleMouseLeaveHint}
 										className="focus:outline-none"
 									>
-										<img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
+										<img src={HintIcon} alt={t("actionSidebar.hintIconAlt")} className="w-6 h-6"/>
 									</button>
 								</div>
 							)}
@@ -498,8 +499,8 @@ function ActionSidebar(
 				)}
 				{isFilterOpen && (
 					<div ref={filterRef} className="">
-						<span className="text-lg font-semibold mb-2">Налаштування фільтрації</span>
-						<h3 className="font-light mt-2">Фільтрувати користувачів за групою:</h3>
+						<span className="text-lg font-semibold mb-2">{t("actionSidebar.filterSettings")}</span>
+						<h3 className="font-light mt-2">{t("actionSidebar.filterUsersByGroup")}:</h3>
 						<div className="mt-2 space-y-2">
 							<button
 								key={`staff-button-${setFilterKey ? Date.now() : 0}`}
@@ -514,7 +515,7 @@ function ActionSidebar(
 									boxSizing: 'border-box',
 								}}
 							>
-								Викладачі
+								{t("actionSidebar.filterGroup.staff")}
 							</button>
 							<button
 								key={`student-button-${setFilterKey ? Date.now() : 0}`}
@@ -529,7 +530,7 @@ function ActionSidebar(
 									boxSizing: 'border-box',
 								}}
 							>
-								Студенти
+								{t("actionSidebar.filterGroup.student")}
 							</button>
 							<button
 								key={`null-button-${setFilterKey ? Date.now() : 0}`}
@@ -544,7 +545,7 @@ function ActionSidebar(
 									boxSizing: 'border-box',
 								}}
 							>
-								Інші
+								{t("actionSidebar.filterGroup.other")}
 							</button>
 						</div>
 						<div className="flex justify-between items-center pt-4 pb-1">
@@ -553,46 +554,27 @@ function ActionSidebar(
 									onClick={onFilterCancel}
 									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
 								>
-									Закрити
+									{t("actionSidebar.closeButton")}
 								</button>
 							</div>
-							{filterHintText && (
-								<div className="pt-2 hover:brightness-200 transition-all duration-300 align-center">
-									<button
-										onMouseEnter={handleMouseEnterHint}
-										onMouseLeave={handleMouseLeaveHint}
-										className="focus:outline-none"
-									>
-										<img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
-									</button>
-								</div>
-							)}
 						</div>
 					</div>
 				)}
       </div>}
-			{showHint && (action || isFilterOpen) && (
-				<div className="w-full pt-5" style={{opacity: hintOpacity, transition: `opacity 300ms ease-in-out`}}>
-					<div className="bg-[#2F3136] rounded p-4">
-						<h3 className="font-semibold mb-2">Підказка</h3>
-						<h3 className="font-light">{action && actionHintText ? actionHintText : filterHintText}</h3>
-					</div>
-				</div>
-			)}
 			{isRoleListOpen && availableRoles.length > 0 && (
 				<div ref={dropdownRef} className="w-full pt-5 relative">
 					<div className="bg-[#2F3136] rounded p-4">
 						<div className="w-full flex flex-row relative">
 							<input
 								type="text"
-								placeholder="Пошук за назвою ролі..."
+								placeholder={t("actionSidebar.searchRolePlaceholder")}
 								className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
 								value={roleSearchTerm}
 								onChange={(e) => setRoleSearchTerm(e.target.value)}
 							/>
 							<img
 								src={SearchIcon}
-								alt="Пошук"
+								alt={t("actionSidebar.searchIconAlt")}
 								className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none"
 							/>
 						</div>
@@ -606,7 +588,7 @@ function ActionSidebar(
 									</li>
 								))
 							) : (
-								<li className="text-gray-400 p-2">Немає ролей</li>
+								<li className="text-gray-400 p-2">{t("actionSidebar.noRoles")}</li>
 							)}
 						</ul>
 					</div>
@@ -615,8 +597,8 @@ function ActionSidebar(
 			{isRoleListOpen && availableRoles.length === 0 && (
 				<div ref={dropdownRef} className="w-full pt-5 relative">
 					<div className="bg-[#2F3136] rounded p-4 text-gray-400">
-						<h3 className="font-semibold mb-2">Доступні ролі</h3>
-						<div className="mt-2">Немає ролей для додавання</div>
+						<h3 className="font-semibold mb-2">{t("actionSidebar.availableRolesTitle")}</h3>
+						<div className="mt-2">{t("actionSidebar.noRolesToAdd")}</div>
 					</div>
 				</div>
 			)}
