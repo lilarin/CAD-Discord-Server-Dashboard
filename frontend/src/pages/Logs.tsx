@@ -10,34 +10,43 @@ import {Log} from "@/lib/types.ts";
 import DatePicker, {registerLocale} from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {uk} from "date-fns/locale/uk";
+import {enUS} from "date-fns/locale/en-US";
 import {useHintAnimation} from "@/hooks/useHintAnimation.tsx";
+import {useTranslation} from "react-i18next";
 
 registerLocale("uk", uk);
+registerLocale("en", enUS);
 
 const ITEMS_PER_PAGE = 7;
 
-const formatDate = (dateString: string): string => {
+const formatDate = (dateString: string, locale: string): string => {
 	const date = new Date(dateString);
 	const now = new Date();
 	const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 	const logDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-	const timeFormat = date.toLocaleTimeString('uk-UA', {hour: '2-digit', minute: '2-digit'});
+	const timeFormat = date.toLocaleTimeString(locale, {hour: '2-digit', minute: '2-digit', hour12: false});
 	const diffInDays = Math.round((today.getTime() - logDate.getTime()) / (1000 * 3600 * 24));
 
+	const daysOfWeekUK = ['Неділі', 'Понеділка', 'Вівторка', 'Середи', 'Четверга', 'П`ятниці', 'Суботи'];
+	const daysOfWeekEN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+	const daysOfWeek = locale === 'uk' ? daysOfWeekUK : daysOfWeekEN;
+
+	const prepositionUK = getPrepositionForDay(date.getDay());
+
+
 	if (diffInDays === 0) {
-		return `Сьогодні о ${timeFormat}`;
+		return `${locale === 'uk' ? 'Сьогодні' : 'Today'} ${locale === 'uk' ? 'о' : 'at'} ${timeFormat}`;
 	} else if (diffInDays === 1) {
-		return `Вчора о ${timeFormat}`;
-	} else if (diffInDays === 2) {
+		return `${locale === 'uk' ? 'Вчора' : 'Yesterday'} ${locale === 'uk' ? 'о' : 'at'} ${timeFormat}`;
+	} else if (diffInDays === 2 && locale === 'uk') {
 		return `Позавчора о ${timeFormat}`;
 	} else if (diffInDays <= 7) {
-		const daysOfWeek = ['неділі', 'понеділка', 'вівторка', 'середи', 'четверга', 'пʼятниці', 'суботи'];
 		const dayOfWeek = daysOfWeek[date.getDay()];
-		const preposition = getPrepositionForDay(date.getDay());
-		return `${timeFormat} ${preposition} ${dayOfWeek}`;
+		const prepositionToUse = locale === 'uk' ? prepositionUK : `on`;
+		return `${timeFormat} ${prepositionToUse} ${dayOfWeek}`;
 	} else {
-		return timeFormat + ' ' + date.toLocaleDateString('uk-UA');
+		return timeFormat + ' ' + date.toLocaleDateString(locale);
 	}
 };
 
@@ -132,12 +141,14 @@ export default function Logs() {
 	const [logs, setLogs] = useState<Log[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const filterRef = useRef<HTMLDivElement>(null);
-	const hintText = "Фільтри дозволяють відобразити логи за вибраний період часу. Перший клік визначає початок періоду пошуку, а другий його кінець";
 
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 	const hintAnimation = useHintAnimation();
 
 	const {isVisible: showHint, opacity: hintOpacity, open: openHint, close: closeHint} = hintAnimation;
+
+	const {t, i18n} = useTranslation();
+	const currentLocale = i18n.language === 'uk' ? 'uk' : 'en';
 
 
 	const {
@@ -161,7 +172,7 @@ export default function Logs() {
 				const response = await getLogs();
 				setLogs(response);
 			} catch (error) {
-				toast.error(error.message || "Failed to load logs", {
+				toast.error(t('error.fetchLogsError'), {
 					position: "bottom-right",
 					duration: 10000
 				});
@@ -194,40 +205,40 @@ export default function Logs() {
 							<div className="w-full flex flex-row relative">
 								<input
 									type="text"
-									placeholder="Пошук по логам..."
+									placeholder={t('search.searchByLogs')}
 									className="w-full p-2 rounded bg-[#292B2F] focus:outline-none pr-8 text-white"
 									value={searchTerm}
 									onChange={handleSearch}
 								/>
 								<img
 									src={SearchIcon}
-									alt="Пошук"
+									alt={t('iconAltName.search')}
 									className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-500"
 								/>
 							</div>
 							<div
 								onClick={handleFilterClick}
 								className={`flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer w-1/3 ml-5 relative transition-all duration-300`}>
-								<img src={FilterSearchIcon} alt="Фільтри пошуку" className="w-5 h-5"/>
+								<img src={FilterSearchIcon} alt={t('filter.filterSettings')} className="w-5 h-5"/>
 							</div>
 						</div>
 
 						<div className="flex-grow">
 							{filteredLogs.length === 0 ? (
-								<div className="text-gray-400">Логів не знайдено</div>
+								<div className="text-gray-400">{t('warnings.noLogs')}</div>
 							) : (
 								<div className="overflow-x-auto">
 									<table className="min-w-full divide-y divide-gray-700 bg-[#2f3136] rounded table-fixed">
 										<thead className="bg-[#292B2F] w-full">
 										<tr className="text-center text-xs text-gray-300 uppercase font-medium">
 											<th scope="col" className="w-1/3 px-6 py-3">
-												Користувач
+												{t('logsPage.tableHeaderUser')}
 											</th>
 											<th scope="col" className="w-1/3 px-6 py-3">
-												Виконана дія
+												{t('logsPage.tableHeaderAction')}
 											</th>
 											<th scope="col" className="w-1/3 px-6 py-3">
-												Час виконання
+												{t('logsPage.tableHeaderTime')}
 											</th>
 										</tr>
 										</thead>
@@ -251,7 +262,7 @@ export default function Logs() {
 													className="px-6 py-4 whitespace-normal text-sm text-gray-200 w-1/3 text-center">{log.action}</td>
 												<td
 													className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 w-1/3 text-center">
-													{formatDate(log.event_time)}
+													{formatDate(log.event_time, currentLocale)}
 												</td>
 											</tr>
 										))}
@@ -269,7 +280,7 @@ export default function Logs() {
 					{isFilterOpen && (
 						<div ref={filterRef} className="pl-5 w-1/3 sticky top-5">
 							<div className="bg-[#2F3136] rounded p-4">
-								<span className="text-lg font-semibold mb-2 text-white">Налаштування фільтрації</span>
+								<span className="text-lg font-semibold mb-2 text-white">{t('filter.filterSettings')}</span>
 								<div className="mt-4 datepicker-container w-full">
 									<DatePicker
 										selectsRange
@@ -277,7 +288,7 @@ export default function Logs() {
 										endDate={dateRange[1]}
 										onChange={handleDateChange}
 										monthsShown={1}
-										locale="uk"
+										locale={currentLocale}
 										open={true}
 										inline
 										className="custom-datepicker w-full"
@@ -291,34 +302,32 @@ export default function Logs() {
 											onClick={() => setIsFilterOpen(false)}
 											className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
 										>
-											Закрити
+											{t('button.closeButton')}
 										</button>
 										<button
 											onClick={handleResetFilters}
 											className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
 										>
-											Скинути фільтри
+											{t('logsPage.resetFiltersButton')}
 										</button>
 									</div>
-									{hintText && (
-										<div className="pt-2 hover:brightness-200 transition-all duration-500 align-center">
-											<button
-												onMouseEnter={handleMouseEnterHint}
-												onMouseLeave={handleMouseLeaveHint}
-												className="focus:outline-none"
-											>
-												<img src={HintIcon} alt="Інформація" className="w-6 h-6"/>
-											</button>
-										</div>
-									)}
+									<div className="pt-2 hover:brightness-200 transition-all duration-500 align-center">
+										<button
+											onMouseEnter={handleMouseEnterHint}
+											onMouseLeave={handleMouseLeaveHint}
+											className="focus:outline-none"
+										>
+											<img src={HintIcon} alt={t('iconAltName.hint')} className="w-6 h-6"/>
+										</button>
+									</div>
 								</div>
 							</div>
-							{showHint && hintText && (
+							{showHint && (
 								<div className="w-full pt-5"
 								     style={{opacity: hintOpacity, transition: `opacity 300ms ease-in-out`}}>
 									<div className="bg-[#2F3136] rounded p-4">
-										<h3 className="font-semibold mb-2 text-white">Підказка</h3>
-										<h3 className="font-light text-gray-300">{hintText}</h3>
+										<h3 className="font-semibold mb-2 text-white">{t('actionSidebar.hintTitle')}</h3>
+										<h3 className="font-light text-gray-300">{t('logsPage.filterHintText')}</h3>
 									</div>
 								</div>
 							)}
