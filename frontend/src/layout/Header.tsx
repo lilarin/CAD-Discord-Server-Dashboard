@@ -4,7 +4,8 @@ import {Button} from "@/components/Button.tsx";
 import LogOutIcon from "@/assets/icons/logout.svg";
 import {useAuth} from "@/contexts/AuthContext";
 import {User} from "@/lib/types";
-
+import GlobeIcon from "@/assets/icons/globe.svg";
+import {useTranslation} from "react-i18next";
 
 interface HeaderProps {
 	userDetails: User | null;
@@ -12,11 +13,17 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({userDetails}) => {
 	const {signOut, loading, user} = useAuth();
+	const {t, i18n} = useTranslation();
+	const currentLanguage = i18n.language;
 
 	const handleSignOut = async () => {
 		await signOut();
 	};
 
+	const toggleLanguage = () => {
+		const newLanguage = currentLanguage === 'uk' ? 'en' : 'uk';
+		i18n.changeLanguage(newLanguage);
+	};
 
 	const userName = () => {
 		if (userDetails?.name) {
@@ -47,7 +54,7 @@ export const Header: React.FC<HeaderProps> = ({userDetails}) => {
 						{userAvatarUrl() ? (
 							<img
 								src={userAvatarUrl()}
-								alt="Аватар користувача"
+								alt={t("header.language")}
 								className="rounded-full h-8 w-8"
 							/>
 						) : (
@@ -55,11 +62,20 @@ export const Header: React.FC<HeaderProps> = ({userDetails}) => {
 						)}
 						<div className="text-sm overflow-hidden">
 							<p
-								className="font-medium text-gray-200 whitespace-nowrap text-ellipsis overflow-hidden">{!userDetails ? "Завантаження..." : truncateName(userName(), 22)}</p>
+								className="font-medium text-gray-200 whitespace-nowrap text-ellipsis overflow-hidden">{!userDetails ? t("protectedRoute.loading") : truncateName(userName(), 22)}</p>
 						</div>
 					</div>
 				</div>
-				<div className="pr-2">
+				<div className="pr-3 flex justify-end items-center">
+					<Button
+							variant="ghost"
+							size="default"
+							className="text-gray-400 hover:text-gray-200 rounded flex items-center gap-2 transition-all duration-300"
+							onClick={toggleLanguage}
+						>
+							<img src={GlobeIcon} alt={t("header.language")} className="w-5 h-5 cursor-pointer"/>
+							{t(`header.language`)}
+					</Button>
 					<Button
 						variant="ghost"
 						size="default"
@@ -67,8 +83,8 @@ export const Header: React.FC<HeaderProps> = ({userDetails}) => {
 						onClick={handleSignOut}
 						disabled={loading}
 					>
-						<img src={LogOutIcon} alt="Вийти з системи" className="w-5 h-5 cursor-pointer"/>
-						{loading ? "Вихід..." : "Вийти з системи"}
+						<img src={LogOutIcon} alt={t("header.signOut")} className="w-5 h-5 cursor-pointer"/>
+						{loading ? t("loginPage.loadingButton") : t("header.signOut")}
 					</Button>
 				</div>
 			</div>
