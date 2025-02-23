@@ -32,6 +32,13 @@ export const Header: React.FC<HeaderProps> = ({userDetails}) => {
 		return null;
 	};
 
+	const truncateName = (name: string, maxLength: number) => {
+		if (name.length <= maxLength) {
+			return name;
+		}
+		return name.slice(0, maxLength - 3) + "...";
+	};
+
 	return (
 		<header className="bg-[#292B2F]">
 			<div className="flex h-14 items-center justify-between">
@@ -46,8 +53,9 @@ export const Header: React.FC<HeaderProps> = ({userDetails}) => {
 						) : (
 							<UserCircle className="h-8 w-8 text-gray-400"/>
 						)}
-						<div className="text-sm">
-							<p className="font-medium text-gray-200">{!userDetails ? "Завантаження..." : userName()}</p>
+						<div className="text-sm overflow-hidden">
+							<p
+								className="font-medium text-gray-200 whitespace-nowrap text-ellipsis overflow-hidden">{!userDetails ? "Завантаження..." : truncateName(userName(), 22)}</p>
 						</div>
 					</div>
 				</div>
