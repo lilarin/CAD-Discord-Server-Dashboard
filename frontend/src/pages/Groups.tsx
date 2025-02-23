@@ -9,6 +9,7 @@ import DeleteIcon from '@/assets/icons/delete.svg';
 import CreateRoleIcon from '@/assets/icons/create_role.svg';
 import {Role} from "@/lib/types.ts";
 import SearchIcon from "@/assets/icons/search.svg";
+import {useTranslation} from "react-i18next";
 
 
 const ITEMS_PER_PAGE = 12;
@@ -57,6 +58,8 @@ const usePaginatedRoles = (roles: Role[], setRoles: React.Dispatch<React.SetStat
 
 export default function Groups({ itemsPerPage = ITEMS_PER_PAGE }: { itemsPerPage?: number }) {
   const [roles, setRoles] = useState<Role[]>([]);
+
+  const { t } = useTranslation();
 
   const {
   rolesOnPage,
@@ -176,21 +179,25 @@ export default function Groups({ itemsPerPage = ITEMS_PER_PAGE }: { itemsPerPage
             <div className="w-full flex flex-row relative">
               <input
                 type="text"
-                placeholder="Пошук за назвою групи..."
+                placeholder={t("search.searchByRole")}
                 className="w-full p-2 rounded bg-[#292B2F] focus:outline-none pr-8"
                 value={searchTerm}
                 onChange={handleSearch}
               />
               <img
                 src={SearchIcon}
-                alt="Пошук"
+                alt={t("iconsAltName.search")}
                 className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none"
               />
             </div>
             <div
               className="flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer w-1/3 ml-5 transition-all duration-300"
               onClick={() => handleActionTriggered('create', 'role', null)}>
-              <img src={CreateRoleIcon} alt="Створити групу" className="w-5 h-5"/>
+              <img
+                src={CreateRoleIcon}
+								alt={t("iconsAltName.add")}
+                className="w-5 h-5"
+              />
             </div>
           </div>
         )}
@@ -210,13 +217,13 @@ export default function Groups({ itemsPerPage = ITEMS_PER_PAGE }: { itemsPerPage
                       <button onClick={() => handleActionTriggered('rename', 'role', role)}>
                         <img
                           src={RenameIcon}
-                          alt="Перейменувати"
+								          alt={t("iconsAltName.rename")}
                           className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"/>
                       </button>
                       <button onClick={() => handleActionTriggered('delete', 'role', role)}>
                         <img
                           src={DeleteIcon}
-                          alt="Перейменувати"
+                          alt={t("iconsAltName.delete")}
                           className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"/>
                       </button>
                     </div>

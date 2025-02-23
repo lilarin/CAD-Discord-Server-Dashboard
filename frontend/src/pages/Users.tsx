@@ -10,6 +10,7 @@ import RenameIcon from "@/assets/icons/rename.svg";
 import EditIcon from "@/assets/icons/edit.svg";
 import KickUserIcon from "@/assets/icons/logout.svg";
 import ActionSidebar, {ActionTarget, ActionType} from "@/components/ActionSidebar.tsx";
+import {useTranslation} from "react-i18next";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -68,6 +69,7 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 		item: User | null;
 	}>({action: null, target: null, item: null});
 
+	const { t } = useTranslation();
 
 	const {
 		usersOnPage,
@@ -175,21 +177,25 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 						<div className="w-full flex flex-row relative">
 							<input
 								type="text"
-								placeholder="Пошук за іменем користувача..."
+								placeholder={t("search.searchByUsername")}
 								className="w-full p-2 rounded bg-[#292B2F] focus:outline-none pr-8"
 								value={searchTerm}
 								onChange={handleSearchChange}
 							/>
 							<img
 								src={SearchIcon}
-								alt="Пошук"
+								alt={t("iconsAltName.search")}
 								className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none"
 							/>
 						</div>
 						<div
 							onClick={handleFilterClick}
 							className={`flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer w-1/3 ml-5 relative transition-all duration-300`}>
-							<img src={FilterSearchIcon} alt="Фільтри пошуку" className="w-5 h-5"/>
+							<img
+								src={FilterSearchIcon}
+								alt={t("iconsAltName.filterSearch")}
+								className="w-5 h-5"
+							/>
 						</div>
 					</div>
 				)}
@@ -197,7 +203,7 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 				{!isLoading && (
 					<div className="flex-grow">
 						{filteredUsers.length === 0 ? (
-							<div className="text-gray-400">Користувачів немає</div>
+							<div className="text-gray-400">{t("users.noUsers")}</div>
 						) : (
 							<ul className="list-none p-0">
 								{usersOnPage.map((user) => (
@@ -209,19 +215,19 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 											<button onClick={() => handleActionTriggered('rename', 'user', user)}>
 												<img
 													src={RenameIcon}
-													alt="Перейменувати"
+													alt={t("iconsAltName.rename")}
 													className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"/>
 											</button>
 											<button onClick={() => handleActionTriggered('edit', 'user', user)}>
 												<img
 													src={EditIcon}
-													alt="Змінити ролі"
+													alt={t("iconsAltName.editRoles")}
 													className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"/>
 											</button>
 											<button onClick={() => handleActionTriggered('delete', 'user', user)}>
 												<img
 													src={KickUserIcon}
-													alt="Видалити"
+													alt={t("iconsAltName.kickUser")}
 													className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"/>
 											</button>
 										</div>
