@@ -110,8 +110,8 @@
       "user": "Kick \"{{itemName}}\" from server?"
     },
     "filter": {
-	  "user": "Filter settings"
-	},
+      "user": "Filter settings"
+    },
     "hint": {
       "create": {
         "category": "A category should be seen as a discipline, or a section with its own channels and access. After creating a category, it will be at the bottom of the list",
@@ -156,7 +156,18 @@
     "fetchCategoryRolesError": "Failed to change the list of roles that have access to the category",
     "fetchUserRolesError": "Failed to load the list of user roles",
     "saveCategoryPermissionsError": "Failed to change the access settings of roles to the category",
-    "saveUserRolesError": "Failed to change user roles"
+    "saveUserRolesError": "Failed to change user roles",
+    "fetchCategoriesError": "Failed to load categories",
+    "fetchChannelsError": "Failed to load category channels",
+    "createCategoryError": "Failed to create category",
+    "createChannelError": "Failed to create channel",
+    "renameCategoryError": "Failed to rename category",
+    "renameChannelError": "Failed to rename channel",
+    "deleteCategoryError": "Failed to delete category",
+    "deleteChannelError": "Failed to delete channel",
+    "deleteRoleError": "Failed to delete role",
+    "updateCategoryPositionError": "Failed to change categories order",
+    "updateChannelPositionError": "Failed to change channels order"
   },
   "search": {
     "searchByUsername": "Search by username...",
@@ -182,6 +193,8 @@
     "noRoles": "No roles",
     "noCategoryRoles": "No roles with access to this category",
     "noUserRoles": "User has no roles",
-    "noRolesToAdd": "No roles to add"
+    "noRolesToAdd": "No roles to add",
+    "noCategory": "No categories",
+    "noChannels": "No channels"
   }
 }
