@@ -320,7 +320,7 @@ export default function Events() {
 								</div>
 								<button
 									onClick={() => setIsCategoryActionOpen(false)}
-									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300 w-full"
+									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-2 mb-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300 w-full"
 								>
 									Закрити
 								</button>
@@ -369,7 +369,7 @@ export default function Events() {
 								</div>
 								<button
 									onClick={() => setIsChannelActionOpen(false)}
-									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-4 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300 w-full"
+									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-2 mb-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300 w-full"
 								>
 									Закрити
 								</button>
