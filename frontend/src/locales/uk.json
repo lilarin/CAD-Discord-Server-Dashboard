@@ -134,44 +134,22 @@
 	"createButton": "Створити",
 	"saveButton": "Зберегти",
 	"closeButton": "Закрити",
-	"inputPlaceholder": {
-	  "category": "Назва категорії",
-	  "channel": "Назва каналу",
-	  "role": "Назва ролі",
-	  "user": "Ім'я користувача"
-	},
 	"rolesWithAccess": "Ролі з доступом:",
 	"userRoles": "Ролі користувача:",
-	"deleteRoleIconAlt": "Видалити",
-	"addRoleIconAlt": "Додати роль",
-	"noCategoryRoles": "Немає ролей з доступом до цієї категорії",
-	"noUserRoles": "Користувач не має ролей",
-	"filterUsersByGroup": "Фільтрувати користувачів за групою",
-	"filterGroup": {
-	  "staff": "Викладачі",
-	  "student": "Студенти",
-	  "other": "Інші"
-	},
-	"hintIconAlt": "Інформація",
 	"hintTitle": "Підказка",
-	"availableRolesTitle": "Доступні ролі",
-	"noRolesToAdd": "Немає ролей для додавання",
-	"searchRolePlaceholder": "Пошук за назвою ролі...",
-	"searchIconAlt": "Пошук",
-	"noRoles": "Немає ролей",
-	"fetchAllRolesError": "Не вдалося завантажити список ролей на сервері",
-	"fetchCategoryRolesError": "Не вдалося змінити список ролей, що мають доступ до категорії",
-	"fetchUserRolesError": "Не вдалося завантажити список ролей користувача",
-	"saveCategoryPermissionsError": "Не вдалося змінити налаштування доступу ролей до категорії",
-	"saveUserRolesError": "Не вдалося змінити ролі користувачу"
-  },
-  "iconsAltName": {
-	"reorder": "Перемістити",
-	"rename": "Перейменувати",
-	"edit": "Змінити",
-	"delete": "Видалити",
 	"textChannel": "Текстовий канал",
 	"voiceChannel": "Голосовий канал"
+  },
+  "iconAltName": {
+	"hint": "Інформація",
+	"reorder": "Перемістити",
+	"rename": "Перейменувати",
+	"add": "Створити",
+	"edit": "Змінити",
+	"delete": "Видалити",
+    "filter": "Фільтрація",
+    "kick": "Вигнати користувача",
+    "search": "Пошук"
   },
   "error": {
   	"fetchAllRolesError": "Не вдалося завантажити список ролей на сервері",
@@ -179,5 +157,31 @@
 	"fetchUserRolesError": "Не вдалося завантажити список ролей користувача",
 	"saveCategoryPermissionsError": "Не вдалося змінити налаштування доступу ролей до категорії",
 	"saveUserRolesError": "Не вдалося змінити ролі користувачу"
+  },
+  "search": {
+    "searchByUsername": "Пошук за іменем користувача...",
+	"searchByRole": "Пошук за назвою ролі...",
+	"searchByCategory": "Пошук за назвою категорії..."
+  },
+  "filter": {
+	"filterUsersByGroup": "Фільтрувати користувачів за групою",
+	"filterGroup": {
+	  "staff": "Викладачі",
+	  "student": "Студенти",
+	  "other": "Інші"
+	}
+  },
+  "input": {
+    "category": "Назва категорії",
+    "channel": "Назва каналу",
+    "role": "Назва ролі",
+    "user": "Ім'я користувача"
+  },
+  "warnings": {
+    "noUsers": "Користувачів немає",
+	"noRoles": "Ролей немає",
+    "noCategoryRoles": "Немає ролей з доступом до цієї категорії",
+    "noUserRoles": "Користувач не має ролей",
+    "noRolesToAdd": "Немає ролей для додавання"
   }
 }

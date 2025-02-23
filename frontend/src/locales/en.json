@@ -134,39 +134,22 @@
     "createButton": "Create",
     "saveButton": "Save",
     "closeButton": "Close",
-    "inputPlaceholder": {
-      "category": "Category name",
-      "channel": "Channel name",
-      "role": "Role name",
-      "user": "Username"
-    },
     "rolesWithAccess": "Roles with access:",
     "userRoles": "User roles:",
-    "deleteRoleIconAlt": "Delete",
-    "addRoleIconAlt": "Add role",
-    "noCategoryRoles": "No roles with access to this category",
-    "noUserRoles": "User has no roles",
-    "filterUsersByGroup": "Filter users by their group",
-    "filterGroup": {
-      "staff": "Teachers",
-      "student": "Students",
-      "other": "Other"
-    },
-    "hintIconAlt": "Information",
     "hintTitle": "Hint",
-    "availableRolesTitle": "Available roles",
-    "noRolesToAdd": "No roles to add",
-    "searchRolePlaceholder": "Search by role name...",
-    "searchIconAlt": "Search",
-    "noRoles": "No roles"
-  },
-  "iconAltName": {
-    "reorder": "Reorder",
-    "rename": "Rename",
-    "edit": "Edit",
-    "delete": "Delete",
     "textChannel": "Text Channel",
     "voiceChannel": "Voice Channel"
+  },
+  "iconAltName": {
+    "hint": "Information",
+    "reorder": "Reorder",
+    "rename": "Rename",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "filter": "Filter",
+    "kick": "Kick User",
+    "search": "Search"
   },
   "error": {
     "fetchAllRolesError": "Failed to load the list of roles on the server",
@@ -174,5 +157,31 @@
     "fetchUserRolesError": "Failed to load the list of user roles",
     "saveCategoryPermissionsError": "Failed to change the access settings of roles to the category",
     "saveUserRolesError": "Failed to change user roles"
+  },
+  "search": {
+    "searchByUsername": "Search by username...",
+    "searchByRole": "Search by role name...",
+    "searchByCategory": "Search by category name..."
+  },
+  "filter": {
+    "filterUsersByGroup": "Filter users by their group",
+    "filterGroup": {
+      "staff": "Teachers",
+      "student": "Students",
+      "other": "Other"
+    }
+  },
+  "input": {
+    "category": "Category name",
+    "channel": "Channel name",
+    "role": "Role name",
+    "user": "Username"
+  },
+  "warnings": {
+    "noUsers": "No users found",
+    "noRoles": "No roles",
+    "noCategoryRoles": "No roles with access to this category",
+    "noUserRoles": "User has no roles",
+    "noRolesToAdd": "No roles to add"
   }
 }
