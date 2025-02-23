@@ -15,41 +15,37 @@ import UsersIcon from "@/assets/icons/users.svg";
 import GroupsIcon from "@/assets/icons/groups.svg";
 import DisciplinesIcon from "@/assets/icons/disciplines.svg";
 import {Link} from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const HomePage = () => {
+	const { t } = useTranslation();
+
 	return (
 		<div className="container mx-auto px-5 py-5 ">
 			<section className="mb-5">
-				<h2 className="text-2xl font-semibold text-white mb-4">Основні положення</h2>
+				<h2 className="text-2xl font-semibold text-white mb-4">{t("homePage.mainProvisionsTitle")}</h2>
 				<div className="text-gray-300 space-y-3 text-justify">
 					<p>
-						Ця панель розроблена для зручного управління сервером, включаючи категорії (дисципліни), канали, групи
-						(ролі)
-						користувачів, самих користувачів, черги на захисти та журнали дій.
-						Кожна секція інтуїтивно зрозуміла та дозволяє виконувати необхідні адміністративні функції ефективно та
-						швидко.
+						{t("homePage.mainProvisionsText1")}
 					</p>
 					<p>
-						Для навігації використовуйте бокове меню зліва. Кожен розділ меню відповідає за певну область управління
-						сервером.
-						На сторінках використовуються іконки для швидкої ідентифікації дій та функцій
+						{t("homePage.mainProvisionsText2")}
 					</p>
 				</div>
 			</section>
 
 			<section className="mb-5">
-				<h2 className="text-2xl font-semibold text-white mb-4">Розділи панелі</h2>
+				<h2 className="text-2xl font-semibold text-white mb-4">{t("homePage.panelSectionsTitle")}</h2>
 
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 					<div className="bg-[#2F3136] rounded p-6 hover:bg-[#292b2f] transition-all duration-200 cursor-pointer">
 						<div className="flex items-center mb-4">
-							<img src={HomePageIcon} alt="Головна" className="w-8 h-8 mr-3"/>
-							<h3 className="text-xl font-semibold text-white">Головна</h3>
+							<img src={HomePageIcon} alt={t("homePage.sections.dashboard.title")} className="w-8 h-8 mr-3"/>
+							<h3 className="text-xl font-semibold text-white">{t("homePage.sections.dashboard.title")}</h3>
 						</div>
 						<div className="text-gray-300 space-y-2">
 							<p>
-								Головна сторінка панелі для керування сервером з описом призначення, оглядом та поясненням загальних дій, що
-								доступні в інтерфейсі
+								{t("homePage.sections.dashboard.description")}
 							</p>
 						</div>
 					</div>
@@ -57,13 +53,12 @@ const HomePage = () => {
 					<Link to="/categories" className="block">
 						<div className="bg-[#2F3136] rounded p-6 hover:bg-[#292b2f] transition-all duration-200 cursor-pointer">
 							<div className="flex items-center mb-4">
-								<img src={DisciplinesIcon} alt="Категорії" className="w-8 h-8 mr-3"/>
-								<h3 className="text-xl font-semibold text-white">Категорії</h3>
+								<img src={DisciplinesIcon} alt={t("homePage.sections.categories.title")} className="w-8 h-8 mr-3"/>
+								<h3 className="text-xl font-semibold text-white">{t("homePage.sections.categories.title")}</h3>
 							</div>
 							<div className="text-gray-300 space-y-2">
 								<p>
-									Розділ дозволяє керувати категоріями (дисциплінами) на сервері.
-									Категорії використовуються для структурування каналів та управління доступом до них
+									{t("homePage.sections.categories.description")}
 								</p>
 							</div>
 						</div>
@@ -72,13 +67,12 @@ const HomePage = () => {
 					<Link to="/groups" className="block">
 						<div className="bg-[#2F3136] rounded p-6 hover:bg-[#292b2f] transition-all duration-200 cursor-pointer">
 							<div className="flex items-center mb-4">
-								<img src={GroupsIcon} alt="Групи" className="w-8 h-8 mr-3"/>
-								<h3 className="text-xl font-semibold text-white">Групи</h3>
+								<img src={GroupsIcon} alt={t("homePage.sections.groups.title")} className="w-8 h-8 mr-3"/>
+								<h3 className="text-xl font-semibold text-white">{t("homePage.sections.groups.title")}</h3>
 							</div>
 							<div className="text-gray-300 space-y-2">
 								<p>
-									Розділ дозволяє керувати ролями (групами) для користувачів на сервері.
-									Групи використовуються для призначення прав доступу до певної категорії
+									{t("homePage.sections.groups.description")}
 								</p>
 							</div>
 						</div>
@@ -87,13 +81,12 @@ const HomePage = () => {
 					<Link to="/users" className="block">
 						<div className="bg-[#2F3136] rounded p-6 hover:bg-[#292b2f] transition-all duration-200 cursor-pointer">
 							<div className="flex items-center mb-4">
-								<img src={UsersIcon} alt="Користувачі" className="w-8 h-8 mr-3"/>
-								<h3 className="text-xl font-semibold text-white">Користувачі</h3>
+								<img src={UsersIcon} alt={t("homePage.sections.users.title")} className="w-8 h-8 mr-3"/>
+								<h3 className="text-xl font-semibold text-white">{t("homePage.sections.users.title")}</h3>
 							</div>
 							<div className="text-gray-300 space-y-2">
 								<p>
-									Розділ призначений для управління користувачами сервера.
-									Тут ви можете переглядати, редагувати та виключати користувачів
+									{t("homePage.sections.users.description")}
 								</p>
 							</div>
 						</div>
@@ -102,13 +95,12 @@ const HomePage = () => {
 					<Link to="/events" className="block">
 						<div className="bg-[#2F3136] rounded p-6 hover:bg-[#292b2f] transition-all duration-200 cursor-pointer">
 							<div className="flex items-center mb-4">
-								<img src={EventsIcon} alt="Захисти" className="w-8 h-8 mr-3"/>
-								<h3 className="text-xl font-semibold text-white">Захисти</h3>
+								<img src={EventsIcon} alt={t("homePage.sections.events.title")} className="w-8 h-8 mr-3"/>
+								<h3 className="text-xl font-semibold text-white">{t("homePage.sections.events.title")}</h3>
 							</div>
 							<div className="text-gray-300 space-y-2">
 								<p>
-									Розділ дозволяє створити черги захисту робіт студентами.
-									Черги доступні у вигляді інтерактивного списку, в який студенти можуть записатись та вийти з нього
+									{t("homePage.sections.events.description")}
 								</p>
 							</div>
 						</div>
@@ -117,13 +109,12 @@ const HomePage = () => {
 					<Link to="/logs" className="block">
 						<div className="bg-[#2F3136] rounded p-6 hover:bg-[#292b2f] transition-all duration-200 cursor-pointer">
 							<div className="flex items-center mb-4">
-								<img src={LogsIcon} alt="Журнали" className="w-8 h-8 mr-3"/>
-								<h3 className="text-xl font-semibold text-white">Логи</h3>
+								<img src={LogsIcon} alt={t("homePage.sections.logs.title")} className="w-8 h-8 mr-3"/>
+								<h3 className="text-xl font-semibold text-white">{t("homePage.sections.logs.title")}</h3>
 							</div>
 							<div className="text-gray-300 space-y-2">
 								<p>
-									Розділ надає доступ до журналу взаємодії з панеллю керування
-									Відстежує дії користувачів панелі та дозволяє переглянути їх
+									{t("homePage.sections.logs.description")}
 								</p>
 							</div>
 						</div>
@@ -132,96 +123,96 @@ const HomePage = () => {
 			</section>
 
 			<section>
-				<h2 className="text-2xl font-semibold text-white mb-4">Іконки та їх пояснення</h2>
+				<h2 className="text-2xl font-semibold text-white mb-4">{t("homePage.iconsExplanationTitle")}</h2>
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 cursor-default">
 					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
-							<img src={HintIcon} alt="Підказка" className="w-6 h-6 mr-3"/>
-							<h3 className="text-lg font-semibold text-white">Підказка</h3>
+							<img src={HintIcon} alt={t("homePage.icons.hint.title")} className="w-6 h-6 mr-3"/>
+							<h3 className="text-lg font-semibold text-white">{t("homePage.icons.hint.title")}</h3>
 						</div>
 						<p className="text-gray-300">
-							Позначає наявність додаткової інформації про функцію, або спосіб використання
+							{t("homePage.icons.hint.description")}
 						</p>
 					</div>
 
 					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
-							<img src={FilterSearchIcon} alt="Фільтри пошуку" className="w-6 h-6 mr-3"/>
-							<h3 className="text-lg font-semibold text-white">Фільтрація</h3>
+							<img src={FilterSearchIcon} alt={t("homePage.icons.filter.title")} className="w-6 h-6 mr-3"/>
+							<h3 className="text-lg font-semibold text-white">{t("homePage.icons.filter.title")}</h3>
 						</div>
 						<p className="text-gray-300">
-							Відкриває панель фільтрації, що дозволяє звузити результати відображення даних
+							{t("homePage.icons.filter.description")}
 						</p>
 					</div>
 
 
 					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
-							<img src={CreateChannelIcon} alt="Створити канал" className="w-6 h-6 mr-3"/>
-							<h3 className="text-lg font-semibold text-white">Створити канал</h3>
+							<img src={CreateChannelIcon} alt={t("homePage.icons.createChannel.title")} className="w-6 h-6 mr-3"/>
+							<h3 className="text-lg font-semibold text-white">{t("homePage.icons.createChannel.title")}</h3>
 						</div>
 						<p className="text-gray-300">
-							Використовується для створення нового каналу в межах певної категорії
+							{t("homePage.icons.createChannel.description")}
 						</p>
 					</div>
 
 					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
-							<img src={CreateCategoryIcon} alt="Створити категорію" className="w-6 h-6 mr-3"/>
-							<h3 className="text-lg font-semibold text-white">Створити категорію</h3>
+							<img src={CreateCategoryIcon} alt={t("homePage.icons.createCategory.title")} className="w-6 h-6 mr-3"/>
+							<h3 className="text-lg font-semibold text-white">{t("homePage.icons.createCategory.title")}</h3>
 						</div>
 						<p className="text-gray-300">
-							Використовується для створення нової категорії з каналами (дисципліни)
+							{t("homePage.icons.createCategory.description")}
 						</p>
 					</div>
 
 					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
-							<img src={EditIcon} alt="Редагувати" className="w-6 h-6 mr-3"/>
-							<h3 className="text-lg font-semibold text-white">Редагувати</h3>
+							<img src={EditIcon} alt={t("homePage.icons.edit.title")} className="w-6 h-6 mr-3"/>
+							<h3 className="text-lg font-semibold text-white">{t("homePage.icons.edit.title")}</h3>
 						</div>
 						<p className="text-gray-300">
-							Використовується для відкриття панелі налаштувань доступу та груп (ролей)
+							{t("homePage.icons.edit.description")}
 						</p>
 					</div>
 
 					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
-							<img src={CreateRoleIcon} alt="Створити (призначити) групу" className="w-6 h-6 mr-3"/>
-							<h3 className="text-lg font-semibold text-white">Створити (призначити) групу</h3>
+							<img src={CreateRoleIcon} alt={t("homePage.icons.createGroup.title")} className="w-6 h-6 mr-3"/>
+							<h3 className="text-lg font-semibold text-white">{t("homePage.icons.createGroup.title")}</h3>
 						</div>
 						<p className="text-gray-300">
-							Використовується для створення та призначення груп (ролей)
+							{t("homePage.icons.createGroup.description")}
 						</p>
 					</div>
 
 					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
-							<img src={RenameIcon} alt="Перейменувати" className="w-6 h-6 mr-3"/>
-							<h3 className="text-lg font-semibold text-white">Перейменувати</h3>
+							<img src={RenameIcon} alt={t("homePage.icons.rename.title")} className="w-6 h-6 mr-3"/>
+							<h3 className="text-lg font-semibold text-white">{t("homePage.icons.rename.title")}</h3>
 						</div>
 						<p className="text-gray-300">
-							Використовується для перейменування елементів
+							{t("homePage.icons.rename.description")}
 						</p>
 					</div>
 
 					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
-							<img src={DeleteIcon} alt="Видалити" className="w-6 h-6 mr-3"/>
-							<h3 className="text-lg font-semibold text-white">Видалити</h3>
+							<img src={DeleteIcon} alt={t("homePage.icons.delete.title")} className="w-6 h-6 mr-3"/>
+							<h3 className="text-lg font-semibold text-white">{t("homePage.icons.delete.title")}</h3>
 						</div>
 						<p className="text-gray-300">
-							Використовується для видалення категорії, каналів або груп
+							{t("homePage.icons.delete.description")}
 						</p>
 					</div>
 
 					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
-							<img src={KickUserIcon} alt="Вигнати користувача" className="w-6 h-6 mr-3"/>
-							<h3 className="text-lg font-semibold text-white">Вигнати користувача</h3>
+							<img src={KickUserIcon} alt={t("homePage.icons.kickUser.title")} className="w-6 h-6 mr-3"/>
+							<h3 className="text-lg font-semibold text-white">{t("homePage.icons.kickUser.title")}</h3>
 						</div>
 						<p className="text-gray-300">
-							Використовується для вигону користувача з серверу
+							{t("homePage.icons.kickUser.description")}
 						</p>
 					</div>
 				</div>
