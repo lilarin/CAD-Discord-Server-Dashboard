@@ -15,14 +15,12 @@ export const useHintAnimation = () => {
 
 
     const open = useCallback(() => {
-        clearTimeout(timeoutRef.current);
         if (!isVisible) {
             setIsVisible(true);
         }
     }, [isVisible]);
 
     const close = useCallback(() => {
-        clearTimeout(timeoutRef.current);
         if (isVisible) {
             requestAnimationFrame(() => setOpacity(0));
             timeoutRef.current = setTimeout(() => setIsVisible(false), 300);
@@ -32,6 +30,7 @@ export const useHintAnimation = () => {
         if (isVisible) {
             close();
         } else {
+            clearTimeout(timeoutRef.current);
             open();
         }
     }, [isVisible, close, open]);
