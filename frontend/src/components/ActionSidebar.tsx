@@ -593,14 +593,6 @@ function ActionSidebar(
 					</div>
 				</div>
 			)}
-			{isRoleListOpen && availableRoles.length === 0 && (
-				<div ref={dropdownRef} className="w-full pt-5 relative">
-					<div className="bg-[#2F3136] rounded p-4 text-gray-400">
-						<h3 className="font-semibold mb-2">{t("actionSidebar.availableRolesTitle")}</h3>
-						<div className="mt-2">{t("actionSidebar.noRolesToAdd")}</div>
-					</div>
-				</div>
-			)}
 		</div>
 	);
 }
