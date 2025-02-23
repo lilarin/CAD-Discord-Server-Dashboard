@@ -86,5 +86,13 @@
   "pagination": {
 	"previous": "Previous",
 	"next": "Next"
+  },
+  "draggable": {
+    "reorder": "Reorder",
+    "rename": "Rename",
+    "edit": "Edit",
+    "delete": "Delete",
+    "textChannel": "Text Channel",
+    "voiceChannel": "Voice Channel"
   }
 }

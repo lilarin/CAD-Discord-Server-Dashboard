@@ -6,6 +6,7 @@ import TextIcon from "@/assets/icons/text.svg";
 import VoiceIcon from "@/assets/icons/voice.svg";
 import RenameIcon from "@/assets/icons/rename.svg";
 import DeleteIcon from "@/assets/icons/delete.svg";
+import { useTranslation } from "react-i18next";
 
 function DraggableChannel({
   channel,
@@ -15,6 +16,7 @@ function DraggableChannel({
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: channel.id,
   });
+  const { t } = useTranslation();
 
   const style = {
     transform: CSS.Translate.toString(transform),
@@ -34,15 +36,15 @@ function DraggableChannel({
         <span className="cursor-grab mr-2" {...attributes} {...listeners}>
           <img
               src={ReorderIcon}
-              alt="Перемістити"
+              alt={t("draggable.reorder")}
               className="w-5 h-5 cursor-grab"
           />
         </span>
         {channel.type === 'text' && (
-            <img src={TextIcon} alt="Текстовий канал" className="w-4 h-4 mr-1"/>
+            <img src={TextIcon} alt={t("draggable.textChannel")} className="w-4 h-4 mr-1"/>
         )}
         {channel.type === 'voice' && (
-          <img src={VoiceIcon} alt="Голосовий канал" className="w-4 h-4 mr-1" />
+          <img src={VoiceIcon} alt={t("draggable.voiceChannel")} className="w-4 h-4 mr-1" />
         )}
         <span className="pl-0.5">{channel.name.charAt(0).toUpperCase() + channel.name.slice(1)}</span>
       </div>
@@ -50,14 +52,14 @@ function DraggableChannel({
         <div className="relative group" onClick={() => onActionTriggered('rename', 'channel', channel)}>
           <img
             src={RenameIcon}
-            alt="Перейменувати"
+            alt={t("draggable.rename")}
             className="w-4 h-4 cursor-pointer filter group-hover:brightness-200 transition-all duration-300"
           />
         </div>
         <div className="relative group" onClick={() => onActionTriggered('delete', 'channel', channel)}>
           <img
             src={DeleteIcon}
-            alt="Видалити"
+            alt={t("draggable.delete")}
             className="w-4 h-4 cursor-pointer filter group-hover:brightness-200 transition-all duration-300"
           />
         </div>
