@@ -1,0 +1,15 @@
+{
+  "header": {
+    "signOut": "Вийти",
+    "language": "Змінити мову"
+  },
+  "sidebar": {
+    "dashboard": "Головна",
+    "categories": "Категорії",
+    "groups": "Групи",
+    "users": "Користувачі",
+    "events": "Захисти",
+    "logs": "Логи",
+    "controlPanel": "Панель керування"
+  }
+}

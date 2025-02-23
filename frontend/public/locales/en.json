@@ -1,0 +1,15 @@
+{
+  "header": {
+    "signOut": "Sign Out",
+    "language": "Change Language"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "categories": "Categories",
+    "groups": "Groups",
+    "users": "Users",
+    "events": "Events",
+    "logs": "Logs",
+    "controlPanel": "Control Panel"
+  }
+}
