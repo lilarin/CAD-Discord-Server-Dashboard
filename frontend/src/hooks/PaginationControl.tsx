@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export const PaginationControl = ({
   currentPage,
@@ -9,7 +10,10 @@ export const PaginationControl = ({
   pageCount: number;
   handlePageChange: (page: number) => void;
 }) => {
+  const { t } = useTranslation();
+
   if (pageCount <= 1) return null;
+
 
   const getVisiblePages = () => {
     if (pageCount <= 5) {
@@ -40,7 +44,7 @@ export const PaginationControl = ({
           currentPage === 1 ? "" : "hover:bg-[#292B2F]"
         } transition-all duration-300`}
       >
-        Попередня
+        {t("pagination.previous")}
       </button>
 
       {visiblePages.map((pageNumber, index) => {
@@ -63,7 +67,7 @@ export const PaginationControl = ({
           currentPage === pageCount ? "" : "hover:bg-[#292B2F]"
         } transition-all duration-300`}
       >
-        Наступна
+        {t("pagination.next")}
       </button>
     </div>
   );

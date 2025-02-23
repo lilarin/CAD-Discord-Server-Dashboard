@@ -1,86 +1,90 @@
 {
   "header": {
-    "signOut": "Sign Out",
-    "language": "Change language"
+	"signOut": "Sign Out",
+	"language": "Change language"
   },
   "sidebar": {
-    "dashboard": "Dashboard",
-    "categories": "Categories",
-    "groups": "Groups",
-    "users": "Users",
-    "events": "Queues",
-    "logs": "Logs",
-    "controlPanel": "Control panel"
+	"dashboard": "Dashboard",
+	"categories": "Categories",
+	"groups": "Groups",
+	"users": "Users",
+	"events": "Queues",
+	"logs": "Logs",
+	"controlPanel": "Control panel"
   },
   "homePage": {
-    "mainProvisionsTitle": "Main provisions",
-    "mainProvisionsText1": "This panel is designed for convenient server management, including categories (disciplines), channels, groups (roles) of users, the users themselves, queues for defenses, and action logs. Each section is intuitive and allows you to perform the necessary administrative functions efficiently and quickly.",
-    "mainProvisionsText2": "Use the sidebar on the left for navigation. Each menu section is responsible for a specific server management area. Icons are used on the pages for quick identification of actions and functions.",
-    "panelSectionsTitle": "Panel sections",
-    "sections": {
-      "dashboard": {
-        "title": "Dashboard",
-        "description": "Home page of the server control panel with a description of the purpose, overview, and explanation of common actions available in the interface"
-      },
-      "categories": {
-        "title": "Categories",
-        "description": "This section allows you to manage categories (disciplines) on the server. Categories are used to structure channels and manage access to them"
-      },
-      "groups": {
-        "title": "Groups",
-        "description": "This section allows you to manage roles (groups) for users on the server. Groups are used to assign access rights to a specific category"
-      },
-      "users": {
-        "title": "Users",
-        "description": "This section is intended for managing server users. Here you can view, rename, edit roles, and kick users from the server. It is also possible to filter users by their role"
-      },
-      "events": {
-        "title": "Queues",
-        "description": "This section allows you to create queues for students. Queues are available as an interactive list that students can join and leave"
-      },
-      "logs": {
-        "title": "Logs",
-        "description": "This section provides access to the interaction log with the control panel. Tracks the actions of panel users and allows you to view them"
-      }
-    },
-    "iconsExplanationTitle": "Icons and their Explanations",
-    "icons": {
-      "hint": {
-        "title": "Hint",
-        "description": "Indicates the availability of additional information about or how to use it"
-      },
-      "filter": {
-        "title": "Filter",
-        "description": "Opens the filter panel, which allows you to narrow down the data display results"
-      },
-      "createChannel": {
-        "title": "Create Channel",
-        "description": "Used to create a new channel within a specific category"
-      },
-      "createCategory": {
-        "title": "Create Category",
-        "description": "Used to create a new category with channels (disciplines)"
-      },
-      "edit": {
-        "title": "Edit",
-        "description": "Used to open the access and group (roles) settings panel"
-      },
-      "createGroup": {
-        "title": "Create (assign) Group",
-        "description": "Used to create and assign groups (roles)"
-      },
-      "rename": {
-        "title": "Rename",
-        "description": "Used to rename items such as categories, channels, roles and users"
-      },
-      "delete": {
-        "title": "Delete",
-        "description": "Used to delete a category, channels, or groups from the server"
-      },
-      "kickUser": {
-        "title": "Kick User",
-        "description": "Used to kick a specific user from the academic discord server"
-      }
-    }
+	"mainProvisionsTitle": "Main provisions",
+	"mainProvisionsText1": "This panel is designed for convenient server management, including categories (disciplines), channels, groups (roles) of users, the users themselves, queues for defenses, and action logs. Each section is intuitive and allows you to perform the necessary administrative functions efficiently and quickly.",
+	"mainProvisionsText2": "Use the sidebar on the left for navigation. Each menu section is responsible for a specific server management area. Icons are used on the pages for quick identification of actions and functions.",
+	"panelSectionsTitle": "Panel sections",
+	"sections": {
+	  "dashboard": {
+		"title": "Dashboard",
+		"description": "Home page of the server control panel with a description of the purpose, overview, and explanation of common actions available in the interface"
+	  },
+	  "categories": {
+		"title": "Categories",
+		"description": "This section allows you to manage categories (disciplines) on the server. Categories are used to structure channels and manage access to them"
+	  },
+	  "groups": {
+		"title": "Groups",
+		"description": "This section allows you to manage roles (groups) for users on the server. Groups are used to assign access rights to a specific category"
+	  },
+	  "users": {
+		"title": "Users",
+		"description": "This section is intended for managing server users. Here you can view, rename, edit roles, and kick users from the server. It is also possible to filter users by their role"
+	  },
+	  "events": {
+		"title": "Queues",
+		"description": "This section allows you to create queues for students. Queues are available as an interactive list that students can join and leave"
+	  },
+	  "logs": {
+		"title": "Logs",
+		"description": "This section provides access to the interaction log with the control panel. Tracks the actions of panel users and allows you to view them"
+	  }
+	},
+	"iconsExplanationTitle": "Icons and their Explanations",
+	"icons": {
+	  "hint": {
+		"title": "Hint",
+		"description": "Indicates the availability of additional information about or how to use it"
+	  },
+	  "filter": {
+		"title": "Filter",
+		"description": "Opens the filter panel, which allows you to narrow down the data display results"
+	  },
+	  "createChannel": {
+		"title": "Create Channel",
+		"description": "Used to create a new channel within a specific category"
+	  },
+	  "createCategory": {
+		"title": "Create Category",
+		"description": "Used to create a new category with channels (disciplines)"
+	  },
+	  "edit": {
+		"title": "Edit",
+		"description": "Used to open the access and group (roles) settings panel"
+	  },
+	  "createGroup": {
+		"title": "Create (assign) Group",
+		"description": "Used to create and assign groups (roles)"
+	  },
+	  "rename": {
+		"title": "Rename",
+		"description": "Used to rename items such as categories, channels, roles and users"
+	  },
+	  "delete": {
+		"title": "Delete",
+		"description": "Used to delete a category, channels, or groups from the server"
+	  },
+	  "kickUser": {
+		"title": "Kick User",
+		"description": "Used to kick a specific user from the academic discord server"
+	  }
+	}
+  },
+  "pagination": {
+	"previous": "Previous",
+	"next": "Next"
   }
 }
