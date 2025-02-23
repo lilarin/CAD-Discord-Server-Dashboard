@@ -73,7 +73,6 @@ export const Header: React.FC<HeaderProps> = ({userDetails}) => {
 							className="text-gray-400 hover:text-gray-200 rounded flex items-center gap-2 transition-all duration-300"
 							onClick={toggleLanguage}
 						>
-							<img src={GlobeIcon} alt={t("header.language")} className="w-5 h-5 cursor-pointer"/>
 							{t(`header.language`)}
 					</Button>
 					<Button
