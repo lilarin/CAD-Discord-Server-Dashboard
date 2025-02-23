@@ -176,7 +176,11 @@
     "updateCategoryPositionErrorLog": "Не вдалося змінити порядок категорій",
     "updateCategoryPositionError": "Не вдалося змінити порядок категорій",
     "updateChannelPositionErrorLog": "Не вдалося змінити порядок каналів",
-    "updateChannelPositionError": "Не вдалося змінити порядок каналів"
+    "updateChannelPositionError": "Не вдалося змінити порядок каналів",
+    "fetchEditableRolesError": "Не вдалося завантажити список доступних ролей",
+    "createRoleError": "Не вдалося створити роль",
+    "renameRoleError": "Не вдалося перейменувати роль",
+    "deleteRoleError": "Не вдалося видалити роль"
   },
   "search": {
     "searchByUsername": "Пошук за іменем користувача...",

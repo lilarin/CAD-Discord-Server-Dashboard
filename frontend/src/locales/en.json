@@ -167,7 +167,10 @@
     "deleteChannelError": "Failed to delete channel",
     "deleteRoleError": "Failed to delete role",
     "updateCategoryPositionError": "Failed to change categories order",
-    "updateChannelPositionError": "Failed to change channels order"
+    "updateChannelPositionError": "Failed to change channels order",
+    "fetchEditableRolesError": "Failed to load the list of available roles",
+    "createRoleError": "Failed to create role",
+    "renameRoleError": "Failed to rename role"
   },
   "search": {
     "searchByUsername": "Search by username...",
