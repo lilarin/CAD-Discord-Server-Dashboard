@@ -400,7 +400,7 @@ export default function Events() {
 								</div>
 								<button
 									onClick={() => setIsDateTimeActionOpen(false)}
-									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-3 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300 w-full"
+									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-3 mb-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300 w-full"
 								>
 									Закрити
 								</button>
