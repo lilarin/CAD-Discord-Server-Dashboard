@@ -149,7 +149,7 @@ function ActionSidebar(
 			setIsRoleListOpen(false);
 			setAvailableRoles([]);
 		}
-	}, [action, target, item, t]);
+	}, [action, target, item]);
 
 	useEffect(() => {
 		function handleClickOutside(event: MouseEvent) {
@@ -333,7 +333,7 @@ function ActionSidebar(
 			return t("warnings.noUserRoles");
 		}
 		return t("warnings.noCategoryRoles");
-	}, [action, target, sortedRoles, t]);
+	}, [action, target, sortedRoles]);
 
 	const handleMouseEnterHint = useCallback(openHint, [openHint]);
 	const handleMouseLeaveHint = useCallback(closeHint, [closeHint]);
