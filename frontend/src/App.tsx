@@ -12,6 +12,7 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import NotFoundPage from "@/pages/NotFoundPage";
 import PCViewOnlyPage from "@/components/PCViewOnly";
 import HomePage from "@/pages/HomePage";
+import '@/i18n';
 
 const App = () => {
 	const [isMobile, setIsMobile] = useState(false);
