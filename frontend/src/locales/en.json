@@ -149,7 +149,8 @@
     "delete": "Delete",
     "filter": "Filter",
     "kick": "Kick User",
-    "search": "Search"
+    "search": "Search",
+    "dropdown": "Dropdown"
   },
   "error": {
     "fetchAllRolesError": "Failed to load the list of roles on the server",
@@ -175,7 +176,9 @@
   "search": {
     "searchByUsername": "Search by username...",
     "searchByRole": "Search by role name...",
-    "searchByCategory": "Search by category name..."
+    "searchByCategory": "Search by category name...",
+    "searchByCategoryName": "Search by category name...",
+    "searchByChannelName": "Search by channel name..."
   },
   "filter": {
     "filterUsersByGroup": "Filter users by their group",
@@ -186,10 +189,12 @@
     }
   },
   "input": {
-    "category": "Category name",
-    "channel": "Channel name",
+    "category": "Category",
+    "channel": "Channel",
     "role": "Role name",
-    "user": "Username"
+    "user": "Username",
+    "eventTitle": "Event title",
+    "eventDateTime": "Event date and time"
   },
   "warnings": {
     "noUsers": "No users found",
@@ -199,5 +204,26 @@
     "noRolesToAdd": "No roles to add",
     "noCategory": "No categories",
     "noChannels": "No channels"
+  },
+  "eventsPage": {
+    "title": "Create queue for student defenses",
+    "channelPlaceholderStart": "Select category first",
+    "selectCategoryTitle": "Select category",
+    "selectChannelTitle": "Select channel",
+    "selectDateTimeTitle": "Select date and time",
+    "timeCaption": "Time",
+    "successToast": "Queue created successfully!"
+  },
+  "placeholder": {
+    "eventTitle": "Enter event title",
+    "category": "Select category",
+    "channel": "Select channel",
+    "eventDateTime": "Select date and time"
+  },
+  "button": {
+    "createLoading": "Creating...",
+    "fillAllFields": "Fill in all fields",
+    "create": "Create",
+    "closeButton": "Close"
   }
 }

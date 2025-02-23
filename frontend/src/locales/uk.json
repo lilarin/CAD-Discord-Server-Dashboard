@@ -149,7 +149,8 @@
     "delete": "Видалити",
     "filter": "Фільтрація",
     "kick": "Вигнати користувача",
-    "search": "Пошук"
+    "search": "Пошук",
+    "dropdown": "Випадаючий список"
   },
   "error": {
     "fetchAllRolesError": "Не вдалося завантажити список ролей на сервері",
@@ -179,13 +180,15 @@
     "updateChannelPositionError": "Не вдалося змінити порядок каналів",
     "fetchEditableRolesError": "Не вдалося завантажити список доступних ролей",
     "createRoleError": "Не вдалося створити роль",
-    "renameRoleError": "Не вдалося перейменувати роль",
-    "deleteRoleError": "Не вдалося видалити роль"
+    "renameRoleError": "Не вдалося перейменувати роль" ,
+    "createQueueMessageError": "Не вдалося створити чергу на сервері"
   },
   "search": {
     "searchByUsername": "Пошук за іменем користувача...",
     "searchByRole": "Пошук за назвою ролі...",
-    "searchByCategory": "Пошук за назвою категорії..."
+    "searchByCategory": "Пошук за назвою категорії...",
+    "searchByCategoryName": "Пошук за назвою категорії...",
+    "searchByChannelName": "Пошук за назвою каналу..."
   },
   "filter": {
     "filterUsersByGroup": "Фільтрувати користувачів за групою",
@@ -196,10 +199,12 @@
     }
   },
   "input": {
-    "category": "Назва категорії",
-    "channel": "Назва каналу",
+    "category": "Категорія",
+    "channel": "Канал",
     "role": "Назва ролі",
-    "user": "Ім'я користувача"
+    "user": "Ім'я користувача",
+    "eventTitle": "Назва події",
+    "eventDateTime": "Дата та час події"
   },
   "warnings": {
     "noUsers": "Користувачів немає",
@@ -208,6 +213,28 @@
     "noUserRoles": "Користувач не має ролей",
     "noRolesToAdd": "Немає ролей для додавання",
     "noCategory": "Категорій немає",
-    "noChannels": "Каналів немає"
+    "noChannels": "Каналів немає" ,
+    "noEvents": "Черг немає"
+  },
+  "eventsPage": {
+    "title": "Створити чергу на захист для студентів",
+    "channelPlaceholderStart": "Спочатку оберіть категорію",
+    "selectCategoryTitle": "Оберіть категорію",
+    "selectChannelTitle": "Оберіть канал",
+    "selectDateTimeTitle": "Оберіть дату та час",
+    "timeCaption": "Час",
+    "successToast": "Черга успішно створена!"
+  },
+  "placeholder": {
+    "eventTitle": "Введіть назву події",
+    "category": "Оберіть категорію",
+    "channel": "Оберіть канал",
+    "eventDateTime": "Оберіть дату та час"
+  },
+  "button": {
+    "createLoading": "Створюється...",
+    "fillAllFields": "Заповніть всі поля",
+    "create": "Створити",
+    "closeButton": "Закрити"
   }
 }

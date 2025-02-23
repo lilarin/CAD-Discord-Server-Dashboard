@@ -6,10 +6,13 @@ import toast from 'react-hot-toast';
 import DatePicker, {registerLocale} from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {uk} from "date-fns/locale/uk";
+import {enUS} from "date-fns/locale/en-US";
 import SearchIcon from "@/assets/icons/search.svg";
 import DropdownIcon from "@/assets/icons/dropdown.svg";
+import {useTranslation} from "react-i18next";
 
 registerLocale("uk", uk);
+registerLocale("en", enUS);
 
 export default function Events() {
 	const [categories, setCategories] = useState<Category[]>([]);
@@ -36,6 +39,10 @@ export default function Events() {
 	const [categorySearchTerm, setCategorySearchTerm] = useState<string>('');
 	const [channelSearchTerm, setChannelSearchTerm] = useState<string>('');
 
+	const {t, i18n} = useTranslation();
+	const currentLocale = i18n.language === 'uk' ? 'uk' : 'en';
+
+
 	useEffect(() => {
 		const fetchCategories = async () => {
 			setIsCategoriesLoading(true);
@@ -43,7 +50,7 @@ export default function Events() {
 				const response = await getCategories();
 				setCategories(response);
 			} catch (error) {
-				toast.error(error.message, {
+				toast.error(t('error.fetchCategoriesError'), {
 					position: "bottom-right",
 					duration: 10000
 				});
@@ -67,7 +74,7 @@ export default function Events() {
 				const fetchedChannels = await getChannels(categoryId);
 				setChannels(fetchedChannels);
 			} catch (error) {
-				toast.error(error.message, {
+				toast.error(t('error.fetchChannelsError'), {
 					position: "bottom-right",
 					duration: 10000
 				});
@@ -77,7 +84,7 @@ export default function Events() {
 		} else {
 			setIsChannelsLoading(false);
 		}
-	}, []);
+	}, [t]);
 
 	const handleCategorySelect = useCallback((categoryId: string) => {
 		setSelectedCategoryId(categoryId === "" ? null : categoryId);
@@ -113,7 +120,7 @@ export default function Events() {
 			if (selectedChannel) {
 				const eventTimeISO = eventDateTime.toISOString();
 				await createQueueMessage(selectedChannel, eventTitle, eventTimeISO);
-				toast.success("Черга успішно створена!", {
+				toast.success(t('eventsPage.successToast'), {
 					position: "bottom-right",
 					duration: 5000
 				});
@@ -131,7 +138,7 @@ export default function Events() {
 		} finally {
 			setIsSubmitting(false);
 		}
-	}, [selectedChannel, eventTitle, eventDateTime, setSelectedCategoryId, setChannels, setSelectedChannel]);
+	}, [selectedChannel, eventTitle, eventDateTime, setSelectedCategoryId, setChannels, setSelectedChannel, t]);
 
 
 	const handleCategoryClick = useCallback(() => {
@@ -177,20 +184,20 @@ export default function Events() {
 				<>
 					<div className="w-2/3 h-full flex flex-col">
 						<div className="bg-[#2F3136] rounded p-4 mb-5">
-							<h2 className="text-2xl font-bold text-white">Створити чергу на захист для студентів</h2>
+							<h2 className="text-2xl font-bold text-white">{t('eventsPage.title')}</h2>
 						</div>
 						<div className="bg-[#2F3136] rounded p-4">
 
 							<form onSubmit={handleSubmit} className="w-full">
 								<div className="mb-3">
 									<label htmlFor="eventTitle" className="block text-gray-300 text-sm font-bold mb-2">
-										Назва події:
+										{t('input.eventTitle')}:
 									</label>
 									<input
 										type="text"
 										id="eventTitle"
 										className="appearance-none rounded w-full py-2 px-2 text-gray-300 bg-[#292B2F] leading-tight focus:outline-none focus:shadow-outline placeholder-gray-500"
-										placeholder="Введіть назву події"
+										placeholder={t('placeholder.eventTitle')}
 										style={{backgroundColor: '#292B2F', color: '#d1d5db'}}
 										value={eventTitle}
 										onChange={handleTitleChange}
@@ -200,7 +207,7 @@ export default function Events() {
 
 								<div className="mb-3">
 									<label htmlFor="category" className="block text-gray-300 text-sm font-bold mb-2">
-										Категорія:
+										{t('input.category')}:
 									</label>
 									<div className="relative">
 										<div
@@ -208,13 +215,13 @@ export default function Events() {
 											ref={categoryRef}
 											className={`cursor-pointer block appearance-none w-full bg-[#292B2F] py-2 px-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline ${!selectedCategoryId ? 'text-gray-500' : 'text-gray-300'}`}
 										>
-											{selectedCategoryId ? categories.find(cat => String(cat.id) === selectedCategoryId)?.name.charAt(0).toUpperCase() + categories.find(cat => String(cat.id) === selectedCategoryId)?.name.slice(1) : "Оберіть категорію"}
+											{selectedCategoryId ? categories.find(cat => String(cat.id) === selectedCategoryId)?.name.charAt(0).toUpperCase() + categories.find(cat => String(cat.id) === selectedCategoryId)?.name.slice(1) : t('placeholder.category')}
 										</div>
 										<div
 											className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-300">
 											<img
 												src={DropdownIcon}
-												alt="Вибір"
+												alt={t('iconAltName.dropdown')}
 												className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-500"
 											/>
 										</div>
@@ -223,7 +230,7 @@ export default function Events() {
 
 								<div className="mb-3">
 									<label htmlFor="channel" className="block text-gray-300 text-sm font-bold mb-2">
-										Канал:
+										{t('input.channel')}:
 									</label>
 									<div className="relative">
 										<div
@@ -231,13 +238,13 @@ export default function Events() {
 											ref={channelRef}
 											className={`cursor-pointer block appearance-none w-full bg-[#292B2F] py-2 px-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline ${!selectedChannel && selectedCategoryId ? 'text-gray-500' : !selectedChannel && !selectedCategoryId ? 'text-gray-500' : 'text-gray-300'}`}
 										>
-											{selectedChannel ? channels.find(chan => String(chan.id) === selectedChannel)?.name.charAt(0).toUpperCase() + channels.find(chan => String(chan.id) === selectedChannel)?.name.slice(1) : (selectedCategoryId ? "Оберіть канал" : "Спочатку оберіть категорію")}
+											{selectedChannel ? channels.find(chan => String(chan.id) === selectedChannel)?.name.charAt(0).toUpperCase() + channels.find(chan => String(chan.id) === selectedChannel)?.name.slice(1) : (selectedCategoryId ? t('placeholder.channel') : t('eventsPage.channelPlaceholderStart'))}
 										</div>
 										<div
 											className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-300">
 											<img
 												src={DropdownIcon}
-												alt="Вибір"
+												alt={t('iconAltName.dropdown')}
 												className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-500"
 											/>
 										</div>
@@ -246,7 +253,7 @@ export default function Events() {
 
 								<div className="mb-3">
 									<label htmlFor="eventDateTime" className="block text-gray-300 text-sm font-bold mb-2">
-										Дата та час події:
+										{t('input.eventDateTime')}:
 									</label>
 									<div className="relative">
 										<div
@@ -254,19 +261,19 @@ export default function Events() {
 											ref={dateTimeRef}
 											className={`cursor-pointer block appearance-none w-full bg-[#292B2F] py-2 px-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline ${!eventDateTime ? 'text-gray-500' : 'text-gray-300'}`}
 										>
-											{eventDateTime ? eventDateTime.toLocaleString('uk-UA', {
+											{eventDateTime ? eventDateTime.toLocaleString(currentLocale, {
 												day: '2-digit',
 												month: '2-digit',
 												year: 'numeric',
 												hour: '2-digit',
 												minute: '2-digit'
-											}) : "Оберіть дату та час"}
+											}) : t('placeholder.eventDateTime')}
 										</div>
 										<div
 											className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-300">
 											<img
 												src={DropdownIcon}
-												alt="Вибір"
+												alt={t('iconAltName.dropdown')}
 												className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-500"
 											/>
 										</div>
@@ -279,7 +286,7 @@ export default function Events() {
 										type="submit"
 										disabled={isSubmitting || !isSubmitButtonActive}
 									>
-										{isSubmitting ? 'Створюється..' : (!isSubmitButtonActive ? 'Заповніть всі поля' : 'Створити')}
+										{isSubmitting ? t('button.createLoading') : (!isSubmitButtonActive ? t('button.fillAllFields') : t('button.create'))}
 									</button>
 								</div>
 							</form>
@@ -288,18 +295,18 @@ export default function Events() {
 					{isCategoryActionOpen && (
 						<div ref={categoryActionRef} className="pl-5 w-1/3 sticky top-5">
 							<div className="bg-[#2F3136] rounded p-4">
-								<span className="text-lg font-semibold mb-2 text-white">Оберіть категорію</span>
+								<span className="text-lg font-semibold mb-2 text-white">{t('eventsPage.selectCategoryTitle')}</span>
 								<div className="w-full flex flex-row relative mt-2">
 									<input
 										type="text"
-										placeholder="Пошук за назвою категорії..."
+										placeholder={t('search.searchByCategoryName')}
 										className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
 										value={categorySearchTerm}
 										onChange={(e) => setCategorySearchTerm(e.target.value)}
 									/>
 									<img
 										src={SearchIcon}
-										alt="Пошук"
+										alt={t('iconAltName.search')}
 										className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-500"
 									/>
 								</div>
@@ -315,14 +322,14 @@ export default function Events() {
 											</button>
 										))
 									) : (
-										<div className="text-gray-400 p-2">Категорії не знайдено</div>
+										<div className="text-gray-400 p-2">{t('warnings.noCategory')}</div>
 									)}
 								</div>
 								<button
 									onClick={() => setIsCategoryActionOpen(false)}
 									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-2 mb-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300 w-full"
 								>
-									Закрити
+									{t('button.closeButton')}
 								</button>
 							</div>
 						</div>
@@ -331,19 +338,19 @@ export default function Events() {
 					{isChannelActionOpen && (
 						<div ref={channelActionRef} className="pl-5 w-1/3 sticky top-5">
 							<div className="bg-[#2F3136] rounded p-4">
-								<span className="text-lg font-semibold mb-2 text-white">Оберіть канал</span>
+								<span className="text-lg font-semibold mb-2 text-white">{t('eventsPage.selectChannelTitle')}</span>
 
 								<div className="w-full flex flex-row relative mt-2">
 									<input
 										type="text"
-										placeholder="Пошук за назвою каналу..."
+										placeholder={t('search.searchByChannelName')}
 										className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
 										value={channelSearchTerm}
 										onChange={(e) => setChannelSearchTerm(e.target.value)}
 									/>
 									<img
 										src={SearchIcon}
-										alt="Пошук"
+										alt={t('iconAltName.search')}
 										className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-500"
 									/>
 								</div>
@@ -364,14 +371,14 @@ export default function Events() {
 											</button>
 										))
 									) : (
-										<div className="text-gray-400 p-2">Канали не знайдено</div>
+										<div className="text-gray-400 p-2">{t('warnings.noChannels')}</div>
 									)}
 								</div>
 								<button
 									onClick={() => setIsChannelActionOpen(false)}
 									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-2 mb-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300 w-full"
 								>
-									Закрити
+									{t('button.closeButton')}
 								</button>
 							</div>
 						</div>
@@ -380,7 +387,7 @@ export default function Events() {
 					{isDateTimeActionOpen && (
 						<div ref={dateTimeRef} className="pl-5 w-1/3 sticky top-5">
 							<div className="bg-[#2F3136] rounded p-4">
-								<span className="text-lg font-semibold mb-2 text-white">Оберіть дату та час</span>
+								<span className="text-lg font-semibold mb-2 text-white">{t('eventsPage.selectDateTimeTitle')}</span>
 								<div className="mt-4 datepicker-container w-full">
 									<DatePicker
 										selected={eventDateTime}
@@ -388,11 +395,11 @@ export default function Events() {
 										showTimeSelect
 										timeFormat="HH:mm"
 										timeIntervals={15}
-										timeCaption="Час"
+										timeCaption={t('eventsPage.timeCaption')}
 										dateFormat="dd.MM.yyyy HH:mm"
 										className="custom-datepicker w-full"
-										placeholderText="Оберіть дату та час"
-										locale="uk"
+										placeholderText={t('placeholder.eventDateTime')}
+										locale={currentLocale}
 										minDate={new Date()}
 										inline
 										open
@@ -402,7 +409,7 @@ export default function Events() {
 									onClick={() => setIsDateTimeActionOpen(false)}
 									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-3 mb-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300 w-full"
 								>
-									Закрити
+									{t('button.closeButton')}
 								</button>
 							</div>
 						</div>
