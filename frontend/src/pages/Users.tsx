@@ -95,10 +95,11 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 				const response = await getUsers();
 				setUsers(response);
 			} catch (error) {
-				toast.error(error.message, {
+				toast.error(t('error.fetchUsersError'), {
 					position: "bottom-right",
 					duration: 10000
 				});
+				console.error(error)
 			}
 		};
 
@@ -118,10 +119,11 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 				const users = await renameUser(userId.toString(), userName);
 				setUsers(users);
 			} catch (error) {
-				toast.error(error.message, {
+				toast.error(t('error.renameUserError'), {
 					position: "bottom-right",
 					duration: 10000
 				});
+				console.error(error)
 				const fetchedUsers = await getUsers();
 				setUsers(fetchedUsers);
 			}
@@ -137,10 +139,11 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 				const users = await kickUser(userId.toString());
 				setUsers(users);
 			} catch (error) {
-				toast.error(error.message, {
+				toast.error(t('error.kickUserError'), {
 					position: "bottom-right",
 					duration: 10000
 				});
+				console.error(error)
 				const fetchedUsers = await getUsers();
 				setUsers(fetchedUsers);
 			}
@@ -203,7 +206,7 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 				{!isLoading && (
 					<div className="flex-grow">
 						{filteredUsers.length === 0 ? (
-							<div className="text-gray-400">{t("users.noUsers")}</div>
+							<div className="text-gray-400">{t("warnings.noUsers")}</div>
 						) : (
 							<ul className="list-none p-0">
 								{usersOnPage.map((user) => (

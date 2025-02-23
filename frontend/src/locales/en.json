@@ -173,7 +173,10 @@
     "createRoleError": "Failed to create role",
     "renameRoleError": "Failed to rename role",
     "createQueueMessageError": "Failed to create queue on server",
-    "fetchLogsError": "Failed to load logs"
+    "fetchLogsError": "Failed to load logs",
+    "fetchUsersError": "Failed to load users",
+    "renameUserError": "Failed to rename user",
+    "kickUserError": "Failed to kick user"
   },
   "search": {
     "searchByUsername": "Search by username...",

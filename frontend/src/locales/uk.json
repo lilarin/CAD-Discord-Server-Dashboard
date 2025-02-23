@@ -182,7 +182,10 @@
     "createRoleError": "Не вдалося створити роль",
     "renameRoleError": "Не вдалося перейменувати роль" ,
     "createQueueMessageError": "Не вдалося створити чергу на сервері",
-    "fetchLogsError": "Не вдалося завантажити логи"
+    "fetchLogsError": "Не вдалося завантажити логи",
+    "fetchUsersError": "Не вдалося завантажити користувачів",
+    "renameUserError": "Не вдалося перейменувати користувача",
+    "kickUserError": "Не вдалося вигнати користувача"
   },
   "search": {
     "searchByUsername": "Пошук за іменем користувача...",
