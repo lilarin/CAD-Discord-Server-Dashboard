@@ -10,7 +10,7 @@ import {Category, Channel, Role, User} from "@/lib/types.ts";
 import {useHintAnimation} from "@/hooks/useHintAnimation.tsx";
 import {useTranslation} from "react-i18next";
 
-export type ActionType = 'create' | 'rename' | 'edit' | 'delete' | null;
+export type ActionType = 'create' | 'rename' | 'edit' | 'delete' | 'filter' | null;
 export type ActionTarget = 'category' | 'channel' | 'role' | 'user' | null;
 
 interface ActionSidebarProps {
@@ -30,11 +30,9 @@ interface ActionSidebarProps {
 	onRenameUser?: (id: number, newName: string) => void;
 	onKickUser?: (id: number) => void;
 
-	isFilterOpen?: boolean;
-	onFilterCancel?: () => void;
-	onFilterGroupChange?: (group: string | null) => void;
+	onFilter?: (group: string | null) => void;
 	filterGroup?: string | null;
-	setFilterKey?: React.Dispatch<React.SetStateAction<number>>;
+	onFilterCancel?: () => void;
 }
 
 function ActionSidebar(
@@ -55,11 +53,9 @@ function ActionSidebar(
 		onRenameUser,
 		onKickUser,
 
-		isFilterOpen,
-		onFilterCancel,
-		onFilterGroupChange,
+		onFilter,
 		filterGroup,
-		setFilterKey,
+		onFilterCancel,
 	}: ActionSidebarProps) {
 	const [itemName, setItemName] = useState('');
 	const [newChannelType, setNewChannelType] = useState<'text' | 'voice'>('text');
@@ -196,6 +192,9 @@ function ActionSidebar(
 			role: t("actionSidebar.delete.role", {itemName: item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}),
 			user: t("actionSidebar.delete.user", {itemName: item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}),
 		},
+		filter: {
+			user: t("actionSidebar.filter.user"),
+		}
 	};
 
 	const actionHintTextMap = {
@@ -217,7 +216,7 @@ function ActionSidebar(
 	};
 
 	const text = action && target ? actionTextMap[action][target] : '';
-	const actionHintText = action && target ? actionHintTextMap[action][target] : '';
+	const actionHintText = action && target && actionHintTextMap[action] ? actionHintTextMap[action][target] : '';
 
 
 	const handleDeleteAction = () => {
@@ -340,15 +339,14 @@ function ActionSidebar(
 	const handleMouseLeaveHint = useCallback(closeHint, [closeHint]);
 
 	const handleFilterGroupChange = (group: string | null) => {
-		onFilterGroupChange?.(group);
-		setFilterKey?.(prev => prev + 1)
+		onFilter?.(group);
 	};
 
 
 	return (
 		<div className="sticky top-5">
-			{(action || isFilterOpen) && <div className="bg-[#2F3136] rounded p-4">
-				{action && <span className="text-lg font-semibold mb-2">{text}</span>}
+			{action && <div className="bg-[#2F3136] rounded p-4">
+				{action !== 'filter' && <span className="text-lg font-semibold mb-2">{text}</span>}
 				{action === 'delete' && (
 					<div className="flex justify-between items-center pt-4 pb-1">
 						<div className="flex justify-start space-x-3">
@@ -497,13 +495,12 @@ function ActionSidebar(
 						</div>
 					</div>
 				)}
-				{isFilterOpen && (
+				{action === 'filter' && target === 'user' && (
 					<div ref={filterRef} className="">
-						<span className="text-lg font-semibold mb-2">{t("actionSidebar.filterSettings")}</span>
+						<span className="text-lg font-semibold mb-2">{t("actionSidebar.filter.user")}</span>
 						<h3 className="font-light mt-2">{t("actionSidebar.filterUsersByGroup")}:</h3>
 						<div className="mt-2 space-y-2">
 							<button
-								key={`staff-button-${setFilterKey ? Date.now() : 0}`}
 								onClick={() => handleFilterGroupChange('staff')}
 								className={`w-full p-2 rounded text-white transition-all duration-300
                  ${filterGroup === 'staff'
@@ -518,7 +515,6 @@ function ActionSidebar(
 								{t("actionSidebar.filterGroup.staff")}
 							</button>
 							<button
-								key={`student-button-${setFilterKey ? Date.now() : 0}`}
 								onClick={() => handleFilterGroupChange('student')}
 								className={`w-full p-2 rounded text-white transition-all duration-300
                  ${filterGroup === 'student'
@@ -533,7 +529,6 @@ function ActionSidebar(
 								{t("actionSidebar.filterGroup.student")}
 							</button>
 							<button
-								key={`null-button-${setFilterKey ? Date.now() : 0}`}
 								onClick={() => handleFilterGroupChange('null')}
 								className={`w-full p-2 rounded text-white transition-all duration-300
                  ${filterGroup === 'null'
@@ -551,7 +546,7 @@ function ActionSidebar(
 						<div className="flex justify-between items-center pt-4 pb-1">
 							<div className="flex justify-start space-x-3">
 								<button
-									onClick={onFilterCancel}
+									onClick={() => {onFilterCancel?.(); handleFilterGroupChange(null)}}
 									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
 								>
 									{t("actionSidebar.closeButton")}

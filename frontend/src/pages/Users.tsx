@@ -13,11 +13,9 @@ import ActionSidebar, {ActionTarget, ActionType} from "@/components/ActionSideba
 
 const ITEMS_PER_PAGE = 12;
 
-const usePaginatedUsers = (users: User[], setUsers: React.Dispatch<React.SetStateAction<User[]>>, itemsPerPage: number = ITEMS_PER_PAGE) => {
+const usePaginatedUsers = (users: User[], searchTerm: string, filterGroup: string | null, itemsPerPage: number = ITEMS_PER_PAGE) => {
 	const [isLoading, setIsLoading] = useState(true);
-	const [searchTerm, setSearchTerm] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
-	const [filterGroup, setFilterGroup] = useState<string | null>(null);
 
 	useEffect(() => {
 		if (users.length) {
@@ -25,10 +23,6 @@ const usePaginatedUsers = (users: User[], setUsers: React.Dispatch<React.SetStat
 		}
 	}, [users]);
 
-	const handleSearch = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-		setSearchTerm(event.target.value);
-		setCurrentPage(1);
-	}, []);
 
 	const filteredUsers = useMemo(() => {
 		let filtered = users.filter((user) =>
@@ -57,36 +51,17 @@ const usePaginatedUsers = (users: User[], setUsers: React.Dispatch<React.SetStat
 	return {
 		usersOnPage,
 		isLoading,
-		searchTerm,
 		pageCount,
 		currentPage,
-		handleSearch,
 		handlePageChange,
 		filteredUsers,
-		filterGroup,
-		setFilterGroup
 	}
 };
 
 export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: number }) {
 	const [users, setUsers] = useState<User[]>([]);
-	const [isFilterOpen, setIsFilterOpen] = useState(false);
-	const [filterKey, setFilterKey] = useState(0)
-
-
-	const {
-		usersOnPage,
-		isLoading,
-		searchTerm,
-		pageCount,
-		currentPage,
-		handleSearch,
-		filteredUsers,
-		handlePageChange,
-		filterGroup,
-		setFilterGroup
-	} = usePaginatedUsers(users, setUsers, itemsPerPage);
-
+	const [searchTerm, setSearchTerm] = useState('');
+	const [filterGroup, setFilterGroup] = useState<string | null>(null);
 	const [actionSidebar, setActionSidebar] = useState<{
 		action: ActionType;
 		target: ActionTarget;
@@ -94,9 +69,18 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 	}>({action: null, target: null, item: null});
 
 
-	const handleActionTriggered = (action: ActionType, target: ActionTarget, item: Role | null) => {
+	const {
+		usersOnPage,
+		isLoading,
+		pageCount,
+		currentPage,
+		handlePageChange,
+		filteredUsers,
+	} = usePaginatedUsers(users, searchTerm, filterGroup, itemsPerPage);
+
+
+	const handleActionTriggered = (action: ActionType, target: ActionTarget, item: User | null = null) => {
 		setActionSidebar({action, target, item});
-		setIsFilterOpen(false);
 	};
 
 	const handleCancelAction = () => {
@@ -107,7 +91,6 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 		const fetchUsers = async () => {
 			try {
 				const response = await getUsers();
-				// const duplicatedUsers = Array(20).fill(response).flat();
 				setUsers(response);
 			} catch (error) {
 				toast.error(error.message, {
@@ -164,26 +147,21 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 	);
 
 
+	const handleFilter = (group: string | null) => {
+		setFilterGroup(group);
+	};
+
+	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setSearchTerm(event.target.value);
+	};
+
 	const handleFilterClick = () => {
-		setActionSidebar({action: null, target: null, item: null});
-		setIsFilterOpen(prev => !prev);
-	};
-
-
-	const handleFilterGroupChange = (group: string | null) => {
-		if (filterGroup === group) {
-			setFilterGroup(null);
+		if (actionSidebar.action === 'filter') {
+			setActionSidebar({action: null, target: null, item: null});
 		} else {
-			setFilterGroup(group);
+			setActionSidebar({action: 'filter', target: 'user', item: null});
 		}
-		setFilterKey(prev => prev + 1)
 	};
-
-	useEffect(() => {
-		if (actionSidebar.action && actionSidebar.target && actionSidebar.item) {
-			setIsFilterOpen(false)
-		}
-	}, [actionSidebar])
 
 
 	return (
@@ -200,7 +178,7 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 								placeholder="Пошук за іменем користувача..."
 								className="w-full p-2 rounded bg-[#292B2F] focus:outline-none pr-8"
 								value={searchTerm}
-								onChange={handleSearch}
+								onChange={handleSearchChange}
 							/>
 							<img
 								src={SearchIcon}
@@ -271,17 +249,9 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 						onCancel={handleCancelAction}
 						onRenameUser={handleRenameUser}
 						onKickUser={handleKickUser}
-					/>
-				</div>
-			)}
-			{isFilterOpen && (
-				<div className="pl-5 w-1/3 sticky top-5">
-					<ActionSidebar
-						isFilterOpen={isFilterOpen}
-						onFilterCancel={() => setIsFilterOpen(false)}
-						onFilterGroupChange={handleFilterGroupChange}
+						onFilter={handleFilter}
 						filterGroup={filterGroup}
-						setFilterKey={setFilterKey}
+						onFilterCancel={handleCancelAction}
 					/>
 				</div>
 			)}
