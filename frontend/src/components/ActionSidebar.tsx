@@ -90,7 +90,7 @@ function ActionSidebar(
 				const fetchedAllRoles = await getAllRoles();
 				setAllRolesList(fetchedAllRoles);
 			} catch (error) {
-				toast.error(t("actionSidebar.fetchAllRolesError"), {
+				toast.error(t("error.fetchAllRolesError"), {
 					position: "bottom-right",
 					duration: 5000
 				});
@@ -107,7 +107,7 @@ function ActionSidebar(
 					setRoles(fetchedRoles);
 					setInitialRoles([...fetchedRoles]);
 				} catch (error) {
-					toast.error(t("actionSidebar.fetchCategoryRolesError"), {
+					toast.error(t("error.fetchCategoryRolesError"), {
 						position: "bottom-right",
 						duration: 10000
 					});
@@ -129,7 +129,7 @@ function ActionSidebar(
 					setRoles(fetchedRoles);
 					setInitialRoles([...fetchedRoles]);
 				} catch (error) {
-					toast.error(t("actionSidebar.fetchUserRolesError"), {
+					toast.error(t("error.fetchUserRolesError"), {
 						position: "bottom-right",
 						duration: 10000
 					});
@@ -263,7 +263,7 @@ function ActionSidebar(
 					setInitialRoles([...roles]);
 				}
 			} catch (error) {
-				toast.error(t("actionSidebar.saveCategoryPermissionsError"), {
+				toast.error(t("error.saveCategoryPermissionsError"), {
 					position: "bottom-right",
 					duration: 10000
 				});
@@ -280,7 +280,7 @@ function ActionSidebar(
 					setInitialRoles([...roles]);
 				}
 			} catch (error) {
-				toast.error(t("actionSidebar.saveUserRolesError"), {
+				toast.error(t("error.saveUserRolesError"), {
 					position: "bottom-right",
 					duration: 10000
 				});

@@ -36,15 +36,15 @@ function DraggableChannel({
         <span className="cursor-grab mr-2" {...attributes} {...listeners}>
           <img
               src={ReorderIcon}
-              alt={t("draggable.reorder")}
+              alt={t("iconAltName.reorder")}
               className="w-5 h-5 cursor-grab"
           />
         </span>
         {channel.type === 'text' && (
-            <img src={TextIcon} alt={t("draggable.textChannel")} className="w-4 h-4 mr-1"/>
+            <img src={TextIcon} alt={t("iconAltName.textChannel")} className="w-4 h-4 mr-1"/>
         )}
         {channel.type === 'voice' && (
-          <img src={VoiceIcon} alt={t("draggable.voiceChannel")} className="w-4 h-4 mr-1" />
+          <img src={VoiceIcon} alt={t("iconAltName.voiceChannel")} className="w-4 h-4 mr-1" />
         )}
         <span className="pl-0.5">{channel.name.charAt(0).toUpperCase() + channel.name.slice(1)}</span>
       </div>
@@ -52,14 +52,14 @@ function DraggableChannel({
         <div className="relative group" onClick={() => onActionTriggered('rename', 'channel', channel)}>
           <img
             src={RenameIcon}
-            alt={t("draggable.rename")}
+            alt={t("iconAltName.rename")}
             className="w-4 h-4 cursor-pointer filter group-hover:brightness-200 transition-all duration-300"
           />
         </div>
         <div className="relative group" onClick={() => onActionTriggered('delete', 'channel', channel)}>
           <img
             src={DeleteIcon}
-            alt={t("draggable.delete")}
+            alt={t("iconAltName.delete")}
             className="w-4 h-4 cursor-pointer filter group-hover:brightness-200 transition-all duration-300"
           />
         </div>

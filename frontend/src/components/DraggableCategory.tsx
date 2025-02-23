@@ -44,7 +44,7 @@ function DraggableCategory({
         <span className="cursor-grab mr-2" {...attributes} {...listeners}>
           <img
               src={ReorderIcon}
-              alt={t("draggable.reorder")}
+              alt={t("iconAltName.reorder")}
               className="w-5 h-5 cursor-grab"
           />
         </span>
@@ -54,21 +54,21 @@ function DraggableCategory({
         <button className="relative group" onClick={() => onActionTriggered('rename', 'category', category)}>
         <img
             src={RenameIcon}
-            alt={t("draggable.rename")}
+            alt={t("iconAltName.rename")}
             className="w-5 h-5 cursor-pointer filter group-hover:brightness-200 transition-all duration-300"
           />
         </button>
         <button className="relative group" onClick={() => onActionTriggered('edit', 'category', category)}>
           <img
             src={EditIcon}
-            alt={t("draggable.edit")}
+            alt={t("iconAltName.edit")}
             className="w-5 h-5 cursor-pointer filter group-hover:brightness-200 transition-all duration-300"
           />
         </button>
         <button className="relative group" onClick={() => onActionTriggered('delete', 'category', category)}>
           <img
             src={DeleteIcon}
-            alt={t("draggable.delete")}
+            alt={t("iconAltName.delete")}
             className="w-5 h-5 cursor-pointer filter group-hover:brightness-200 transition-all duration-300"
           />
         </button>

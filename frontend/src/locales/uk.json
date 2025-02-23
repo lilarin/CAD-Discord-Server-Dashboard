@@ -87,14 +87,6 @@
 	"previous": "Попередня",
 	"next": "Наступна"
   },
-  "draggable": {
-	"reorder": "Перемістити",
-	"rename": "Перейменувати",
-	"edit": "Змінити",
-	"delete": "Видалити",
-	"textChannel": "Текстовий канал",
-	"voiceChannel": "Голосовий канал"
-  },
   "actionSidebar": {
 	"create": {
 	  "category": "Створення нової категорії",
@@ -168,6 +160,21 @@
 	"searchIconAlt": "Пошук",
 	"noRoles": "Немає ролей",
 	"fetchAllRolesError": "Не вдалося завантажити список ролей на сервері",
+	"fetchCategoryRolesError": "Не вдалося змінити список ролей, що мають доступ до категорії",
+	"fetchUserRolesError": "Не вдалося завантажити список ролей користувача",
+	"saveCategoryPermissionsError": "Не вдалося змінити налаштування доступу ролей до категорії",
+	"saveUserRolesError": "Не вдалося змінити ролі користувачу"
+  },
+  "iconsAltName": {
+	"reorder": "Перемістити",
+	"rename": "Перейменувати",
+	"edit": "Змінити",
+	"delete": "Видалити",
+	"textChannel": "Текстовий канал",
+	"voiceChannel": "Голосовий канал"
+  },
+  "error": {
+  	"fetchAllRolesError": "Не вдалося завантажити список ролей на сервері",
 	"fetchCategoryRolesError": "Не вдалося змінити список ролей, що мають доступ до категорії",
 	"fetchUserRolesError": "Не вдалося завантажити список ролей користувача",
 	"saveCategoryPermissionsError": "Не вдалося змінити налаштування доступу ролей до категорії",

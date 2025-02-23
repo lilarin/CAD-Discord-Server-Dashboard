@@ -87,14 +87,6 @@
     "previous": "Previous",
     "next": "Next"
   },
-  "draggable": {
-    "reorder": "Reorder",
-    "rename": "Rename",
-    "edit": "Edit",
-    "delete": "Delete",
-    "textChannel": "Text Channel",
-    "voiceChannel": "Voice Channel"
-  },
   "actionSidebar": {
     "create": {
       "category": "Create new category",
@@ -166,7 +158,17 @@
     "noRolesToAdd": "No roles to add",
     "searchRolePlaceholder": "Search by role name...",
     "searchIconAlt": "Search",
-    "noRoles": "No roles",
+    "noRoles": "No roles"
+  },
+  "iconAltName": {
+    "reorder": "Reorder",
+    "rename": "Rename",
+    "edit": "Edit",
+    "delete": "Delete",
+    "textChannel": "Text Channel",
+    "voiceChannel": "Voice Channel"
+  },
+  "error": {
     "fetchAllRolesError": "Failed to load the list of roles on the server",
     "fetchCategoryRolesError": "Failed to change the list of roles that have access to the category",
     "fetchUserRolesError": "Failed to load the list of user roles",
