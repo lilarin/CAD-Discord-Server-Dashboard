@@ -339,7 +339,11 @@ function ActionSidebar(
 	const handleMouseLeaveHint = useCallback(closeHint, [closeHint]);
 
 	const handleFilterGroupChange = (group: string | null) => {
-		onFilter?.(group);
+		if (filterGroup === group) {
+			onFilter?.(null);
+		} else {
+			onFilter?.(group);
+		}
 	};
 
 
