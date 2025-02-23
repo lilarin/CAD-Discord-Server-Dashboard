@@ -3,7 +3,7 @@ import {getUsers, kickUser, renameUser} from '@/lib/api';
 import {ComponentLoadingSpinner} from '@/components/LoadingSpinner';
 import toast from 'react-hot-toast';
 import {PaginationControl} from "@/hooks/PaginationControl.tsx";
-import {Role, User} from "@/lib/types.ts";
+import {User} from "@/lib/types.ts";
 import FilterSearchIcon from "@/assets/icons/filter_search.svg";
 import SearchIcon from "@/assets/icons/search.svg";
 import RenameIcon from "@/assets/icons/rename.svg";
@@ -69,7 +69,7 @@ export default function Users({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: 
 		item: User | null;
 	}>({action: null, target: null, item: null});
 
-	const { t } = useTranslation();
+	const {t} = useTranslation();
 
 	const {
 		usersOnPage,
