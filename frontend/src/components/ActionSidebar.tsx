@@ -71,7 +71,7 @@ function ActionSidebar(
 	const [roleSearchTerm, setRoleSearchTerm] = useState('');
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const filterRef = useRef<HTMLDivElement>(null);
-	const hintText = "Фільтри дозволяють відобразити лише користувачів з конкретної групи";
+	const filterHintText = "Фільтри дозволяють відобразити лише користувачів з конкретної групи";
 
 
 	const hintAnimation = useHintAnimation();
@@ -93,10 +93,11 @@ function ActionSidebar(
 				const fetchedAllRoles = await getAllRoles();
 				setAllRolesList(fetchedAllRoles);
 			} catch (error) {
-				toast.error("Не вдалося завантажити список ролей", {
+				toast.error("Не вдалося завантажити список ролей на сервері", {
 					position: "bottom-right",
 					duration: 5000
 				});
+				console.log(error.message)
 				setAllRolesList([]);
 			}
 		};
@@ -109,10 +110,11 @@ function ActionSidebar(
 					setRoles(fetchedRoles);
 					setInitialRoles([...fetchedRoles]);
 				} catch (error) {
-					toast.error(error.message, {
+					toast.error("Не вдалося змінити список ролей, що мають доступ до категорії", {
 						position: "bottom-right",
 						duration: 10000
 					});
+					console.log(error.message)
 					setRoles([]);
 				} finally {
 					setIsLoadingPermissions(false);
@@ -130,10 +132,11 @@ function ActionSidebar(
 					setRoles(fetchedRoles);
 					setInitialRoles([...fetchedRoles]);
 				} catch (error) {
-					toast.error(error.message, {
+					toast.error("Не вдалося завантажити список ролей користувача", {
 						position: "bottom-right",
 						duration: 10000
 					});
+					console.log(error.message)
 					setRoles([]);
 				} finally {
 					setIsLoadingPermissions(false);
@@ -194,7 +197,7 @@ function ActionSidebar(
 		},
 	};
 
-	const hintTextMap = {
+	const actionHintTextMap = {
 		create: {
 			category: 'Категорію варто сприймати як дисципліну, чи розділ зі своїми каналами та доступом. Після створення категорії вона знаходитиметься внизу списку',
 			channel: 'Введіть назву для каналу та оберіть його тип',
@@ -213,7 +216,7 @@ function ActionSidebar(
 	};
 
 	const text = action && target ? actionTextMap[action][target] : '';
-	const actionHintText = action && target ? hintTextMap[action][target] : '';
+	const actionHintText = action && target ? actionHintTextMap[action][target] : '';
 
 
 	const handleDeleteAction = () => {
@@ -260,10 +263,11 @@ function ActionSidebar(
 					setInitialRoles([...roles]);
 				}
 			} catch (error) {
-				toast.error(error.message, {
+				toast.error("Не вдалося змінити налаштування доступу ролей до категорії", {
 					position: "bottom-right",
 					duration: 10000
 				});
+				console.log(error.message)
 				const fetchedRoles = await getCategoryAccessRoles(item.id.toString());
 				setRoles(fetchedRoles);
 			}
@@ -276,10 +280,11 @@ function ActionSidebar(
 					setInitialRoles([...roles]);
 				}
 			} catch (error) {
-				toast.error(error.message, {
+				toast.error("Не вдалося змінити ролі користувачу", {
 					position: "bottom-right",
 					duration: 10000
 				});
+				console.log(error.message)
 				const fetchedRoles = await getUserRoles(item.id.toString());
 				setRoles(fetchedRoles);
 			}
@@ -318,7 +323,6 @@ function ActionSidebar(
 			initialRoles.length === roles.length &&
 			initialRoles.map(r => r.id).sort().every((id, index) => id === roles.map(r => r.id).sort()[index])
 		);
-
 
 	const sortedRoles = useMemo(() => {
 		return [...roles].sort((a, b) => a.name.localeCompare(b.name));
@@ -552,7 +556,7 @@ function ActionSidebar(
 									Закрити
 								</button>
 							</div>
-							{hintText && (
+							{filterHintText && (
 								<div className="pt-2 hover:brightness-200 transition-all duration-300 align-center">
 									<button
 										onMouseEnter={handleMouseEnterHint}
@@ -567,11 +571,11 @@ function ActionSidebar(
 					</div>
 				)}
       </div>}
-			{showHint && hintText && (
+			{showHint && (action || isFilterOpen) && (
 				<div className="w-full pt-5" style={{opacity: hintOpacity, transition: `opacity 300ms ease-in-out`}}>
 					<div className="bg-[#2F3136] rounded p-4">
 						<h3 className="font-semibold mb-2">Підказка</h3>
-						<h3 className="font-light">{hintText}</h3>
+						<h3 className="font-light">{action && actionHintText ? actionHintText : filterHintText}</h3>
 					</div>
 				</div>
 			)}
