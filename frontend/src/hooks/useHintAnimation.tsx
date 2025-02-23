@@ -9,12 +9,13 @@ export const useHintAnimation = () => {
         if (isVisible) {
             requestAnimationFrame(() => setOpacity(1));
         } else {
-            setOpacity(0);
+            requestAnimationFrame(() => setOpacity(0));
         }
     }, [isVisible]);
 
 
     const open = useCallback(() => {
+        clearTimeout(timeoutRef.current);
         if (!isVisible) {
             setIsVisible(true);
         }
@@ -26,11 +27,11 @@ export const useHintAnimation = () => {
             timeoutRef.current = setTimeout(() => setIsVisible(false), 300);
         }
     }, [isVisible]);
+
     const toggle = useCallback(() => {
         if (isVisible) {
             close();
         } else {
-            clearTimeout(timeoutRef.current);
             open();
         }
     }, [isVisible, close, open]);
