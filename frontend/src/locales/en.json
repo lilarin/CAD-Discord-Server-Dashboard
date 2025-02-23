@@ -176,7 +176,9 @@
     "fetchLogsError": "Failed to load logs",
     "fetchUsersError": "Failed to load users",
     "renameUserError": "Failed to rename user",
-    "kickUserError": "Failed to kick user"
+    "kickUserError": "Failed to kick user",
+    "signInError": "Failed to sign in",
+    "signOutError": "Failed to sign out"
   },
   "search": {
     "searchByUsername": "Search by username...",
@@ -241,5 +243,24 @@
     "tableHeaderTime": "Execution Time",
     "resetFiltersButton": "Reset filters",
     "filterHintText": "Filters allow you to display logs for the selected time period. The first click determines the beginning of the search period, and the second determines its end."
+  },
+  "pcViewOnlyPage": {
+    "title": "Resource unavailable",
+    "description": "Sorry, but the control panel does not support viewing from mobile devices."
+  },
+  "noAccessPage": {
+    "title": "Access denied",
+    "description": "Sorry, you do not have access rights to the control panel. \nTo get access, contact your administrator, or log in with another account.",
+    "signOutButton": "Sign out of system"
+  },
+  "loginPage": {
+    "title": "Authorization required to access the control panel",
+    "description": "We use Discord OAuth2 to identify users. \nClick the button below to log in via Discord account.",
+    "loginButton": "Login via Discord",
+    "loadingButton": "Loading..."
+  },
+  "notFoundPage": {
+    "title404": "404: Page not found",
+    "description": "Nothing to see here 🤓"
   }
 }
