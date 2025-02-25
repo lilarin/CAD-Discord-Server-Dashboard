@@ -7,7 +7,8 @@ from backend.services.modals import (
     USER_REGISTER_DATA,
     init_register_buttons,
     init_group_confirm_button,
-    init_group_select
+    init_group_select,
+    init_queue_buttons
 )
 from backend.services.responses import send_ephemeral_response
 
@@ -125,11 +126,15 @@ async def on_button_click(interaction: disnake.MessageInteraction) -> None:
             await send_ephemeral_response(interaction, "Ви доєднались до черги")
             embed.description = f"\n1. {interaction.user.mention}"
             embed.clear_fields()
-            await interaction.message.edit(embed=embed)
+            action_row = await init_queue_buttons(leave_disabled=False)
+
+            await interaction.message.edit(embed=embed, components=action_row)
         elif not str(interaction.user.id) in embed.description:
             await send_ephemeral_response(interaction, "Ви доєднались до черги")
             embed.description += f"\n1. {interaction.user.mention}"
-            await interaction.message.edit(embed=embed)
+            action_row = await init_queue_buttons(leave_disabled=False, switch_disabled=False)
+
+            await interaction.message.edit(embed=embed, components=action_row)
         else:
             await send_ephemeral_response(interaction, "Ви вже у черзі")
 
@@ -148,6 +153,13 @@ async def on_button_click(interaction: disnake.MessageInteraction) -> None:
             if new_description == "":
                 new_description = None
                 embed.add_field("", "-# Черга порожня")
-
-            embed.description = new_description
-            await interaction.message.edit(embed=embed)
+                action_row = await init_queue_buttons()
+                embed.description = new_description
+                await interaction.message.edit(embed=embed, components=action_row)
+            elif len(users) == 2: # last user + left user
+                action_row = await init_queue_buttons(leave_disabled=False)
+                embed.description = new_description
+                await interaction.message.edit(embed=embed, components=action_row)
+            else:
+                embed.description = new_description
+                await interaction.message.edit(embed=embed)
