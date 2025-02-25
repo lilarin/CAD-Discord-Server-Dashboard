@@ -29,18 +29,25 @@ async def init_register_buttons() -> disnake.ui.ActionRow:
     return disnake.ui.ActionRow(register, inactive)
 
 
-async def init_queue_buttons() -> disnake.ui.ActionRow:
-    register = disnake.ui.Button(
+async def init_queue_buttons(leave_disabled: bool = True, switch_disabled: bool = True) -> disnake.ui.ActionRow:
+    join = disnake.ui.Button(
         style=disnake.ButtonStyle.primary,
-        label="🚀 Записатись в чергу",
+        label="🚀 Записатись",
         custom_id="join_queue_button",
     )
-    inactive = disnake.ui.Button(
+    leave = disnake.ui.Button(
         style=disnake.ButtonStyle.grey,
-        label="👋 Вийти з черги",
+        label="👋 Вийти",
         custom_id="leave_queue_button",
+        disabled=leave_disabled,
     )
-    return disnake.ui.ActionRow(register, inactive)
+    switch_places = disnake.ui.Button(
+        style=disnake.ButtonStyle.grey,
+        label="🔄 Помінятись місцями",
+        custom_id="switch_queue_places_button",
+        disabled=switch_disabled,
+    )
+    return disnake.ui.ActionRow(join, leave, switch_places)
 
 
 async def init_name_confirm_button() -> disnake.ui.ActionRow:
