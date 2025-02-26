@@ -8,7 +8,8 @@ from backend.services.modals import (
     init_register_buttons,
     init_group_confirm_button,
     init_group_select,
-    init_queue_buttons
+    init_queue_buttons,
+    init_user_select
 )
 from backend.services.responses import send_ephemeral_response
 
@@ -60,7 +61,9 @@ async def create_register_message(
 
 @bot.event
 async def on_dropdown(interaction: disnake.MessageInteraction) -> None:
-    if interaction.component.custom_id == "role_select_option":
+    interaction_component_id = interaction.component.custom_id
+
+    if interaction_component_id == "role_select_option":
         selected_role_id = interaction.values[0]
         role = interaction.guild.get_role(int(selected_role_id))
 
@@ -74,6 +77,16 @@ async def on_dropdown(interaction: disnake.MessageInteraction) -> None:
             f"### {role.name} \n "
             f"Чи підтверджуєте правильність вибору?",
             components=await init_group_confirm_button()
+        )
+
+    elif interaction_component_id == "user_select_option":
+        selected_user_id = interaction.values[0]
+        user = interaction.guild.get_member(int(selected_user_id))
+
+        await send_ephemeral_response(
+            interaction,
+            f"Запит на обмін місцями надіслано користувачу {user.mention}.\n"
+            f"Очікуйте сповіщення з відповіддю від бота в особисті повідомлення"
         )
 
 
@@ -120,8 +133,8 @@ async def on_button_click(interaction: disnake.MessageInteraction) -> None:
             except disnake.Forbidden:
                 pass
 
-    elif interaction_component_id == "join_queue_button":
-        embed = interaction.message.embeds[0]
+    embed = interaction.message.embeds[0]
+    if interaction_component_id == "join_queue_button":
         if not embed.description:
             await send_ephemeral_response(interaction, "Ви доєднались до черги")
             embed.description = f"\n1. {interaction.user.mention}"
@@ -139,7 +152,6 @@ async def on_button_click(interaction: disnake.MessageInteraction) -> None:
             await send_ephemeral_response(interaction, "Ви вже у черзі")
 
     elif interaction_component_id == "leave_queue_button":
-        embed = interaction.message.embeds[0]
         if not embed.description or not str(interaction.user.id) in embed.description:
             await send_ephemeral_response(interaction, "Ви не в черзі")
         else:
@@ -163,3 +175,16 @@ async def on_button_click(interaction: disnake.MessageInteraction) -> None:
             else:
                 embed.description = new_description
                 await interaction.message.edit(embed=embed)
+
+    elif interaction_component_id == "switch_queue_places_button":
+        users_ids = [user.split(" ")[1] for user in embed.description.split("\n")]
+        users = [
+            user for user in await interaction.guild.fetch_members().flatten()
+            if user.mention in users_ids and user.id != interaction.user.id
+        ]
+        action_row = await init_user_select(users)
+        await send_ephemeral_response(
+            interaction,
+            message="Оберіть користувача, з яким хочете обмінятись місцями:",
+            components=action_row
+        )
