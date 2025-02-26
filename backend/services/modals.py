@@ -78,13 +78,13 @@ async def init_user_select(users) -> disnake.ui.ActionRow:
     options = [
         disnake.SelectOption(
             label=user.display_name,
-            value=user
+            value=str(user.id)
         ) for user in users
     ]
     user_select = disnake.ui.Select(
         placeholder="...",
         options=options,
-        custom_id="role_select_option"
+        custom_id="user_select_option"
     )
     return disnake.ui.ActionRow(user_select)
 
