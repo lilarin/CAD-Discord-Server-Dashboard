@@ -59,6 +59,19 @@ async def init_name_confirm_button() -> disnake.ui.ActionRow:
     return disnake.ui.ActionRow(name_confirm)
 
 
+async def init_switch_accept_button(disabled: bool = False):
+    style = disnake.ButtonStyle.grey if disabled else disnake.ButtonStyle.green
+    label = "Запит прийнято" if disabled else "✔️ Прийняти запит"
+
+    accept = disnake.ui.Button(
+        style=style,
+        label=label,
+        custom_id="accept_switch_button",
+        disabled=disabled,
+    )
+    return disnake.ui.ActionRow(accept)
+
+
 async def init_group_select(roles) -> disnake.ui.ActionRow:
     options = [
         disnake.SelectOption(
@@ -74,11 +87,11 @@ async def init_group_select(roles) -> disnake.ui.ActionRow:
     return disnake.ui.ActionRow(role_select)
 
 
-async def init_user_select(users) -> disnake.ui.ActionRow:
+async def init_user_select(users, message_id) -> disnake.ui.ActionRow:
     options = [
         disnake.SelectOption(
             label=user.display_name,
-            value=str(user.id)
+            value=f"{user.id} {message_id}"
         ) for user in users
     ]
     user_select = disnake.ui.Select(
