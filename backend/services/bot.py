@@ -9,9 +9,12 @@ from backend.services.modals import (
     init_group_confirm_button,
     init_group_select,
     init_queue_buttons,
-    init_user_select
+    init_user_select, init_switch_accept_button
 )
-from backend.services.responses import send_ephemeral_response
+from backend.services.responses import (
+    send_ephemeral_response,
+    edit_ephemeral_response
+)
 
 bot = commands.InteractionBot(intents=disnake.Intents.all())
 
@@ -32,6 +35,11 @@ async def on_slash_command_error(interaction, error):
             interaction,
             "Ви не можете використовувати цю команду",
         )
+    if isinstance(error, commands.NoPrivateMessage):
+        await send_ephemeral_response(
+            interaction,
+            f"Ви можете використовувати цю команду тільки на сервері",
+        )
 
 
 @bot.slash_command(
@@ -39,6 +47,7 @@ async def on_slash_command_error(interaction, error):
     description="Створити повідомлення для реєстрації в поточному каналі"
 )
 @commands.has_any_role(config.administrator_role_id)
+@commands.guild_only()
 async def create_register_message(
         interaction: disnake.ApplicationCommandInteraction
 ) -> None:
@@ -80,14 +89,36 @@ async def on_dropdown(interaction: disnake.MessageInteraction) -> None:
         )
 
     elif interaction_component_id == "user_select_option":
-        selected_user_id = interaction.values[0]
+        await send_ephemeral_response(interaction, f"Очікуйте...")
+
+        values = interaction.values[0].split()
+        selected_user_id = values[0]
+        message_id = values[1]
+        message = await interaction.channel.fetch_message(int(message_id))
+
         user = interaction.guild.get_member(int(selected_user_id))
 
-        await send_ephemeral_response(
-            interaction,
-            f"Запит на обмін місцями надіслано користувачу {user.mention}.\n"
-            f"Очікуйте сповіщення з відповіддю від бота в особисті повідомлення"
+        embed = disnake.Embed(
+            title=f"Запит на обмін місцями у черзі {message.jump_url}",
+            description=f"Від користувача {interaction.user.mention}\n",
+            color=0xFFFFFF,
         )
+
+        action_row = await init_switch_accept_button()
+
+        try:
+            await user.send(embed=embed, components=action_row)
+
+            await edit_ephemeral_response(
+                interaction,
+                f"Запит на обмін місцями надіслано користувачу {user.mention}.\n"
+                f"Очікуйте сповіщення з відповіддю від бота в особисті повідомлення"
+            )
+        except disnake.errors.Forbidden:
+            await edit_ephemeral_response(
+                interaction,
+                f"Не вдалось надіслати запит на обмін місцями через налаштування приватності користувача"
+            )
 
 
 @bot.event
@@ -182,9 +213,69 @@ async def on_button_click(interaction: disnake.MessageInteraction) -> None:
             user for user in await interaction.guild.fetch_members().flatten()
             if user.mention in users_ids and user.id != interaction.user.id
         ]
-        action_row = await init_user_select(users)
+        action_row = await init_user_select(users, interaction.message.id)
         await send_ephemeral_response(
             interaction,
             message="Оберіть користувача, з яким хочете обмінятись місцями:",
             components=action_row
         )
+
+    elif interaction_component_id == "accept_switch_button":
+        await send_ephemeral_response(interaction, f"Очікуйте...")
+
+        jump_url = embed.title.split()[-1]
+        channel_id = int(jump_url.split("/")[-2])
+        message_id = int(jump_url.split("/")[-1])
+        switch_user_id = int(embed.description.split()[-1][2:20])
+
+        guild = await bot.fetch_guild(config.guild_id)
+        channel = await guild.fetch_channel(channel_id)
+        queue_message = await channel.fetch_message(message_id)
+        queue_embed = queue_message.embeds[0]
+        users_ids = [user.split(" ")[1] for user in queue_embed.description.split("\n")]
+        target_user = None
+        switch_user = None
+        users = []
+
+        for user in [await guild.fetch_member(int(user[2:20])) for user in users_ids]:
+            if user.mention in users_ids:
+                users.append(user)
+                if user.id == interaction.user.id:
+                    target_user = user
+                elif user.id == switch_user_id:
+                    switch_user = user
+
+        if not target_user:
+            await edit_ephemeral_response(
+                interaction,
+                "Ви не можете обмінятись місцями оскільки вас немає в черзі"
+            )
+
+        if not switch_user:
+            await edit_ephemeral_response(
+                interaction,
+                "Ви не можете обмінятись місцями оскільки користувача немає в черзі"
+            )
+
+        target_user_index = users.index(target_user)
+        switch_user_index = users.index(switch_user)
+
+        users[target_user_index], users[switch_user_index] = users[switch_user_index], users[target_user_index]
+
+        new_description = ""
+        for user in users:
+            new_description += f"\n1. {user.mention}"
+
+        queue_embed.description = new_description
+
+        action_row = await init_switch_accept_button(disabled=True)
+
+        await interaction.message.edit(components=action_row)
+        await queue_message.edit(embed=queue_embed)
+        await edit_ephemeral_response(interaction, "Ви успішно обмінялись місцями у черзі!")
+
+        embed = disnake.Embed(
+            description=f"Ваш запит на обмін місцями у черзі {jump_url} схвалено",
+            color=0xFFFFFF,
+        )
+        await switch_user.send(embed=embed)
