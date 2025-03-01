@@ -14,7 +14,7 @@ import {useTranslation} from "react-i18next";
 registerLocale("uk", uk);
 registerLocale("en", enUS);
 
-export default function Events() {
+export default function Queues() {
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [selectedCategoryId, setSelectedCategoryIdState] = useState<string | null>(null);
 	const [channels, setChannels] = useState<Channel[]>([]);
