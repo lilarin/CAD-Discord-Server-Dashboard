@@ -8,7 +8,7 @@
     "categories": "Categories",
     "groups": "Roles",
     "users": "Users",
-    "events": "Queues",
+    "queues": "Queues",
     "logs": "Logs",
     "controlPanel": "Control panel"
   },
