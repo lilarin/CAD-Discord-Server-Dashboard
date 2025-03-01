@@ -1,6 +1,5 @@
-import datetime
+from datetime import datetime
 
-import disnake
 from disnake import (
     CategoryChannel,
     VoiceChannel,
@@ -18,7 +17,10 @@ from backend.services.fetch import (
     fetch_channel,
     fetch_channels_by_category
 )
-from backend.services.modals import init_queue_buttons
+from backend.services.bot_ui import (
+    init_queue_buttons,
+    create_queue_message_embed
+)
 
 
 async def create_template_category(category_name) -> CategoryChannel:
@@ -105,15 +107,9 @@ async def create_queue_message(
         event_time: str,
 ) -> None:
     channel = await fetch_channel(int(channel_id))
-    timestamp = datetime.datetime.fromisoformat(event_time)
+    timestamp = datetime.fromisoformat(event_time)
 
-    embed = disnake.Embed(
-        title=title,
-        color=0xFFFFFF,
-        timestamp=timestamp,
-    )
-    embed.add_field("", "-# Черга порожня")
-    embed.set_footer(text="Початок")
+    embed = await create_queue_message_embed(title, timestamp)
     action_row = await init_queue_buttons()
 
     await channel.send(embed=embed, components=action_row)
