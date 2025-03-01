@@ -14,7 +14,7 @@ const navigation = [
   { name: "sidebar.categories", href: "/categories", icon: DisciplinesIcon },
   { name: "sidebar.groups", href: "/groups", icon: GroupsIcon },
   { name: "sidebar.users", href: "/users", icon: UsersIcon },
-  { name: "sidebar.events", href: "/events", icon: EventsIcon },
+  { name: "sidebar.queues", href: "/queues", icon: EventsIcon },
   { name: "sidebar.logs", href: "/logs", icon: LogsIcon },
 ];
 
