@@ -1,17 +1,9 @@
 import re
-from dataclasses import dataclass
 
 import disnake
 
 from backend.services.responses import send_ephemeral_response
-
-USER_REGISTER_DATA = {}
-
-
-@dataclass
-class UserRegistrationData:
-    full_name: str
-    role: disnake.Role = None
+from backend.services.user_registration import USER_REGISTER_DATA, UserRegistrationData
 
 
 async def init_register_buttons() -> disnake.ui.ActionRow:
@@ -61,7 +53,7 @@ async def init_name_confirm_button() -> disnake.ui.ActionRow:
 
 async def init_switch_accept_button(disabled: bool = False):
     style = disnake.ButtonStyle.grey if disabled else disnake.ButtonStyle.green
-    label = "Запит прийнято" if disabled else "✔️ Прийняти запит"
+    label = "Запит схвалено" if disabled else "✔️ Схвалити запит"
 
     accept = disnake.ui.Button(
         style=style,
