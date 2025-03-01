@@ -1,9 +1,9 @@
-import re
+from datetime import datetime
 
 import disnake
 
 from backend.services.responses import send_ephemeral_response
-from backend.services.user_registration import USER_REGISTER_DATA, UserRegistrationData
+from backend.services.users_registration import add_registration_user, check_user_name
 
 
 async def init_register_buttons() -> disnake.ui.ActionRow:
@@ -19,6 +19,20 @@ async def init_register_buttons() -> disnake.ui.ActionRow:
         disabled=True,
     )
     return disnake.ui.ActionRow(register, inactive)
+
+
+async def create_registration_embed():
+    embed = disnake.Embed(
+        title="Кафедра Системного Проєктування ІПСА",
+        description=(
+            "Щоб отримати доступ до серверу необхідно пройти реєстрацію. "
+            "Натисніть на кнопку під повідомленням та дотримуйтесь інструкцій\n"
+            "-# Викладачам достатньо першого пункту, вказати прізвище та ім'я"
+        ),
+        color=0xFFFFFF,
+    )
+    embed.set_image(url="https://imgur.com/uG2M5wK.png")
+    return embed
 
 
 async def init_queue_buttons(leave_disabled: bool = True, switch_disabled: bool = True) -> disnake.ui.ActionRow:
@@ -42,6 +56,17 @@ async def init_queue_buttons(leave_disabled: bool = True, switch_disabled: bool 
     return disnake.ui.ActionRow(join, leave, switch_places)
 
 
+async def create_queue_message_embed(title: str, timestamp: datetime):
+    embed = disnake.Embed(
+        title=title,
+        color=0xFFFFFF,
+        timestamp=timestamp,
+    )
+    embed.add_field("", "-# Черга порожня")
+    embed.set_footer(text="Початок")
+    return embed
+
+
 async def init_name_confirm_button() -> disnake.ui.ActionRow:
     name_confirm = disnake.ui.Button(
         style=disnake.ButtonStyle.primary,
@@ -62,6 +87,14 @@ async def init_switch_accept_button(disabled: bool = False):
         disabled=disabled,
     )
     return disnake.ui.ActionRow(accept)
+
+
+async def create_switch_accepted_embed(jump_url: str):
+    embed = disnake.Embed(
+        description=f"Ваш запит на обмін місцями у черзі {jump_url} схвалено",
+        color=0xFFFFFF,
+    )
+    return embed
 
 
 async def init_group_select(roles) -> disnake.ui.ActionRow:
@@ -123,22 +156,16 @@ class RegisterModal(disnake.ui.Modal):
 
     async def callback(self, interaction: disnake.ModalInteraction) -> None:
         name = interaction.text_values["name"]
-        match_patter = r"[А-Яа-яЄєІіЇїҐґ'’\s-]+"
-        if not re.fullmatch(match_patter, name) or " " not in name:
-            await send_ephemeral_response(
-                interaction,
-                "Введені дані повинні містити "
-                "тільки кирилицю, пробіли або апостроф."
-            )
+        if not await check_user_name(interaction, name):
             return
 
-        USER_REGISTER_DATA[interaction.user.id] = UserRegistrationData(full_name=name)
+        await add_registration_user(interaction.user.id, name)
 
         await send_ephemeral_response(
             interaction,
             f"Ви ввели: \n"
             f"### {name} \n "
             f"Чи підтверджуєте правильність вводу?\n"
-            f"-# Ваше ім'я буде змінене на введене",
+            f"-# Ваше ім'я буде змінено на введене",
             components=await init_name_confirm_button()
         )
