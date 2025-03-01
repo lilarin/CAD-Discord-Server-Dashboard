@@ -1,7 +1,7 @@
 from disnake import Role, Member, VoiceChannel, TextChannel, CategoryChannel, Guild
 
 from backend.config import config
-from backend.services.bot import bot
+from backend.bot import bot
 
 
 async def fetch_guild() -> Guild:

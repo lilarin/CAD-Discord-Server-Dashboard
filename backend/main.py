@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from backend.api.v1.router import router as router_v1
 from backend.middlewares.authorization import AuthMiddleware
-from backend.services.bot import bot, run_bot
+from backend.bot import bot, run_bot
 
 
 @asynccontextmanager
