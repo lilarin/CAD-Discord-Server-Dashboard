@@ -586,7 +586,7 @@ function ActionSidebar(
 								filteredAvailableRoles.map(role => (
 									<li key={role.id}
 									    onClick={() => handleSelectAvailableRole(role)}
-									    className="bg-[#36393F] rounded pl-2 p-1.5 flex items-center hover:bg-[#3e4147] cursor-pointer">
+									    className="bg-[#36393F] rounded pl-2 p-1.5 flex items-center hover:bg-[#3e4147] cursor-pointer transition-all duration-300">
 										{role.name}
 									</li>
 								))
