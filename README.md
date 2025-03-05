@@ -8,8 +8,7 @@ aspects of the academic Discord server for both students and teachers, including
 - [Features](#features)
 - [Environment Variables](#environment-variables)
 - [Supabase Setup](#supabase-setup)
-- [Installation](#installation)
-- [Launch](#launch)
+- [Installation and Launch](#installation-and-launch)
 
 ## Features
 
