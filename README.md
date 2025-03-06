@@ -105,7 +105,7 @@ these steps to set up your Supabase project and obtain the necessary credentials
 3. **Invite your Discord bot to the server that will be managed with its own bot role with admin access to the server**
 
 4. **Build and run using Docker Compose:**
-    - Ensure you have [Docker](https://www.docker.com/get-started/) installed
+    - Ensure you have [Docker](https://www.docker.com/get-started/) installed and launched
     - From the root directory of the project, run:
       ```bash
       docker-compose up --build
