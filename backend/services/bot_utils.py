@@ -37,7 +37,7 @@ async def handle_role_selection(interaction: disnake.MessageInteraction):
 
 
 async def handle_user_selection_for_queue_switch(interaction: disnake.MessageInteraction):
-    await send_ephemeral_response(interaction, f"Очікуйте...")
+    await send_ephemeral_response(interaction, "Очікуйте...")
 
     values = interaction.values[0].split()
     selected_user_id = values[0]
@@ -58,7 +58,7 @@ async def handle_user_selection_for_queue_switch(interaction: disnake.MessageInt
     except disnake.errors.Forbidden:
         await edit_ephemeral_response(
             interaction,
-            f"Не вдалось надіслати запит на обмін місцями через налаштування приватності користувача"
+            "Не вдалось надіслати запит на обмін місцями через налаштування приватності користувача"
         )
 
 
@@ -183,7 +183,7 @@ async def handle_switch_queue_places_button_click(interaction: disnake.MessageIn
 
 
 async def handle_accept_switch_button_click(interaction: disnake.MessageInteraction, embed: disnake.Embed):
-    await send_ephemeral_response(interaction, f"Очікуйте...")
+    await send_ephemeral_response(interaction, "Очікуйте...")
 
     jump_url = embed.title.split()[-1]
     channel_id = int(jump_url.split("/")[-2])
