@@ -56,6 +56,7 @@ a template
   Supabase
 - `VITE_API_URL`: The URL where your backend API is running. If you are running locally with Docker Compose,
   this will be `http://127.0.0.1:8000`
+- `REDIS_URL`: The URL where Redis is running for caching purpose
 
 > **Important:** See [Supabase Setup](#supabase-setup) for instructions how to obtain Supabase environment variables
 
