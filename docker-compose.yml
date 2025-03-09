@@ -11,10 +11,13 @@ services:
         VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
         VITE_SUPABASE_SERVICE_ROLE_KEY: ${VITE_SUPABASE_SERVICE_ROLE_KEY}
         SUPABASE_DIRECT_URL: ${SUPABASE_DIRECT_URL}
+        REDIS_URL: ${REDIS_URL}
     ports:
       - "8000:8000"
     volumes:
       - ./backend:/app
+    depends_on:
+      - redis
 
   frontend:
     build:
@@ -29,3 +32,9 @@ services:
       - ./frontend:/app
     depends_on:
       - backend
+
+  redis:
+    image: redis:7.4.0-alpine3.20
+    restart: always
+    ports:
+      - "6379:6379"
