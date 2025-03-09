@@ -13,10 +13,10 @@ class Config:
         self.teacher_role_id = int(self._get_env_variable("TEACHER_ROLE_ID"))
         self.student_role_id = int(self._get_env_variable("STUDENT_ROLE_ID"))
         self.guild_id = int(self._get_env_variable("GUILD_ID"))
-
         self.supabase_direct_url = self._get_env_variable("SUPABASE_DIRECT_URL")
         self.supabase_url = self._get_env_variable("VITE_SUPABASE_URL")
         self.supabase_key = self._get_env_variable("VITE_SUPABASE_SERVICE_ROLE_KEY")
+        self.redis_url = self._get_env_variable("REDIS_URL")
 
     @staticmethod
     def _get_env_variable(var_name: str) -> str | None:
