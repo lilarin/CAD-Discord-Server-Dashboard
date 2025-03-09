@@ -8,8 +8,9 @@ from starlette.middleware.base import BaseHTTPMiddleware
 
 from backend.middlewares.schemas import ResponseWrapper
 from backend.services.fetch import fetch_user
-from backend.services.supabase_client import supabase, save_log_to_supabase
+from backend.services.supabase_client import supabase, save_log_to_supabase, read_logs_from_supabase
 from backend.services.utils import get_user_group
+from backend.services.cache import set_logs_to_cache
 
 
 class AuthMiddleware(BaseHTTPMiddleware):
@@ -35,6 +36,8 @@ class AuthMiddleware(BaseHTTPMiddleware):
                     if action:
                         action_text = unquote(action)
                         await save_log_to_supabase(user, action_text)
+                        logs = await read_logs_from_supabase()
+                        await set_logs_to_cache(logs)
                     response = await call_next(request)
                     return response
                 else:
