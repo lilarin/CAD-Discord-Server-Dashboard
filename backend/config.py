@@ -1,7 +1,8 @@
-import logging
 import os
 
 from dotenv import load_dotenv
+
+from backend.utils.logger import logger
 
 load_dotenv()
 
@@ -22,7 +23,7 @@ class Config:
     def _get_env_variable(var_name: str) -> str | None:
         value = os.environ.get(var_name)
         if not value:
-            logging.warning(f"{var_name} environment variable is not set!")
+            logger.error(f"{var_name} environment variable is not set!")
             return None
         return value
 
