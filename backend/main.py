@@ -1,22 +1,32 @@
 import asyncio
+import datetime
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 
 from backend.api.v1.router import router as router_v1
-from backend.middlewares.authorization import AuthMiddleware
 from backend.bot import bot, run_bot
+from backend.middlewares.authorization import AuthMiddleware
+from backend.services.cache import update_logs_cache
+
+
+async def refresh_cache():
+    while True:
+        await update_logs_cache()
+        await asyncio.sleep(datetime.timedelta(days=1).total_seconds())
 
 
 @asynccontextmanager
 async def lifespan(*args, **kwargs):
     bot_task = asyncio.create_task(run_bot())
+    cache_task = asyncio.create_task(refresh_cache())
     try:
         yield
     finally:
         await bot.close()
         bot_task.cancel()
+        cache_task.cancel()
 
 
 app = FastAPI(
