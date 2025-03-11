@@ -262,5 +262,23 @@
   "notFoundPage": {
     "title404": "404: Page not found",
     "description": "Nothing to see here 🤓"
+  },
+  "logActions": {
+    "category.create": "Category Created",
+    "category.delete": "Category Deleted",
+    "category.reorder": "Category Position Changed",
+    "category.rename": "Category Renamed",
+    "category.permissions.edit": "Category Permissions Edited",
+    "channel.create": "Channel Created",
+    "channel.delete": "Channel Deleted",
+    "channel.reorder": "Channel Position Changed",
+    "channel.rename": "Channel Renamed",
+    "role.create": "Role Created",
+    "role.delete": "Role Deleted",
+    "role.rename": "Role Renamed",
+    "user.rename": "User Renamed",
+    "user.kick": "User Kicked",
+    "user.roles.edit": "User Roles Edited",
+    "queue.create": "Queue Created"
   }
 }
