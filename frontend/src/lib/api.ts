@@ -85,7 +85,7 @@ export async function getChannels(categoryId: string): Promise<Channel[]> {
 export async function deleteCategory(categoryId: string): Promise<Category[]> {
 	return handleRequest(api.delete<ApiResponse<Category[]>>(`/api/v1/categories/${categoryId}`, {
 		headers: {
-			'X-Request-Source-Method': encodeURI('Видалення категорії')
+			'X-Request-Source-Method': 'category.delete'
 		}
 	}));
 }
@@ -93,7 +93,7 @@ export async function deleteCategory(categoryId: string): Promise<Category[]> {
 export async function deleteChannel(channelId: string): Promise<Channel[]> {
 	return handleRequest(api.delete<ApiResponse<Channel[]>>(`/api/v1/channels/${channelId}`, {
 		headers: {
-			'X-Request-Source-Method': encodeURI('Видалення каналу')
+			'X-Request-Source-Method': 'channel.delete'
 		}
 	}));
 }
@@ -102,7 +102,7 @@ export async function updateCategoryPosition(categoryId: string, position: numbe
 	const requestBody: ReorderRequest = {position};
 	return handleRequest(api.patch<ApiResponse<Category[]>>(`/api/v1/categories/${categoryId}/reorder`, requestBody, {
 		headers: {
-			'X-Request-Source-Method': encodeURI('Зміна позиції категорії')
+			'X-Request-Source-Method': 'category.reorder'
 		}
 	}));
 }
@@ -111,7 +111,7 @@ export async function updateChannelPosition(channelId: string, position: number)
 	const requestBody: ReorderRequest = {position};
 	return handleRequest(api.patch<ApiResponse<Channel[]>>(`/api/v1/channels/${channelId}/reorder`, requestBody, {
 		headers: {
-			'X-Request-Source-Method': encodeURI('Зміна позиції каналу')
+			'X-Request-Source-Method': 'channel.reorder'
 		}
 	}));
 }
@@ -119,7 +119,7 @@ export async function updateChannelPosition(channelId: string, position: number)
 export async function createCategory(name: string): Promise<Category[]> {
 	return handleRequest(api.post<ApiResponse<Category[]>>(`/api/v1/categories/${name}`, {}, {
 		headers: {
-			'X-Request-Source-Method': encodeURI('Створення категорії')
+			'X-Request-Source-Method': 'category.create'
 		}
 	}));
 }
@@ -130,7 +130,7 @@ export async function createChannel(categoryId: string, name: string, channel_ty
 		const requestBody: RenameRequest = {name};
 		return handleRequest(api.post<ApiResponse<Channel[]>>(`/api/v1/channels/${categoryId}/${channel_type}`, requestBody, {
 			headers: {
-				'X-Request-Source-Method': encodeURI('Створення каналу')
+				'X-Request-Source-Method': 'channel.create'
 			}
 		}));
 	}
@@ -141,7 +141,7 @@ export async function renameChannel(channelId: string, name: string): Promise<Ch
 	const requestBody: RenameRequest = {name};
 	return handleRequest(api.patch<ApiResponse<Channel[]>>(`/api/v1/channels/${channelId}`, requestBody, {
 		headers: {
-			'X-Request-Source-Method': encodeURI('Перейменування каналу')
+			'X-Request-Source-Method': 'channel.rename'
 		}
 	}));
 }
@@ -150,7 +150,7 @@ export async function renameCategory(categoryId: string, name: string): Promise<
 	const requestBody: RenameRequest = {name};
 	return handleRequest(api.patch<ApiResponse<Category[]>>(`/api/v1/categories/${categoryId}`, requestBody, {
 		headers: {
-			'X-Request-Source-Method': encodeURI('Перейменування категорії')
+			'X-Request-Source-Method': 'category.rename'
 		}
 	}));
 }
@@ -162,7 +162,7 @@ export async function getCategoryAccessRoles(categoryId: string): Promise<Role[]
 export async function editCategoryPermissions(categoryId: string, rolesWithAccess: number[]): Promise<Role[]> {
 	return handleRequest(api.put<ApiResponse<Role[]>>(`/api/v1/categories/${categoryId}/permissions`, rolesWithAccess, {
 		headers: {
-			'X-Request-Source-Method': encodeURI('Зміна доступу до категорії')
+			'X-Request-Source-Method': 'category.permissions.edit'
 		}
 	}));
 }
@@ -178,7 +178,7 @@ export async function getEditableRoles(): Promise<Role[]> {
 export async function createRole(name: string): Promise<Role[]> {
 	return handleRequest(api.post<ApiResponse<Role[]>>(`/api/v1/roles/${name}`, {}, {
 		headers: {
-			'X-Request-Source-Method': encodeURI('Створення ролі')
+			'X-Request-Source-Method': 'role.create'
 		}
 	}));
 }
@@ -188,7 +188,7 @@ export async function renameRole(roleId: string, name: string): Promise<Role[]> 
 	return handleRequest(
 		api.patch<ApiResponse<Role[]>>(`/api/v1/roles/${roleId}`, requestBody, {
 			headers: {
-				'X-Request-Source-Method': encodeURI('Перейменування ролі')
+				'X-Request-Source-Method': 'role.rename'
 			}
 		}));
 }
@@ -196,7 +196,7 @@ export async function renameRole(roleId: string, name: string): Promise<Role[]> 
 export async function deleteRole(roleId: string): Promise<Role[]> {
 	return handleRequest(api.delete<ApiResponse<Role[]>>(`/api/v1/roles/${roleId}`, {
 		headers: {
-			'X-Request-Source-Method': encodeURI('Видалення ролі')
+			'X-Request-Source-Method': 'role.delete'
 		}
 	}));
 }
@@ -209,7 +209,7 @@ export async function renameUser(userId: string, name: string): Promise<User[]> 
 	const requestBody: RenameRequest = {name};
 	return handleRequest(api.patch<ApiResponse<User[]>>(`/api/v1/users/${userId}`, requestBody, {
 		headers: {
-			'X-Request-Source-Method': encodeURI('Перейменування користувача')
+			'X-Request-Source-Method': 'user.rename'
 		}
 	}));
 }
@@ -217,7 +217,7 @@ export async function renameUser(userId: string, name: string): Promise<User[]> 
 export async function kickUser(userId: string): Promise<User[]> {
 	return handleRequest(api.delete<ApiResponse<User[]>>(`/api/v1/users/${userId}`, {
 		headers: {
-			'X-Request-Source-Method': encodeURI('Вигон користувача з серверу')
+			'X-Request-Source-Method': 'user.kick'
 		}
 	}));
 }
@@ -233,7 +233,7 @@ export async function getUser(userId: string): Promise<User> {
 export async function editUserRoles(userId: string, roles: number[]): Promise<User[]> {
 	return handleRequest(api.put<ApiResponse<User[]>>(`/api/v1/users/${userId}`, roles, {
 		headers: {
-			'X-Request-Source-Method': encodeURI('Зміна ролей користувача')
+			'X-Request-Source-Method': 'user.roles.edit'
 		}
 	}));
 }
@@ -250,7 +250,7 @@ export async function createQueueMessage(channelId: string, title: string, event
 	};
 	return handleRequest(api.post<ApiResponse<void>>('/api/v1/queue', requestBody, {
 		headers: {
-			'X-Request-Source-Method': encodeURI('Створення черги на захист')
+			'X-Request-Source-Method': 'queue.create'
 		}
 	}));
 }
