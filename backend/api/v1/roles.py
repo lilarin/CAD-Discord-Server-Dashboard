@@ -8,7 +8,7 @@ from backend.services.format import (
     format_editable_roles_response,
     format_non_editable_roles_response
 )
-from backend.utils.role_methods import (
+from backend.utils.role import (
     create_target_role,
     rename_target_role,
     delete_target_role

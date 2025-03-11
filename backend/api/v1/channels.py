@@ -9,7 +9,7 @@ from backend.services.format import (
     format_base_channel_response
 )
 from backend.services.requests import update_channel_order
-from backend.utils.channel_methods import (
+from backend.utils.channel import (
     delete_target_channel,
     create_voice_target_channel,
     rename_target_channel,

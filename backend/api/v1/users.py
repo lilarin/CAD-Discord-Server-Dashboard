@@ -5,7 +5,7 @@ from backend.middlewares.uniform_response import uniform_response_middleware
 from backend.schemas import User, NameRequestBody
 from backend.services.fetch import fetch_roles_by_ids, fetch_user, fetch_user_roles, fetch_guild_default_role
 from backend.services.format import format_users_response, format_roles_response, format_user_response
-from backend.utils.user_methods import kick_target_user, rename_target_user
+from backend.utils.user import kick_target_user, rename_target_user
 
 router = APIRouter()
 
