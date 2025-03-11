@@ -3,16 +3,13 @@ from fastapi import APIRouter, HTTPException, Body
 
 from backend.middlewares.uniform_response import uniform_response_middleware
 from backend.schemas import Channel, NameRequestBody, PositionRequestBody
-from backend.services.fetch import (
-    fetch_channel,
-    fetch_channels_by_type
-)
+from backend.services.fetch import fetch_channel, fetch_channels_by_type
 from backend.services.format import (
     format_channels_by_category_response,
     format_base_channel_response
 )
 from backend.services.requests import update_channel_order
-from backend.services.utils import (
+from backend.utils.channel_methods import (
     delete_target_channel,
     create_voice_target_channel,
     rename_target_channel,
