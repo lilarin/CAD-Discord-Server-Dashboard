@@ -115,12 +115,13 @@ async def format_editable_roles_response() -> list[Role]:
 async def format_users_response() -> list[User]:
     users = []
     for member in await fetch_users():
-        user_group = await get_user_group(member)
+        user_group, is_admin = await get_user_group(member)
         users.append(
             User(
                 id=str(member.id),
                 name=member.display_name,
-                group=user_group
+                group=user_group,
+                is_admin=is_admin
             )
         )
     users.sort(key=lambda user: user.name)
@@ -128,9 +129,10 @@ async def format_users_response() -> list[User]:
 
 
 async def format_user_response(user: Member) -> User:
-    user_group = await get_user_group(user)
+    user_group, is_admin = await get_user_group(user)
     return User(
         id=str(user.id),
         name=user.display_name,
-        group=user_group
+        group=user_group,
+        is_admin=is_admin
     )
