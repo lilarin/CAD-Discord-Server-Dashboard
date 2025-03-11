@@ -236,7 +236,7 @@ export default function Queues() {
 										<div
 											onClick={handleChannelClick}
 											ref={channelRef}
-											className={`cursor-pointer block appearance-none w-full bg-[#292B2F] py-2 px-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline ${!selectedChannel && selectedCategoryId ? 'text-gray-500' : !selectedChannel && !selectedCategoryId ? 'text-gray-500 cursor-not-allowed' : 'text-gray-300'}`}
+											className={`block appearance-none w-full bg-[#292B2F] py-2 px-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline ${!selectedChannel && selectedCategoryId ? 'text-gray-500 cursor-pointer' : !selectedChannel && !selectedCategoryId ? 'text-gray-500 cursor-not-allowed' : 'text-gray-300 cursor-pointer'}`}
 										>
 											{selectedChannel ? channels.find(chan => String(chan.id) === selectedChannel)?.name.charAt(0).toUpperCase() + channels.find(chan => String(chan.id) === selectedChannel)?.name.slice(1) : (selectedCategoryId ? t('placeholder.channel') : t('eventsPage.channelPlaceholderStart'))}
 										</div>
