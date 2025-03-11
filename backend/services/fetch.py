@@ -67,6 +67,10 @@ async def fetch_user_roles(user: Member) -> list[Role]:
     return [role for role in user.roles]
 
 
+async def fetch_user_roles_ids(user: Member) -> list[int]:
+    return [role.id for role in user.roles]
+
+
 async def fetch_users() -> list[Member]:
     guild = await fetch_guild()
     members = await guild.fetch_members().flatten()

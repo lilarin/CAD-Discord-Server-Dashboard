@@ -1,7 +1,7 @@
 from disnake import Member
 
 from backend.config import config
-from backend.services.fetch import fetch_guild
+from backend.services.fetch import fetch_guild, fetch_user_roles_ids
 
 
 async def rename_target_user(user: Member, name: str) -> Member:
@@ -15,10 +15,10 @@ async def kick_target_user(user: Member) -> None:
 
 async def get_user_group(user: Member) -> tuple[str, bool]:
     guild = await fetch_guild()
-    for role in user.roles:
-        if role.id == config.administrator_role_id or user.id == guild.owner_id:
-            return "staff", True
-        elif role.id == config.teacher_role_id:
-            return "staff", False
-        elif role.id == config.student_role_id:
-            return "student", False
+    roles_ids = await fetch_user_roles_ids(user)
+    if config.administrator_role_id in roles_ids or user.id == guild.owner_id:
+        return "staff", True
+    elif config.teacher_role_id in roles_ids:
+        return "staff", False
+    elif config.student_role_id in roles_ids:
+        return "student", False
