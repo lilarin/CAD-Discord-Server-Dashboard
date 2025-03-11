@@ -29,7 +29,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
 
             if user_data.user and user_data.user.user_metadata:
                 user = await fetch_user(user_data.user.user_metadata["provider_id"])
-                user_group = await get_user_group(user)
+                user_group, _ = await get_user_group(user)
                 if user_group and user_group == "staff":
                     request.state.user = user_data.user
                     action = request.headers.get("X-Request-Source-Method")
