@@ -36,7 +36,7 @@ async def rename_user(user_id: int, request_body: NameRequestBody = Body(...)):
 
 @router.get("/users/{user_id}", response_model=list[User])
 @uniform_response_middleware
-async def get_user(user_id: int):
+async def get_user_by_id(user_id: int):
     try:
         user = await fetch_user(user_id)
         return await format_user_response(user)
