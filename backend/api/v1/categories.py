@@ -16,9 +16,10 @@ from backend.services.format import (
     format_roles_response
 )
 from backend.services.requests import update_channel_order
-from backend.services.utils import (
+from backend.utils.category_methods import delete_target_category
+from backend.utils.channel_methods import (
     create_template_category,
-    delete_target_category, rename_target_channel
+    rename_target_channel
 )
 
 router = APIRouter()
