@@ -4,13 +4,14 @@
     "language": "Змінити мову на Англійську"
   },
   "sidebar": {
+    "title": "Панель керування",
     "dashboard": "Головна",
     "categories": "Категорії",
     "groups": "Ролі",
     "users": "Користувачі",
     "queues": "Захисти",
     "logs": "Логи",
-    "controlPanel": "Панель керування"
+    "settings": "Налаштування"
   },
   "homePage": {
     "mainProvisionsTitle": "Основні положення",

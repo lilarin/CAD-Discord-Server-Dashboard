@@ -4,13 +4,14 @@
     "language": "Change the language to Ukrainian"
   },
   "sidebar": {
+    "title": "Control panel",
     "dashboard": "Home",
     "categories": "Categories",
     "groups": "Roles",
     "users": "Users",
     "queues": "Queues",
     "logs": "Logs",
-    "controlPanel": "Control panel"
+    "settings": "Settings"
   },
   "homePage": {
     "mainProvisionsTitle": "Main provisions",
