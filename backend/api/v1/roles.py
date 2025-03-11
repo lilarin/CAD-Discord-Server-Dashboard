@@ -4,8 +4,15 @@ from fastapi import APIRouter, HTTPException, Body
 from backend.middlewares.uniform_response import uniform_response_middleware
 from backend.schemas import Role, NameRequestBody
 from backend.services.fetch import fetch_role
-from backend.services.format import format_editable_roles_response, format_non_editable_roles_response
-from backend.services.utils import create_target_role, rename_target_role, delete_target_role
+from backend.services.format import (
+    format_editable_roles_response,
+    format_non_editable_roles_response
+)
+from backend.utils.role_methods import (
+    create_target_role,
+    rename_target_role,
+    delete_target_role
+)
 
 router = APIRouter()
 
