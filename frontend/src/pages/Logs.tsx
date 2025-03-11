@@ -259,7 +259,7 @@ export default function Logs() {
 													</div>
 												</td>
 												<td
-													className="px-6 py-4 whitespace-normal text-sm text-gray-200 w-1/3 text-center">{log.action}</td>
+													className="px-6 py-4 whitespace-normal text-sm text-gray-200 w-1/3 text-center">{t(`logActions.${log.action}`)}</td>
 												<td
 													className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 w-1/3 text-center">
 													{formatDate(log.event_time, currentLocale)}
