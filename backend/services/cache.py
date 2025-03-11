@@ -19,7 +19,6 @@ async def set_logs_to_cache(logs: list[LogSchema]):
         await redis_client.set(REDIS_LOGS_KEY, json.dumps(serialized_logs))
     except exceptions.ConnectionError as error:
         logger.error(f"Redis connection error: {error}")
-        raise
 
 
 async def get_logs_from_cache() -> list[LogSchema]:
@@ -30,12 +29,7 @@ async def get_logs_from_cache() -> list[LogSchema]:
             return [LogSchema(**log) for log in deserialized_logs]
     except exceptions.ConnectionError as error:
         logger.error(f"Redis connection error: {error}, falling back to Supabase")
-        raise
-
-    supabase_logs = await read_logs_from_supabase()
-    if supabase_logs:
-        await set_logs_to_cache(supabase_logs)
-    return supabase_logs
+    return await read_logs_from_supabase()
 
 
 async def update_logs_cache():
