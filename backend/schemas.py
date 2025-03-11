@@ -21,6 +21,7 @@ class User(BaseModel):
     id: str
     name: str = Field(max_length=32)
     group: Optional[str] = None
+    is_admin: bool
 
 
 class BaseRole(BaseModel):
