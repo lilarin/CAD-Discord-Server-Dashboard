@@ -92,7 +92,7 @@ const HomePage = () => {
 						</div>
 					</Link>
 
-					<Link to="/events" className="block">
+					<Link to="/queues" className="block">
 						<div className="bg-[#2F3136] rounded p-6 hover:bg-[#292b2f] transition-all duration-200 cursor-pointer">
 							<div className="flex items-center mb-4">
 								<img src={EventsIcon} alt={t("homePage.sections.events.title")} className="w-8 h-8 mr-3"/>
