@@ -1,42 +1,42 @@
-export interface Category {
+export type Category = {
 	id: number;
 	name: string;
 }
 
-export interface Channel {
+export type Channel = {
 	id: number;
 	position: number;
 	name: string;
 	type: string
 }
 
-export interface Role {
+export type Role = {
 	id: number;
 	name: string;
 }
 
-export interface RenameRequest {
+export type RenameRequest = {
 	name: string;
 }
 
-export interface ReorderRequest {
+export type ReorderRequest = {
 	position: number;
 }
 
-export interface User {
+export type User = {
 	id: number;
 	name: string;
 	group?: string | null;
 }
 
-export interface Log {
+export type Log = {
 	user_name: string;
 	user_avatar: string;
 	action: string;
 	event_time: string
 }
 
-export interface Queue {
+export type Queue = {
 	channel_id: string;
 	message_id?: string | null;
 	title: string;
