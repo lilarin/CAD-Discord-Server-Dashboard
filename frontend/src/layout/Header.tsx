@@ -3,14 +3,13 @@ import {UserCircle} from "lucide-react";
 import {Button} from "@/components/Button.tsx";
 import LogOutIcon from "@/assets/icons/logout.svg";
 import {useAuth} from "@/contexts/AuthContext";
-import {User} from "@/lib/types";
 import {useTranslation} from "react-i18next";
 
 interface HeaderProps {
-	userDetails: User | null;
+	userDisplayName: string | null;
 }
 
-export const Header: React.FC<HeaderProps> = ({userDetails}) => {
+export const Header: React.FC<HeaderProps> = ({userDisplayName}) => {
 	const {signOut, loading, user} = useAuth();
 	const {t, i18n} = useTranslation();
 	const currentLanguage = i18n.language;
@@ -25,8 +24,8 @@ export const Header: React.FC<HeaderProps> = ({userDetails}) => {
 	};
 
 	const userName = () => {
-		if (userDetails?.name) {
-			return userDetails.name;
+		if (userDisplayName) {
+			return userDisplayName;
 		}
 		return user?.user_metadata?.full_name || 'User';
 	};
@@ -61,7 +60,7 @@ export const Header: React.FC<HeaderProps> = ({userDetails}) => {
 						)}
 						<div className="text-sm overflow-hidden">
 							<p
-								className="font-medium text-gray-200 whitespace-nowrap text-ellipsis overflow-hidden">{!userDetails ? t("protectedRoute.loading") : truncateName(userName(), 22)}</p>
+								className="font-medium text-gray-200 whitespace-nowrap text-ellipsis overflow-hidden">{!userDisplayName ? t("protectedRoute.loading") : truncateName(userName(), 22)}</p>
 						</div>
 					</div>
 				</div>

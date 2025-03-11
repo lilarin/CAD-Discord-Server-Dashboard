@@ -16,7 +16,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({children}) => {
 	const {user, loading} = useAuth();
 	const location = useLocation();
 	const [userGroup, setUserGroup] = useState<string | null>(null);
-	const [userDetails, setUserDetails] = useState<User | null>(null);
+	const [userDisplayName, setUserDisplayName] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	useEffect(() => {
@@ -29,11 +29,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({children}) => {
 			try {
 				const fetchedUser = await getUser(user.user_metadata.provider_id);
 				setUserGroup(fetchedUser.group || null);
-				setUserDetails(fetchedUser);
+				setUserDisplayName(fetchedUser.name || null);
 			} catch (error) {
 				console.error("Error fetching user data:", error);
 				setUserGroup(null);
-				setUserDetails(null)
+				setUserDisplayName(null)
 			} finally {
 				setIsLoading(false);
 			}
@@ -57,7 +57,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({children}) => {
 
 	return (
 		<div className="min-h-screen flex flex-col">
-			<Header userDetails={userDetails}/>
+			<Header userDisplayName={userDisplayName}/>
 			<div className="flex flex-1">
 				<Sidebar/>
 				<main className="flex-1 bg-[#36393F]">
