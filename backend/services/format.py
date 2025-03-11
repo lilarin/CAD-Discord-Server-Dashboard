@@ -10,7 +10,7 @@ from backend.services.fetch import (
     fetch_roles,
     fetch_users
 )
-from backend.services.utils import get_user_group
+from backend.utils.user_methods import get_user_group
 
 
 async def format_categories_response() -> list[Category]:

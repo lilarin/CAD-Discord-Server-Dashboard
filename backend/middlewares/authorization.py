@@ -10,7 +10,7 @@ from backend.middlewares.schemas import ResponseWrapper
 from backend.services.cache import update_logs_cache
 from backend.services.fetch import fetch_user
 from backend.services.supabase_client import supabase, save_log_to_supabase
-from backend.services.utils import get_user_group
+from backend.utils.user_methods import get_user_group
 
 
 class AuthMiddleware(BaseHTTPMiddleware):
