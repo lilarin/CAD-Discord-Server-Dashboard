@@ -17,7 +17,7 @@ from backend.services.bot_utils import (
     handle_switch_queue_places_button_click,
     handle_accept_switch_button_click
 )
-from backend.services.responses import send_ephemeral_response
+from backend.utils.response import send_ephemeral_response
 from backend.utils.logger import logger
 
 bot = commands.InteractionBot(intents=disnake.Intents.all())

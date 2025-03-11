@@ -2,7 +2,7 @@ from datetime import datetime
 
 import disnake
 
-from backend.services.responses import send_ephemeral_response
+from backend.utils.response import send_ephemeral_response
 from backend.services.users_registration import add_registration_user, check_user_name
 
 

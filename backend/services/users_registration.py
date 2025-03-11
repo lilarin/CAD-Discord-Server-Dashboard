@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 import disnake
 
-from backend.services.responses import send_ephemeral_response
+from backend.utils.response import send_ephemeral_response
 
 USER_REGISTER_DATA = {}
 

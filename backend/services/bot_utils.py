@@ -10,7 +10,7 @@ from backend.services.bot_ui import (
     init_switch_accept_button,
     create_switch_accepted_embed
 )
-from backend.services.responses import (
+from backend.utils.response import (
     send_ephemeral_response,
     edit_ephemeral_response
 )
