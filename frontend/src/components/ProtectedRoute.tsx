@@ -6,7 +6,6 @@ import {getUser} from '@/lib/api';
 import NoAccessPage from '@/pages/NoAccessPage';
 import {Header} from '@/layout/Header';
 import {Sidebar} from '@/layout/Sidebar';
-import {User} from '@/lib/types';
 
 interface ProtectedRouteProps {
 	children: React.ReactNode;
@@ -17,6 +16,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({children}) => {
 	const location = useLocation();
 	const [userGroup, setUserGroup] = useState<string | null>(null);
 	const [userDisplayName, setUserDisplayName] = useState<string | null>(null);
+	const [isUserAdmin, setIsUserAdmin] = useState<boolean | null>(null);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	useEffect(() => {
@@ -30,10 +30,12 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({children}) => {
 				const fetchedUser = await getUser(user.user_metadata.provider_id);
 				setUserGroup(fetchedUser.group || null);
 				setUserDisplayName(fetchedUser.name || null);
+				setIsUserAdmin(fetchedUser.is_admin || false);
 			} catch (error) {
 				console.error("Error fetching user data:", error);
 				setUserGroup(null);
-				setUserDisplayName(null)
+				setUserDisplayName(null);
+				setIsUserAdmin(false);
 			} finally {
 				setIsLoading(false);
 			}
@@ -59,7 +61,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({children}) => {
 		<div className="min-h-screen flex flex-col">
 			<Header userDisplayName={userDisplayName}/>
 			<div className="flex flex-1">
-				<Sidebar/>
+				<Sidebar isAdmin={isUserAdmin}/>
 				<main className="flex-1 bg-[#36393F]">
 					{children}
 				</main>
