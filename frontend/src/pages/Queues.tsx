@@ -310,9 +310,10 @@ export default function Queues() {
 										className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-500"
 									/>
 								</div>
-								<div className="mt-4 space-y-2 max-h-36 overflow-y-auto">
+								<div className="mt-2 mb-4 max-h-36 overflow-y-auto">
 									{filteredCategories.length > 0 ? (
 										filteredCategories.map((category) => (
+											<div className="mt-2">
 											<button
 												key={category.id}
 												onClick={() => handleCategorySelect(String(category.id))}
@@ -320,6 +321,7 @@ export default function Queues() {
 											>
 												{category.name.charAt(0).toUpperCase() + category.name.slice(1)}
 											</button>
+											</div>
 										))
 									) : (
 										<div className="text-gray-400 p-2">{t('warnings.noCategory')}</div>
@@ -327,7 +329,7 @@ export default function Queues() {
 								</div>
 								<button
 									onClick={() => setIsCategoryActionOpen(false)}
-									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-2 mb-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300 w-full"
+									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300 w-full"
 								>
 									{t('button.closeButton')}
 								</button>
@@ -355,20 +357,22 @@ export default function Queues() {
 									/>
 								</div>
 
-								<div className="mt-4 space-y-2 max-h-36 overflow-y-auto">
+								<div className="mt-2 mb-4 max-h-36 overflow-y-auto">
 									{isChannelsLoading ? (
 										<div className="flex justify-center items-center p-2">
 											<ChannelLoadingSpinner/>
 										</div>
 									) : filteredChannels.length > 0 ? (
 										filteredChannels.map((channel) => (
-											<button
-												key={channel.id}
-												onClick={() => handleChannelSelect(String(channel.id))}
-												className={`w-full p-2 rounded text-white transition-all duration-300 bg-[#36393F] hover:bg-[#3e4147] text-left`}
-											>
-												{channel.name.charAt(0).toUpperCase() + channel.name.slice(1)}
-											</button>
+											<div className="mt-2">
+												<button
+													key={channel.id}
+													onClick={() => handleChannelSelect(String(channel.id))}
+													className={`w-full p-2 rounded text-white transition-all duration-300 bg-[#36393F] hover:bg-[#3e4147] text-left`}
+												>
+													{channel.name.charAt(0).toUpperCase() + channel.name.slice(1)}
+												</button>
+											</div>
 										))
 									) : (
 										<div className="text-gray-400 p-2">{t('warnings.noChannels')}</div>
@@ -376,7 +380,7 @@ export default function Queues() {
 								</div>
 								<button
 									onClick={() => setIsChannelActionOpen(false)}
-									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-4 mb-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300 w-full"
+									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300 w-full"
 								>
 									{t('button.closeButton')}
 								</button>
