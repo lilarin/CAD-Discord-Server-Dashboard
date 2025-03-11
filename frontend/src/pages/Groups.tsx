@@ -15,15 +15,8 @@ import {useTranslation} from "react-i18next";
 const ITEMS_PER_PAGE = 12;
 
 const usePaginatedRoles = (roles: Role[], setRoles: React.Dispatch<React.SetStateAction<Role[]>>, itemsPerPage: number = ITEMS_PER_PAGE) => {
-	const [isLoading, setIsLoading] = useState(true);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
-
-	useEffect(() => {
-		if (roles.length) {
-			setIsLoading(false);
-		}
-	}, [roles]);
 
 	const handleSearch = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchTerm(event.target.value);
@@ -46,7 +39,6 @@ const usePaginatedRoles = (roles: Role[], setRoles: React.Dispatch<React.SetStat
 
 	return {
 		rolesOnPage,
-		isLoading,
 		searchTerm,
 		pageCount,
 		currentPage,
@@ -58,12 +50,11 @@ const usePaginatedRoles = (roles: Role[], setRoles: React.Dispatch<React.SetStat
 
 export default function Groups({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: number }) {
 	const [roles, setRoles] = useState<Role[]>([]);
-
+	const [isLoading, setIsLoading] = useState(true);
 	const {t} = useTranslation();
 
 	const {
 		rolesOnPage,
-		isLoading,
 		searchTerm,
 		pageCount,
 		currentPage,
@@ -74,6 +65,7 @@ export default function Groups({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?:
 
 	useEffect(() => {
 		const fetchRoles = async () => {
+			setIsLoading(true);
 			try {
 				const response = await getEditableRoles();
 				setRoles(response);
@@ -83,6 +75,8 @@ export default function Groups({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?:
 					duration: 10000
 				});
 				console.error(error)
+			} finally {
+				setIsLoading(false);
 			}
 		};
 
