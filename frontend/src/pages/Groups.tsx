@@ -82,7 +82,7 @@ export default function Groups({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?:
 
 		fetchRoles().then(r => {
 		});
-	}, [t, setRoles]);
+	}, [setRoles]);
 
 	const [actionSidebar, setActionSidebar] = useState<{
 		action: ActionType;
