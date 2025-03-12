@@ -117,7 +117,7 @@
       "create": {
         "category": "A category should be thought of as a discipline, or a section with its own channels and access to it for some roles. After creating a category, it will be at the bottom of the list",
         "channel": "Enter a name for the channel and select its type",
-        "role": "A role is a specific group that a user can have on the server. It can be used to classify students by their primary group, certain discipline, or other characteristics. Once created, it will be immediately sorted in ascending order"
+        "role": "A role is a specific group that a user can have on the server. It can be used to classify students by grade level, discipline, or other characteristics and will be sorted on the page after creation"
       },
       "rename": {
         "category": "Case is not taken into account for the channel name and is processed automatically",
