@@ -39,10 +39,11 @@ async def get_editable_roles():
         raise HTTPException(status_code=500, detail=str(exception))
 
 
-@router.post("/roles/{name}", response_model=list[Role])
+@router.post("/roles", response_model=list[Role])
 @uniform_response_middleware
-async def create_role(name: str):
+async def create_role(request_body: NameRequestBody = Body(...)):
     try:
+        name = request_body.name
         await create_target_role(name)
         return await format_editable_roles_response()
     except disnake.errors.HTTPException as exception:

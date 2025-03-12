@@ -177,7 +177,8 @@ export async function getEditableRoles(): Promise<Role[]> {
 }
 
 export async function createRole(name: string): Promise<Role[]> {
-	return handleRequest(api.post<ApiResponse<Role[]>>(`/api/v1/roles/${name}`, {}, {
+	const requestBody: NameRequest = {name};
+	return handleRequest(api.post<ApiResponse<Role[]>>(`/api/v1/roles`, requestBody, {
 		headers: {
 			'X-Request-Source-Method': 'role.create'
 		}
