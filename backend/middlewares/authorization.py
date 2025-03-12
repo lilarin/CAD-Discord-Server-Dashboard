@@ -1,3 +1,4 @@
+import asyncio
 from typing import Optional
 from urllib.parse import unquote
 
@@ -35,8 +36,8 @@ class AuthMiddleware(BaseHTTPMiddleware):
                     action = request.headers.get("X-Request-Source-Method")
                     if action:
                         action_text = unquote(action)
-                        await save_log_to_supabase(user, action_text)
-                        await update_logs_cache()
+                        asyncio.create_task(save_log_to_supabase(user, action_text))
+                        asyncio.create_task(update_logs_cache())
                     response = await call_next(request)
                     return response
                 else:
