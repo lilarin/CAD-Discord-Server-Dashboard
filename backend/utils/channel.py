@@ -16,8 +16,8 @@ from backend.services.fetch import (
 async def create_template_category(category_name) -> CategoryChannel:
     guild = await fetch_guild()
     everyone_role = await fetch_guild_default_role()
-    teacher_role = await fetch_role(config.teacher_role)
-    administrator_role = await fetch_role(config.administrator_role)
+    teacher_role = await fetch_role(config.teacher_role_id)
+    administrator_role = await fetch_role(config.administrator_role_id)
 
     default_overwrites = {
         everyone_role: PermissionOverwrite(view_channel=False),
