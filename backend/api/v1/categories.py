@@ -36,11 +36,11 @@ async def get_categories():
         raise HTTPException(status_code=500, detail=str(exception))
 
 
-@router.patch("/categories/{channel_id}", response_model=list[Category])
+@router.patch("/categories/{category_id}", response_model=list[Category])
 @uniform_response_middleware
-async def rename_channel(channel_id: int, request_body: NameRequestBody = Body(...)):
+async def rename_category(category_id: int, request_body: NameRequestBody = Body(...)):
     try:
-        channel = await fetch_channel(channel_id)
+        channel = await fetch_channel(category_id)
         if channel.type not in [disnake.ChannelType.category]:
             raise ValueError("Incorrect channel type")
 
@@ -57,10 +57,11 @@ async def rename_channel(channel_id: int, request_body: NameRequestBody = Body(.
         raise HTTPException(status_code=500, detail=str(exception))
 
 
-@router.post("/categories/{name}", response_model=list[Category])
+@router.post("/categories", response_model=list[Category])
 @uniform_response_middleware
-async def create_category(name: str):
+async def create_category(request_body: NameRequestBody = Body(...)):
     try:
+        name = request_body.name
         await create_template_category(name)
         return await format_categories_response()
     except disnake.errors.HTTPException as exception:
