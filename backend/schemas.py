@@ -51,3 +51,7 @@ class QueueRequestBody(BaseModel):
     channel_id: str
     title: str
     event_time: str
+
+
+class RegistrationRequestBody(BaseModel):
+    channel_id: str
