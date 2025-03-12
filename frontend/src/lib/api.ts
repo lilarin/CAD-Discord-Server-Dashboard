@@ -1,5 +1,5 @@
 import axios, {AxiosError, AxiosResponse, InternalAxiosRequestConfig} from 'axios';
-import {Category, Channel, Log, Queue, RenameRequest, ReorderRequest, Role, User} from "@/lib/types.ts";
+import {Category, Channel, Log, Queue, NameRequest, ReorderRequest, Role, User} from "@/lib/types.ts";
 import {supabase} from "@/lib/supabaseClient";
 
 if (!import.meta.env.VITE_API_URL) {
@@ -117,7 +117,8 @@ export async function updateChannelPosition(channelId: string, position: number)
 }
 
 export async function createCategory(name: string): Promise<Category[]> {
-	return handleRequest(api.post<ApiResponse<Category[]>>(`/api/v1/categories/${name}`, {}, {
+	const requestBody: NameRequest = {name};
+	return handleRequest(api.post<ApiResponse<Category[]>>(`/api/v1/categories`, requestBody, {
 		headers: {
 			'X-Request-Source-Method': 'category.create'
 		}
@@ -127,7 +128,7 @@ export async function createCategory(name: string): Promise<Category[]> {
 export async function createChannel(categoryId: string, name: string, channel_type: string): Promise<Channel[]> {
 	const allowedChannelTypes = ["text", "voice"];
 	if (allowedChannelTypes.includes(channel_type)) {
-		const requestBody: RenameRequest = {name};
+		const requestBody: NameRequest = {name};
 		return handleRequest(api.post<ApiResponse<Channel[]>>(`/api/v1/channels/${categoryId}/${channel_type}`, requestBody, {
 			headers: {
 				'X-Request-Source-Method': 'channel.create'
@@ -138,7 +139,7 @@ export async function createChannel(categoryId: string, name: string, channel_ty
 }
 
 export async function renameChannel(channelId: string, name: string): Promise<Channel[]> {
-	const requestBody: RenameRequest = {name};
+	const requestBody: NameRequest = {name};
 	return handleRequest(api.patch<ApiResponse<Channel[]>>(`/api/v1/channels/${channelId}`, requestBody, {
 		headers: {
 			'X-Request-Source-Method': 'channel.rename'
@@ -147,7 +148,7 @@ export async function renameChannel(channelId: string, name: string): Promise<Ch
 }
 
 export async function renameCategory(categoryId: string, name: string): Promise<Category[]> {
-	const requestBody: RenameRequest = {name};
+	const requestBody: NameRequest = {name};
 	return handleRequest(api.patch<ApiResponse<Category[]>>(`/api/v1/categories/${categoryId}`, requestBody, {
 		headers: {
 			'X-Request-Source-Method': 'category.rename'
@@ -184,7 +185,7 @@ export async function createRole(name: string): Promise<Role[]> {
 }
 
 export async function renameRole(roleId: string, name: string): Promise<Role[]> {
-	const requestBody: RenameRequest = {name};
+	const requestBody: NameRequest = {name};
 	return handleRequest(
 		api.patch<ApiResponse<Role[]>>(`/api/v1/roles/${roleId}`, requestBody, {
 			headers: {
@@ -206,7 +207,7 @@ export async function getUsers(): Promise<User[]> {
 }
 
 export async function renameUser(userId: string, name: string): Promise<User[]> {
-	const requestBody: RenameRequest = {name};
+	const requestBody: NameRequest = {name};
 	return handleRequest(api.patch<ApiResponse<User[]>>(`/api/v1/users/${userId}`, requestBody, {
 		headers: {
 			'X-Request-Source-Method': 'user.rename'

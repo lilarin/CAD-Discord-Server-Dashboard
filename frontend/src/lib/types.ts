@@ -15,7 +15,7 @@ export type Role = {
 	name: string;
 }
 
-export type RenameRequest = {
+export type NameRequest = {
 	name: string;
 }
 
