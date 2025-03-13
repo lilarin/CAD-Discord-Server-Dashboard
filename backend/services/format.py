@@ -162,3 +162,13 @@ async def format_user_response(user: Member) -> User:
         group=user_group,
         is_admin=is_admin
     )
+
+
+async def format_users_with_role_response(users: list[Member]) -> list[User]:
+    return [
+        User(
+            id=str(user.id),
+            name=user.display_name
+        )
+        for user in users
+    ]
