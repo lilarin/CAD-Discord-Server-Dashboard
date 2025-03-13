@@ -10,6 +10,7 @@ import CreateRoleIcon from '@/assets/icons/create_role.svg';
 import {Role} from "@/lib/types.ts";
 import SearchIcon from "@/assets/icons/search.svg";
 import {useTranslation} from "react-i18next";
+import EditIcon from "@/assets/icons/edit.svg";
 
 
 const ITEMS_PER_PAGE = 12;
@@ -217,6 +218,12 @@ export default function Groups({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?:
 												<img
 													src={RenameIcon}
 													alt={t("iconsAltName.rename")}
+													className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"/>
+											</button>
+											<button onClick={() => handleActionTriggered('edit', 'role', role)}>
+												<img
+													src={EditIcon}
+													alt={t("iconsAltName.editRoles")}
 													className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"/>
 											</button>
 											<button onClick={() => handleActionTriggered('delete', 'role', role)}>
