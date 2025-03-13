@@ -96,6 +96,14 @@ async def fetch_users_with_role(role_id: int) -> list[Member]:
     return [member for member in members if member.bot is False and role in member.roles]
 
 
+async def fetch_users_by_ids(members: list) -> list[Member]:
+    guild = await fetch_guild()
+    return [
+        await guild.fetch_member(member_id)
+        for member_id in members
+    ]
+
+
 async def fetch_guild_default_role() -> Role:
     guild = await fetch_guild()
     return guild.default_role
