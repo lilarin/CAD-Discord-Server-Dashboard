@@ -3,7 +3,7 @@ from functools import wraps
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 
-from backend.middlewares.schemas import ResponseWrapper
+from backend.schemas import ResponseWrapper
 
 
 def uniform_response_middleware(func):

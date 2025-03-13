@@ -1,6 +1,13 @@
-from typing import Optional
+from typing import Optional, Any
 
 from pydantic import BaseModel, Field
+
+
+class ResponseWrapper(BaseModel):
+    data: Optional[Any] = None
+    success: bool
+    error: Optional[str] = None
+
 
 
 class BaseChannel(BaseModel):

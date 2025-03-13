@@ -7,7 +7,7 @@ from fastapi import HTTPException, Request
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 
-from backend.middlewares.schemas import ResponseWrapper
+from backend.schemas import ResponseWrapper
 from backend.services.cache import update_logs_cache
 from backend.services.fetch import fetch_user
 from backend.services.supabase_client import supabase, save_log_to_supabase
