@@ -89,6 +89,13 @@ async def fetch_role(role_id: int) -> Role:
     return role
 
 
+async def fetch_users_with_role(role_id: int) -> list[Member]:
+    guild = await fetch_guild()
+    members = await guild.fetch_members().flatten()
+    role = await guild.fetch_role(role_id)
+    return [member for member in members if member.bot is False and role in member.roles]
+
+
 async def fetch_guild_default_role() -> Role:
     guild = await fetch_guild()
     return guild.default_role
