@@ -207,6 +207,22 @@ export async function getUsers(): Promise<User[]> {
 	return handleRequest(api.get<ApiResponse<User[]>>(`/api/v1/users`));
 }
 
+export async function getBaseUsers(): Promise<User[]> {
+	return handleRequest(api.get<ApiResponse<User[]>>(`/api/v1/users/base`));
+}
+
+export async function getRoleHolders(roleId: string): Promise<User[]> {
+	return handleRequest(api.get<ApiResponse<User[]>>(`/api/v1/roles/${roleId}`));
+}
+
+export async function editRoleHolders(roleId: string, roleHolders: number[]): Promise<User[]> {
+	return handleRequest(api.put<ApiResponse<User[]>>(`/api/v1/roles/${roleId}/users`, roleHolders, {
+		headers: {
+			'X-Request-Source-Method': 'role.edit.users'
+		}
+	}));
+}
+
 export async function renameUser(userId: string, name: string): Promise<User[]> {
 	const requestBody: NameRequest = {name};
 	return handleRequest(api.patch<ApiResponse<User[]>>(`/api/v1/users/${userId}`, requestBody, {
