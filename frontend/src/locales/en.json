@@ -1,285 +1,299 @@
 {
   "header": {
-    "signOut": "Sign Out",
-    "language": "Change the language to Ukrainian"
+	"signOut": "Sign Out",
+	"language": "Change the language to Ukrainian"
   },
   "sidebar": {
-    "title": "Control panel",
-    "dashboard": "Home",
-    "categories": "Categories",
-    "groups": "Roles",
-    "users": "Users",
-    "queues": "Queues",
-    "logs": "Logs",
-    "settings": "Settings"
+	"title": "Control panel",
+	"dashboard": "Home",
+	"categories": "Categories",
+	"groups": "Roles",
+	"users": "Users",
+	"queues": "Queues",
+	"logs": "Logs",
+	"settings": "Settings"
   },
   "homePage": {
-    "mainProvisionsTitle": "Main provisions",
-    "mainProvisionsText1": "This panel is designed for convenient server management, including categories (disciplines), channels, roles (groups) of users, the users themselves, queues for defenses, and action logs. Each section is intuitive and allows you to perform the necessary administrative functions efficiently and quickly.",
-    "mainProvisionsText2": "Use the sidebar on the left for navigation. Each menu section is responsible for a specific server management area. Icons are used on the pages for quick identification of actions and functions.",
-    "panelSectionsTitle": "Panel sections",
-    "sections": {
-      "dashboard": {
-        "title": "Dashboard",
-        "description": "Home page of the server control panel with a description of the purpose, overview, and explanation of common actions available in the interface"
-      },
-      "categories": {
-        "title": "Categories",
-        "description": "This section allows you to manage categories (disciplines) on the server. Categories are used to structure channels and manage access to them"
-      },
-      "groups": {
-        "title": "Roles",
-        "description": "This section allows you to manage roles (groups) for users on the server. Roles are used to assign access rights to a specific category"
-      },
-      "users": {
-        "title": "Users",
-        "description": "This section is intended for managing server users. Here you can view, rename, edit roles, and kick users from the server. It is also possible to filter users by their role"
-      },
-      "events": {
-        "title": "Queues",
-        "description": "This section allows you to create queues for students. Queues are available as an interactive list that students can join and leave"
-      },
-      "logs": {
-        "title": "Logs",
-        "description": "This section provides access to the interaction log with the control panel. Tracks the actions of panel users and allows you to view them"
-      }
-    },
-    "iconsExplanationTitle": "Icons and their Explanations",
-    "icons": {
-      "hint": {
-        "title": "Hint",
-        "description": "Indicates the availability of additional information about or how to use it"
-      },
-      "filter": {
-        "title": "Filter",
-        "description": "Opens the filter panel, which allows you to narrow down the data display results"
-      },
-      "createChannel": {
-        "title": "Create Channel",
-        "description": "Used to create a new channel within a specific category"
-      },
-      "createCategory": {
-        "title": "Create Category",
-        "description": "Used to create a new category with channels (disciplines)"
-      },
-      "edit": {
-        "title": "Edit",
-        "description": "Used to open the access and roles (groups) settings panel"
-      },
-      "createGroup": {
-        "title": "Create (assign) roles",
-        "description": "Used to create and assign roles (groups)"
-      },
-      "rename": {
-        "title": "Rename",
-        "description": "Used to rename items such as categories, channels, roles and users"
-      },
-      "delete": {
-        "title": "Delete",
-        "description": "Used to delete a category, channels, or roles (groups) from the server"
-      },
-      "kickUser": {
-        "title": "Kick User",
-        "description": "Used to kick a specific user from the academic discord server"
-      }
-    }
+	"mainProvisionsTitle": "Main provisions",
+	"mainProvisionsText1": "This panel is designed for convenient server management, including categories (disciplines), channels, roles (groups) of users, the users themselves, queues for defenses, and action logs. Each section is intuitive and allows you to perform the necessary administrative functions efficiently and quickly.",
+	"mainProvisionsText2": "Use the sidebar on the left for navigation. Each menu section is responsible for a specific server management area. Icons are used on the pages for quick identification of actions and functions.",
+	"panelSectionsTitle": "Panel sections",
+	"sections": {
+	  "dashboard": {
+		"title": "Dashboard",
+		"description": "Home page of the server control panel with a description of the purpose, overview, and explanation of common actions available in the interface"
+	  },
+	  "categories": {
+		"title": "Categories",
+		"description": "This section allows you to manage categories (disciplines) on the server. Categories are used to structure channels and manage access to them"
+	  },
+	  "groups": {
+		"title": "Roles",
+		"description": "This section allows you to manage roles (groups) for users on the server. Roles are used to assign access rights to a specific category"
+	  },
+	  "users": {
+		"title": "Users",
+		"description": "This section is intended for managing server users. Here you can view, rename, edit roles, and kick users from the server. It is also possible to filter users by their role"
+	  },
+	  "events": {
+		"title": "Queues",
+		"description": "This section allows you to create queues for students. Queues are available as an interactive list that students can join and leave"
+	  },
+	  "logs": {
+		"title": "Logs",
+		"description": "This section provides access to the interaction log with the control panel. Tracks the actions of panel users and allows you to view them"
+	  }
+	},
+	"iconsExplanationTitle": "Icons and their Explanations",
+	"icons": {
+	  "hint": {
+		"title": "Hint",
+		"description": "Indicates the availability of additional information about or how to use it"
+	  },
+	  "filter": {
+		"title": "Filter",
+		"description": "Opens the filter panel, which allows you to narrow down the data display results"
+	  },
+	  "createChannel": {
+		"title": "Create Channel",
+		"description": "Used to create a new channel within a specific category"
+	  },
+	  "createCategory": {
+		"title": "Create Category",
+		"description": "Used to create a new category with channels (disciplines)"
+	  },
+	  "edit": {
+		"title": "Edit",
+		"description": "Used to open the access and roles (groups) settings panel"
+	  },
+	  "createGroup": {
+		"title": "Create (assign) roles",
+		"description": "Used to create and assign roles (groups)"
+	  },
+	  "rename": {
+		"title": "Rename",
+		"description": "Used to rename items such as categories, channels, roles and users"
+	  },
+	  "delete": {
+		"title": "Delete",
+		"description": "Used to delete a category, channels, or roles (groups) from the server"
+	  },
+	  "kickUser": {
+		"title": "Kick User",
+		"description": "Used to kick a specific user from the academic discord server"
+	  }
+	}
   },
   "pagination": {
-    "previous": "Previous",
-    "next": "Next"
+	"previous": "Previous",
+	"next": "Next"
   },
   "actionSidebar": {
-    "create": {
-      "category": "Create new category",
-      "channel": "Create new channel",
-      "role": "Create new role"
-    },
-    "rename": {
-      "category": "Rename category \"{{itemName}}\"",
-      "channel": "Rename channel \"{{itemName}}\"",
-      "role": "Rename role \"{{itemName}}\"",
-      "user": "Change username for \"{{itemName}}\""
-    },
-    "edit": {
-      "category": "Edit role access to category \"{{itemName}}\"",
-      "user": "Edit roles for user \"{{itemName}}\""
-    },
-    "delete": {
-      "category": "Delete category \"{{itemName}}\"?",
-      "channel": "Delete channel \"{{itemName}}\"?",
-      "role": "Delete role \"{{itemName}}\"?",
-      "user": "Kick \"{{itemName}}\" from server?"
-    },
-    "filter": {
-      "user": "Filter settings"
-    },
-    "hint": {
-      "create": {
-        "category": "A category should be thought of as a discipline, or a section with its own channels and access to it for some roles. After creating a category, it will be at the bottom of the list",
-        "channel": "Enter a name for the channel and select its type",
-        "role": "A role is a specific group that a user can have on the server. It can be used to classify students by grade level, discipline, or other characteristics and will be sorted on the page after creation"
-      },
-      "rename": {
-        "category": "Case is not taken into account for the channel name and is processed automatically",
-        "channel": "Case is not taken into account for the category name and is processed automatically"
-      },
-      "edit": {
-        "category": "Select roles for access to the category and all its channels"
-      },
-      "delete": {
-        "category": "When deleting a category, all channels in it will also be deleted"
-      }
-    },
-    "deleteButton": "Delete",
-    "cancelButton": "Cancel",
-    "createButton": "Create",
-    "saveButton": "Save",
-    "closeButton": "Close",
-    "rolesWithAccess": "Roles with access:",
-    "userRoles": "User roles:",
-    "hintTitle": "Hint",
-    "textChannel": "Text Channel",
-    "voiceChannel": "Voice Channel"
+	"create": {
+	  "category": "Create new category",
+	  "channel": "Create new channel",
+	  "role": "Create new role"
+	},
+	"rename": {
+	  "category": "Rename category \"{{itemName}}\"",
+	  "channel": "Rename channel \"{{itemName}}\"",
+	  "role": "Rename role \"{{itemName}}\"",
+	  "user": "Change username for \"{{itemName}}\""
+	},
+	"edit": {
+	  "category": "Edit role access to category \"{{itemName}}\"",
+	  "role": "Edit the list of users with a role \"{{itemName}}\"",
+	  "user": "Edit roles for user \"{{itemName}}\""
+	},
+	"delete": {
+	  "category": "Delete category \"{{itemName}}\"?",
+	  "channel": "Delete channel \"{{itemName}}\"?",
+	  "role": "Delete role \"{{itemName}}\"?",
+	  "user": "Kick \"{{itemName}}\" from server?"
+	},
+	"filter": {
+	  "user": "Filter settings"
+	},
+	"hint": {
+	  "create": {
+		"category": "A category should be thought of as a discipline, or a section with its own channels and access to it for some roles. After creating a category, it will be at the bottom of the list",
+		"channel": "Enter a name for the channel and select its type",
+		"role": "A role is a specific group that a user can have on the server. It can be used to classify students by grade level, discipline, or other characteristics and will be sorted on the page after creation"
+	  },
+	  "rename": {
+		"category": "Case is not taken into account for the channel name and is processed automatically",
+		"channel": "Case is not taken into account for the category name and is processed automatically"
+	  },
+	  "edit": {
+		"category": "Select roles for access to the category and all its channels"
+	  },
+	  "delete": {
+		"category": "When deleting a category, all channels in it will also be deleted"
+	  }
+	},
+	"deleteButton": "Delete",
+	"cancelButton": "Cancel",
+	"createButton": "Create",
+	"saveButton": "Save",
+	"closeButton": "Close",
+	"rolesWithAccess": "Roles with access:",
+	"userRoles": "User roles:",
+	"roleHolders": "Users with the role:",
+	"hintTitle": "Hint",
+	"textChannel": "Text Channel",
+	"voiceChannel": "Voice Channel"
   },
   "iconAltName": {
-    "hint": "Information",
-    "reorder": "Reorder",
-    "rename": "Rename",
-    "add": "Add",
-    "edit": "Edit",
-    "delete": "Delete",
-    "filter": "Filter",
-    "kick": "Kick User",
-    "search": "Search",
-    "dropdown": "Dropdown"
+	"hint": "Information",
+	"reorder": "Reorder",
+	"rename": "Rename",
+	"add": "Add",
+	"edit": "Edit",
+	"delete": "Delete",
+	"filter": "Filter",
+	"kick": "Kick User",
+	"search": "Search",
+	"dropdown": "Dropdown"
   },
   "error": {
-    "fetchAllRolesError": "Failed to load the list of roles on the server",
-    "fetchCategoryRolesError": "Failed to change the list of roles that have access to the category",
-    "fetchUserRolesError": "Failed to load the list of user roles",
-    "saveCategoryPermissionsError": "Failed to change the access settings of roles to the category",
-    "saveUserRolesError": "Failed to change user roles",
-    "fetchCategoriesError": "Failed to load categories",
-    "fetchChannelsError": "Failed to load category channels",
-    "createCategoryError": "Failed to create category",
-    "createChannelError": "Failed to create channel",
-    "renameCategoryError": "Failed to rename category",
-    "renameChannelError": "Failed to rename channel",
-    "deleteCategoryError": "Failed to delete category",
-    "deleteChannelError": "Failed to delete channel",
-    "deleteRoleError": "Failed to delete role",
-    "updateCategoryPositionError": "Failed to change categories order",
-    "updateChannelPositionError": "Failed to change channels order",
-    "fetchEditableRolesError": "Failed to load the list of available roles",
-    "createRoleError": "Failed to create role",
-    "renameRoleError": "Failed to rename role",
-    "createQueueMessageError": "Failed to create queue on server",
-    "fetchLogsError": "Failed to load logs",
-    "fetchUsersError": "Failed to load users",
-    "renameUserError": "Failed to rename user",
-    "kickUserError": "Failed to kick user",
-    "signInError": "Failed to sign in",
-    "signOutError": "Failed to sign out"
+	"fetchAllRolesError": "Failed to load roles list from server",
+	"fetchCategoryRolesError": "Failed to change the list of roles that have access to the category",
+	"fetchUserRolesError": "Failed to load user roles list",
+	"saveCategoryPermissionsError": "Failed to change role access settings to the category",
+	"saveUserRolesError": "Failed to change user roles",
+	"fetchCategoriesErrorLog": "Failed to load categories list",
+	"fetchCategoriesError": "Failed to load categories list",
+	"fetchChannelsErrorLog": "Failed to load category channels",
+	"fetchChannelsError": "Failed to load category channels",
+	"createCategoryErrorLog": "Failed to create category",
+	"createCategoryError": "Failed to create category",
+	"createChannelErrorLog": "Failed to create channel",
+	"createChannelError": "Failed to create channel",
+	"renameCategoryErrorLog": "Failed to rename category",
+	"renameCategoryError": "Failed to rename category",
+	"renameChannelErrorLog": "Failed to rename channel",
+	"renameChannelError": "Failed to rename channel",
+	"deleteCategoryErrorLog": "Failed to delete category",
+	"deleteCategoryError": "Failed to delete category",
+	"deleteChannelErrorLog": "Failed to delete channel",
+	"deleteChannelError": "Failed to delete channel",
+	"updateCategoryPositionErrorLog": "Failed to change categories order",
+	"updateCategoryPositionError": "Failed to change categories order",
+	"updateChannelPositionErrorLog": "Failed to change channels order",
+	"updateChannelPositionError": "Failed to change channels order",
+	"fetchEditableRolesError": "Failed to load list of available roles",
+	"createRoleError": "Failed to create role",
+	"renameRoleError": "Failed to rename role",
+	"createQueueMessageError": "Failed to create queue on server",
+	"fetchLogsError": "Failed to load logs",
+	"fetchUsersError": "Failed to load users",
+	"renameUserError": "Failed to rename user",
+	"kickUserError": "Failed to kick user",
+	"signInError": "Failed to sign in",
+	"signOutError": "Failed to sign out",
+	"fetchRoleHoldersError": "Failed to load list of users with selected role",
+	"saveRoleHoldersError": "Failed to save updated list of users with role"
   },
   "search": {
-    "searchByUsername": "Search by username...",
-    "searchByRole": "Search by role name...",
-    "searchByCategory": "Search by category name...",
-    "searchByCategoryName": "Search by category name...",
-    "searchByChannelName": "Search by channel name...",
-    "searchByLogs": "Search logs..."
+	"searchByUsername": "Search by username...",
+	"searchByRole": "Search by role name...",
+	"searchByCategory": "Search by category name...",
+	"searchByCategoryName": "Search by category name...",
+	"searchByChannelName": "Search by channel name...",
+	"searchByLogs": "Search logs..."
   },
   "filter": {
-    "filterUsersByGroup": "Filter users by their group",
-    "filterGroup": {
-      "staff": "Teachers",
-      "student": "Students",
-      "other": "Other"
-    },
-    "filterSettings": "Filter settings"
+	"filterUsersByGroup": "Filter users by their group",
+	"filterGroup": {
+	  "staff": "Teachers",
+	  "student": "Students",
+	  "other": "Other"
+	},
+	"filterSettings": "Filter settings"
   },
   "input": {
-    "category": "Category",
-    "channel": "Channel",
-    "role": "Role name",
-    "user": "Username",
-    "eventTitle": "Event title",
-    "eventDateTime": "Event date and time"
+	"category": "Category",
+	"channel": "Channel",
+	"role": "Role name",
+	"user": "Username",
+	"eventTitle": "Event title",
+	"eventDateTime": "Event date and time"
   },
   "warnings": {
-    "noUsers": "No users found",
-    "noRoles": "No roles",
-    "noCategoryRoles": "No roles with access to this category",
-    "noUserRoles": "User has no roles",
-    "noRolesToAdd": "No roles to add",
-    "noCategory": "No categories",
-    "noChannels": "No channels",
-    "noEvents": "No queues",
-    "noLogs": "No logs found"
+	"noUsers": "No users found",
+	"noRoles": "No roles",
+	"noCategoryRoles": "No roles with access to this category",
+	"noUserRoles": "User has no roles",
+	"noRolesToAdd": "No roles to add",
+	"noCategory": "No categories",
+	"noChannels": "No channels",
+	"noEvents": "No queues",
+	"noLogs": "No logs found",
+	"noRoleHolders": "No users with this role found"
   },
   "eventsPage": {
-    "title": "Create queue for student defenses",
-    "channelPlaceholderStart": "Select category first",
-    "selectCategoryTitle": "Select category",
-    "selectChannelTitle": "Select channel",
-    "selectDateTimeTitle": "Select date and time",
-    "timeCaption": "Time",
-    "successToast": "Queue created successfully!"
+	"title": "Create queue for student defenses",
+	"channelPlaceholderStart": "Select category first",
+	"selectCategoryTitle": "Select category",
+	"selectChannelTitle": "Select channel",
+	"selectDateTimeTitle": "Select date and time",
+	"timeCaption": "Time",
+	"successToast": "Queue created successfully!"
   },
   "placeholder": {
-    "eventTitle": "Enter event title",
-    "category": "Select category",
-    "channel": "Select channel",
-    "eventDateTime": "Select date and time"
+	"eventTitle": "Enter event title",
+	"category": "Select category",
+	"channel": "Select channel",
+	"eventDateTime": "Select date and time"
   },
   "button": {
-    "createLoading": "Creating...",
-    "fillAllFields": "Fill in all fields",
-    "create": "Create",
-    "closeButton": "Close"
+	"createLoading": "Creating...",
+	"fillAllFields": "Fill in all fields",
+	"create": "Create",
+	"closeButton": "Close"
   },
   "logsPage": {
-    "tableHeaderUser": "User",
-    "tableHeaderAction": "Action Performed",
-    "tableHeaderTime": "Execution Time",
-    "resetFiltersButton": "Reset filters",
-    "filterHintText": "Filters allow you to display logs for the selected time period. The first click determines the beginning of the search period, and the second determines its end."
+	"tableHeaderUser": "User",
+	"tableHeaderAction": "Action Performed",
+	"tableHeaderTime": "Execution Time",
+	"resetFiltersButton": "Reset filters",
+	"filterHintText": "Filters allow you to display logs for the selected time period. The first click determines the beginning of the search period, and the second determines its end."
   },
   "pcViewOnlyPage": {
-    "title": "Resource unavailable",
-    "description": "Sorry, but the control panel does not support viewing from mobile devices."
+	"title": "Resource unavailable",
+	"description": "Sorry, but the control panel does not support viewing from mobile devices."
   },
   "noAccessPage": {
-    "title": "Access denied",
-    "description": "Sorry, you do not have access rights to the control panel. \nTo get access, contact your administrator, or log in with another account.",
-    "signOutButton": "Sign out of system"
+	"title": "Access denied",
+	"description": "Sorry, you do not have access rights to the control panel. \nTo get access, contact your administrator, or log in with another account.",
+	"signOutButton": "Sign out of system"
   },
   "loginPage": {
-    "title": "Authorization required to access the control panel",
-    "description": "We use Discord OAuth2 to identify users. \nClick the button below to log in via Discord account.",
-    "loginButton": "Login via Discord",
-    "loadingButton": "Loading..."
+	"title": "Authorization required to access the control panel",
+	"description": "We use Discord OAuth2 to identify users. \nClick the button below to log in via Discord account.",
+	"loginButton": "Login via Discord",
+	"loadingButton": "Loading..."
   },
   "notFoundPage": {
-    "title404": "404: Page not found",
-    "description": "Nothing to see here 🤓"
+	"title404": "404: Page not found",
+	"description": "Nothing to see here 🤓"
   },
   "logActions": {
-    "category.create": "Category Created",
-    "category.delete": "Category Deleted",
-    "category.reorder": "Category Position Changed",
-    "category.rename": "Category Renamed",
-    "category.permissions.edit": "Category Permissions Edited",
-    "channel.create": "Channel Created",
-    "channel.delete": "Channel Deleted",
-    "channel.reorder": "Channel Position Changed",
-    "channel.rename": "Channel Renamed",
-    "role.create": "Role Created",
-    "role.delete": "Role Deleted",
-    "role.rename": "Role Renamed",
-    "user.rename": "User Renamed",
-    "user.kick": "User Kicked",
-    "user.roles.edit": "User Roles Edited",
-    "queue.create": "Queue Created"
+	"category.create": "Category Created",
+	"category.delete": "Category Deleted",
+	"category.reorder": "Category Position Changed",
+	"category.rename": "Category Renamed",
+	"category.permissions.edit": "Category Permissions Edited",
+	"channel.create": "Channel Created",
+	"channel.delete": "Channel Deleted",
+	"channel.reorder": "Channel Position Changed",
+	"channel.rename": "Channel Renamed",
+	"role.create": "Role Created",
+	"role.delete": "Role Deleted",
+	"role.rename": "Role Renamed",
+	"user.rename": "User Renamed",
+	"user.kick": "User Kicked",
+	"user.roles.edit": "User Roles Edited",
+	"queue.create": "Queue Created"
   }
 }
