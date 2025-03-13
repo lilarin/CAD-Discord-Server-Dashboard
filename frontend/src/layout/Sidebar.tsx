@@ -7,7 +7,7 @@ import RolesIcon from "@/assets/icons/roles.svg";
 import UsersIcon from "@/assets/icons/users.svg";
 import EventsIcon from "@/assets/icons/events.svg";
 import LogsIcon from "@/assets/icons/logs.svg";
-import SettingsIcon from "@/assets/icons/settings.svg";
+import SettingsIcon from "@/assets/icons/edit.svg";
 import {useTranslation} from "react-i18next";
 
 const baseNavigation = [
