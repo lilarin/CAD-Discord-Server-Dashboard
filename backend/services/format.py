@@ -8,7 +8,9 @@ from backend.services.fetch import (
     fetch_roles_with_access,
     fetch_guild_default_role,
     fetch_roles,
-    fetch_users
+    fetch_users,
+    fetch_role,
+    fetch_guild,
 )
 from backend.utils.user import get_user_group
 
@@ -113,9 +115,10 @@ async def format_editable_roles_response() -> list[Role]:
 
 
 async def format_users_response() -> list[User]:
+    guild = await fetch_guild()
     users = []
     for member in await fetch_users():
-        user_group, is_admin = await get_user_group(member)
+        user_group, is_admin = await get_user_group(member, guild.owner_id)
         users.append(
             User(
                 id=str(member.id),
@@ -124,6 +127,29 @@ async def format_users_response() -> list[User]:
                 is_admin=is_admin
             )
         )
+    users.sort(key=lambda user: user.name)
+    return users
+
+
+async def format_base_users_response() -> list[User]:
+    filter_roles_ids = [
+        config.administrator_role_id,
+        config.teacher_role_id,
+        config.student_role_id,
+    ]
+    filter_roles = [
+        await fetch_role(role_id) for role_id in filter_roles_ids
+    ]
+
+    users = []
+    for member in await fetch_users():
+        if any(role in filter_roles for role in member.roles):
+            users.append(
+                User(
+                    id=str(member.id),
+                    name=member.display_name
+                )
+            )
     users.sort(key=lambda user: user.name)
     return users
 
