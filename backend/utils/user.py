@@ -13,12 +13,16 @@ async def kick_target_user(user: Member) -> None:
     await guild.kick(user)
 
 
-async def get_user_group(user: Member) -> tuple[str, bool]:
-    guild = await fetch_guild()
+async def get_user_group(user: Member, owner_id: int = None) -> tuple[str | None, bool]:
+    if not owner_id:
+        guild = await fetch_guild()
+        owner_id = guild.owner_id
+
     roles_ids = await fetch_user_roles_ids(user)
-    if config.administrator_role_id in roles_ids or user.id == guild.owner_id:
+    if config.administrator_role_id in roles_ids or user.id == owner_id:
         return "staff", True
     elif config.teacher_role_id in roles_ids:
         return "staff", False
     elif config.student_role_id in roles_ids:
         return "student", False
+    return None, False
