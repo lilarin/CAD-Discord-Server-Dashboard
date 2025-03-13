@@ -27,7 +27,7 @@ export type User = {
 	id: number;
 	name: string;
 	group?: string | null;
-	is_admin: boolean;
+	is_admin?: boolean | null;
 }
 
 export type Log = {
