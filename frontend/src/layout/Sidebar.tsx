@@ -3,7 +3,7 @@ import {cn} from "@/lib/utils";
 
 import HomePageIcon from "@/assets/icons/index.svg"
 import DisciplinesIcon from "@/assets/icons/disciplines.svg";
-import GroupsIcon from "@/assets/icons/groups.svg";
+import RolesIcon from "@/assets/icons/roles.svg";
 import UsersIcon from "@/assets/icons/users.svg";
 import EventsIcon from "@/assets/icons/events.svg";
 import LogsIcon from "@/assets/icons/logs.svg";
@@ -13,7 +13,7 @@ import {useTranslation} from "react-i18next";
 const baseNavigation = [
 	{name: "sidebar.dashboard", href: "/", icon: HomePageIcon},
 	{name: "sidebar.categories", href: "/categories", icon: DisciplinesIcon},
-	{name: "sidebar.groups", href: "/groups", icon: GroupsIcon},
+	{name: "sidebar.roles", href: "/roles", icon: RolesIcon},
 	{name: "sidebar.users", href: "/users", icon: UsersIcon},
 	{name: "sidebar.queues", href: "/queues", icon: EventsIcon},
 	{name: "sidebar.logs", href: "/logs", icon: LogsIcon},

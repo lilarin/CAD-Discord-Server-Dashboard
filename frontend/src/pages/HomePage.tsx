@@ -12,7 +12,7 @@ import HintIcon from "@/assets/icons/hint.svg";
 import LogsIcon from "@/assets/icons/logs.svg";
 import EventsIcon from "@/assets/icons/events.svg";
 import UsersIcon from "@/assets/icons/users.svg";
-import GroupsIcon from "@/assets/icons/groups.svg";
+import RolesIcon from "@/assets/icons/roles.svg";
 import DisciplinesIcon from "@/assets/icons/disciplines.svg";
 import {Link} from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -64,15 +64,15 @@ const HomePage = () => {
 						</div>
 					</Link>
 
-					<Link to="/groups" className="block">
+					<Link to="/roles" className="block">
 						<div className="bg-[#2F3136] rounded p-6 hover:bg-[#292b2f] transition-all duration-200 cursor-pointer">
 							<div className="flex items-center mb-4">
-								<img src={GroupsIcon} alt={t("homePage.sections.groups.title")} className="w-8 h-8 mr-3"/>
-								<h3 className="text-xl font-semibold text-white">{t("homePage.sections.groups.title")}</h3>
+								<img src={RolesIcon} alt={t("homePage.sections.roles.title")} className="w-8 h-8 mr-3"/>
+								<h3 className="text-xl font-semibold text-white">{t("homePage.sections.roles.title")}</h3>
 							</div>
 							<div className="text-gray-300 space-y-2">
 								<p>
-									{t("homePage.sections.groups.description")}
+									{t("homePage.sections.roles.description")}
 								</p>
 							</div>
 						</div>
@@ -178,11 +178,11 @@ const HomePage = () => {
 
 					<div className="bg-[#2F3136] rounded p-6">
 						<div className="flex items-center mb-4">
-							<img src={CreateRoleIcon} alt={t("homePage.icons.createGroup.title")} className="w-6 h-6 mr-3"/>
-							<h3 className="text-lg font-semibold text-white">{t("homePage.icons.createGroup.title")}</h3>
+							<img src={CreateRoleIcon} alt={t("homePage.icons.createRole.title")} className="w-6 h-6 mr-3"/>
+							<h3 className="text-lg font-semibold text-white">{t("homePage.icons.createRole.title")}</h3>
 						</div>
 						<p className="text-gray-300">
-							{t("homePage.icons.createGroup.description")}
+							{t("homePage.icons.createRole.description")}
 						</p>
 					</div>
 

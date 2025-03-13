@@ -7,7 +7,7 @@
 	"title": "Control panel",
 	"dashboard": "Home",
 	"categories": "Categories",
-	"groups": "Roles",
+	"roles": "Roles",
 	"users": "Users",
 	"queues": "Queues",
 	"logs": "Logs",
@@ -27,7 +27,7 @@
 		"title": "Categories",
 		"description": "This section allows you to manage categories (disciplines) on the server. Categories are used to structure channels and manage access to them"
 	  },
-	  "groups": {
+	  "roles": {
 		"title": "Roles",
 		"description": "This section allows you to manage roles (groups) for users on the server. Roles are used to assign access rights to a specific category"
 	  },
@@ -66,7 +66,7 @@
 		"title": "Edit",
 		"description": "Used to open the access and roles (groups) settings panel"
 	  },
-	  "createGroup": {
+	  "createRole": {
 		"title": "Create (assign) roles",
 		"description": "Used to create and assign roles (groups)"
 	  },

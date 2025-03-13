@@ -49,7 +49,7 @@ const usePaginatedRoles = (roles: Role[], setRoles: React.Dispatch<React.SetStat
 	}
 };
 
-export default function Groups({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: number }) {
+export default function Roles({itemsPerPage = ITEMS_PER_PAGE}: { itemsPerPage?: number }) {
 	const [roles, setRoles] = useState<Role[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const {t} = useTranslation();
