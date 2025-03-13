@@ -1,5 +1,14 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {editCategoryPermissions, editUserRoles, getAllRoles, getCategoryAccessRoles, getUserRoles} from "@/lib/api.ts";
+import {
+	editCategoryPermissions,
+	editRoleHolders,
+	editUserRoles,
+	getAllRoles,
+	getBaseUsers,
+	getCategoryAccessRoles,
+	getRoleHolders,
+	getUserRoles,
+} from "@/lib/api.ts";
 import HintIcon from "@/assets/icons/hint.svg";
 import DeleteIcon from "@/assets/icons/delete.svg";
 import AddRoleIcon from "@/assets/icons/add_role.svg";
@@ -69,6 +78,15 @@ function ActionSidebar(
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const filterRef = useRef<HTMLDivElement>(null);
 
+	const [roleHolders, setRoleHolders] = useState<User[]>([]);
+	const [initialRoleHolders, setInitialRoleHolders] = useState<User[]>([]);
+	const [isLoadingRoleHolders, setIsLoadingRoleHolders] = useState(false);
+	const [isUserListOpen, setIsUserListOpen] = useState(false);
+	const [availableUsers, setAvailableUsers] = useState<User[]>([]);
+	const [allUsersList, setAllUsersList] = useState<User[]>([]);
+	const [userSearchTerm, setUserSearchTerm] = useState('');
+	const userDropdownRef = useRef<HTMLDivElement>(null);
+
 
 	const hintAnimation = useHintAnimation();
 	const {isVisible: showHint, opacity: hintOpacity, open: openHint, close: closeHint} = hintAnimation;
@@ -98,6 +116,20 @@ function ActionSidebar(
 				setAllRolesList([]);
 			}
 		};
+		const fetchAllUsers = async () => {
+			try {
+				const fetchedAllUsers = await getBaseUsers();
+				setAllUsersList(fetchedAllUsers);
+			} catch (error) {
+				toast.error(t("error.fetchUsersError"), {
+					position: "bottom-right",
+					duration: 5000
+				});
+				console.error(error);
+				setAllUsersList([]);
+			}
+		};
+
 
 		if (action === 'edit' && target === 'category' && item) {
 			const fetchRoles = async () => {
@@ -143,31 +175,72 @@ function ActionSidebar(
 			});
 			fetchAllRoles().then(r => {
 			});
+		} else if (action === 'edit' && target === 'role' && item) {
+			const fetchRoleHoldersList = async () => {
+				setIsLoadingRoleHolders(true);
+				try {
+					const fetchedHolders = await getRoleHolders(item.id.toString());
+					setRoleHolders(fetchedHolders);
+					setInitialRoleHolders([...fetchedHolders]);
+				} catch (error) {
+					toast.error(t("error.fetchRoleHoldersError"), {
+						position: "bottom-right",
+						duration: 10000
+					});
+					console.error(error);
+					setRoleHolders([]);
+				} finally {
+					setIsLoadingRoleHolders(false);
+				}
+			};
+			fetchRoleHoldersList().then(r => {
+			});
+			fetchAllUsers().then(r => {
+			});
 		} else {
 			setRoles([]);
 			setInitialRoles([]);
 			setIsRoleListOpen(false);
 			setAvailableRoles([]);
+			setRoleHolders([]);
+			setInitialRoleHolders([]);
+			setIsUserListOpen(false);
+			setAvailableUsers([]);
+			setUserSearchTerm('');
 		}
 	}, [action, target, item]);
 
 	useEffect(() => {
-		function handleClickOutside(event: MouseEvent) {
+		function handleClickOutsideRoleDropdown(event: MouseEvent) {
 			if (isRoleListOpen && dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
 				setIsRoleListOpen(false);
 			}
 		}
 
-		if (isRoleListOpen) {
-			document.addEventListener("mousedown", handleClickOutside);
-		} else {
-			document.removeEventListener("mousedown", handleClickOutside);
+		function handleClickOutsideUserDropdown(event: MouseEvent) {
+			if (isUserListOpen && userDropdownRef.current && !userDropdownRef.current.contains(event.target as Node)) {
+				setIsUserListOpen(false);
+			}
 		}
 
+
+		if (isRoleListOpen) {
+			document.addEventListener("mousedown", handleClickOutsideRoleDropdown);
+		} else {
+			document.removeEventListener("mousedown", handleClickOutsideRoleDropdown);
+		}
+		if (isUserListOpen) {
+			document.addEventListener("mousedown", handleClickOutsideUserDropdown);
+		} else {
+			document.removeEventListener("mousedown", handleClickOutsideUserDropdown);
+		}
+
+
 		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
+			document.removeEventListener("mousedown", handleClickOutsideRoleDropdown);
+			document.removeEventListener("mousedown", handleClickOutsideUserDropdown);
 		};
-	}, [isRoleListOpen]);
+	}, [isRoleListOpen, isUserListOpen]);
 
 
 	const actionTextMap = {
@@ -184,6 +257,7 @@ function ActionSidebar(
 		},
 		edit: {
 			category: t("actionSidebar.edit.category", {itemName: item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}),
+			role: t("actionSidebar.edit.role", {itemName: item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}),
 			user: t("actionSidebar.edit.user", {itemName: item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ''}),
 		},
 		delete: {
@@ -346,6 +420,59 @@ function ActionSidebar(
 		}
 	};
 
+	const handleRemoveRoleHolder = (userId: number) => {
+		setRoleHolders(roleHolders.filter(user => user.id !== userId));
+	};
+
+	const handleAddUserToRole = () => {
+		if (action === 'edit' && target === 'role') {
+			const available = allUsersList.filter(allUser => !roleHolders.some(selectedUser => selectedUser.id === allUser.id));
+			setAvailableUsers(available);
+			setIsUserListOpen(true);
+			setUserSearchTerm('');
+		}
+	};
+
+	const handleSelectAvailableUser = (userToAdd: User) => {
+		setRoleHolders([...roleHolders, userToAdd]);
+		setAvailableUsers(availableUsers.filter(user => user.id !== userToAdd.id));
+		setIsUserListOpen(false);
+	};
+
+	const filteredAvailableUsers = useMemo(() => {
+		const term = userSearchTerm.toLowerCase();
+		return availableUsers.filter(user => user.name.toLowerCase().includes(term));
+	}, [availableUsers, userSearchTerm]);
+
+	const isEditRoleHoldersDisabled = (action === 'edit' && target === 'role') &&
+		initialRoleHolders && roleHolders && (
+			initialRoleHolders.length === roleHolders.length &&
+			initialRoleHolders.map(u => u.id).sort().every((id, index) => id === roleHolders.map(u => u.id).sort()[index])
+		);
+
+
+	const handleSaveRoleHolders = async () => {
+		if (action === 'edit' && target === 'role' && item) {
+			onCancel?.();
+			try {
+				const userIds = roleHolders.map(user => user.id);
+				if (!isEditRoleHoldersDisabled) {
+					await editRoleHolders(item.id.toString(), userIds);
+					setInitialRoleHolders([...roleHolders]);
+				}
+			} catch (error) {
+				toast.error(t("error.saveRoleHoldersError"), {
+					position: "bottom-right",
+					duration: 10000
+				});
+				console.error(error)
+				const fetchedHolders = await getRoleHolders(item.id.toString());
+				setRoleHolders(fetchedHolders);
+				setInitialRoleHolders([...fetchedHolders]);
+			}
+		}
+	};
+
 
 	return (
 		<div className="sticky top-5">
@@ -500,6 +627,72 @@ function ActionSidebar(
 						</div>
 					</div>
 				)}
+				{/* Edit Role Holders */}
+				{action === 'edit' && target === 'role' && item && (
+					<div>
+						{isLoadingRoleHolders ? (
+							<div className="flex justify-center items-center p-2">
+								<ChannelLoadingSpinner/>
+							</div>
+						) : roleHolders.length > 0 ? (
+							<ul className="space-y-2 mt-2">
+								<h3 className="font-light">{t("actionSidebar.roleHolders")}</h3>
+								{roleHolders.map(user => (
+									<li key={user.id}
+									    className="bg-[#36393F] rounded pl-2 p-1.5 flex justify-between items-center pr-1.5">
+										{user.name}
+										<button onClick={() => handleRemoveRoleHolder(user.id)}>
+											<img
+												src={DeleteIcon}
+												alt={t("iconAltName.delete")}
+												className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"
+											/>
+										</button>
+									</li>
+								))}
+							</ul>
+						) : (
+							<div className="font-light mt-2 mb-2">{t("warnings.noRoleHolders")}</div>
+						)}
+						{!isLoadingRoleHolders && (
+							<div
+								className="flex justify-center p-2 border-dashed border-gray-500 text-gray-300 hover:border-gray-400 hover:text-gray-100 border rounded cursor-pointer mt-2  transition-all duration-300"
+								onClick={handleAddUserToRole}>
+								<img src={AddRoleIcon} alt={t("iconAltName.add")} className="w-4 h-4 mr-2"/>
+							</div>
+						)}
+						<div className="flex justify-between items-center pt-4 pb-1">
+							<div className="flex justify-start space-x-3">
+								<button
+									onClick={handleSaveRoleHolders}
+									disabled={isEditRoleHoldersDisabled}
+									className={`bg-green-600 ${
+										!isEditRoleHoldersDisabled ? 'hover:bg-green-700 transition-all duration-300' : ''
+									} text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-40 transition-all duration-300`}
+								>
+									{t("actionSidebar.saveButton")}
+								</button>
+								<button
+									onClick={onCancel}
+									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
+								>
+									{t("actionSidebar.cancelButton")}
+								</button>
+							</div>
+							{actionHintText && (
+								<div className="pt-2 hover:brightness-200 transition-all duration-300">
+									<button
+										onMouseEnter={handleMouseEnterHint}
+										onMouseLeave={handleMouseLeaveHint}
+										className="focus:outline-none"
+									>
+										<img src={HintIcon} alt={t("iconAltName.hint")} className="w-6 h-6"/>
+									</button>
+								</div>
+							)}
+						</div>
+					</div>
+				)}
 				{action === 'filter' && target === 'user' && (
 					<div ref={filterRef} className="">
 						<span className="text-lg font-semibold mb-2">{t("actionSidebar.filter.user")}</span>
@@ -592,6 +785,39 @@ function ActionSidebar(
 								))
 							) : (
 								<li className="text-gray-400 p-2">{t("actionSidebar.noRoles")}</li>
+							)}
+						</ul>
+					</div>
+				</div>
+			)}
+			{isUserListOpen && availableUsers.length > 0 && (
+				<div ref={userDropdownRef} className="w-full pt-5 relative">
+					<div className="bg-[#2F3136] rounded p-4">
+						<div className="w-full flex flex-row relative">
+							<input
+								type="text"
+								placeholder={t("search.searchByUsername")}
+								className="w-full p-2 rounded bg-[#292B2F] text-white focus:outline-none"
+								value={userSearchTerm}
+								onChange={(e) => setUserSearchTerm(e.target.value)}
+							/>
+							<img
+								src={SearchIcon}
+								alt={t("iconAltName.search")}
+								className="w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none"
+							/>
+						</div>
+						<ul className="space-y-2 mt-2 max-h-32 overflow-y-auto">
+							{filteredAvailableUsers.length > 0 ? (
+								filteredAvailableUsers.map(user => (
+									<li key={user.id}
+									    onClick={() => handleSelectAvailableUser(user)}
+									    className="bg-[#36393F] rounded pl-2 p-1.5 flex items-center hover:bg-[#3e4147] cursor-pointer transition-all duration-300">
+										{user.name}
+									</li>
+								))
+							) : (
+								<li className="text-gray-400 p-2">{t("warnings.noUsers")}</li>
 							)}
 						</ul>
 					</div>
