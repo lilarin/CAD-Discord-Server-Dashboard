@@ -290,6 +290,7 @@
 	"channel.rename": "Channel Renamed",
 	"role.create": "Role Created",
 	"role.delete": "Role Deleted",
+	"role.edit.users": "Role Holders Updated",
 	"role.rename": "Role Renamed",
 	"user.rename": "User Renamed",
 	"user.kick": "User Kicked",
