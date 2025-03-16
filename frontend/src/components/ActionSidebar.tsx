@@ -568,23 +568,25 @@ function ActionSidebar(
 								<ChannelLoadingSpinner/>
 							</div>
 						) : sortedRoles.length > 0 ? (
-							<ul className="space-y-2 mt-2">
+							<div>
 								<h3
 									className="font-light">{target === 'category' ? t("actionSidebar.rolesWithAccess") : t("actionSidebar.userRoles")}</h3>
-								{sortedRoles.map(role => (
-									<li key={role.id}
-									    className="bg-[#36393F] rounded pl-2 p-1.5 flex justify-between items-center pr-1.5">
-										{role.name}
-										<button onClick={() => handleRemoveRole(role.id)}>
-											<img
-												src={DeleteIcon}
-												alt={t("iconAltName.delete")}
-												className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"
-											/>
-										</button>
-									</li>
-								))}
-							</ul>
+								<ul className="space-y-2 mt-2 max-h-44 overflow-y-auto">
+									{sortedRoles.map(role => (
+										<li key={role.id}
+										    className="bg-[#36393F] rounded pl-2 p-1.5 flex justify-between items-center pr-1.5">
+											{role.name}
+											<button onClick={() => handleRemoveRole(role.id)}>
+												<img
+													src={DeleteIcon}
+													alt={t("iconAltName.delete")}
+													className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"
+												/>
+											</button>
+										</li>
+									))}
+								</ul>
+							</div>
 						) : (
 							<div className="font-light mt-2 mb-2">{noRolesText}</div>
 						)}
@@ -627,7 +629,6 @@ function ActionSidebar(
 						</div>
 					</div>
 				)}
-				{/* Edit Role Holders */}
 				{action === 'edit' && target === 'role' && item && (
 					<div>
 						{isLoadingRoleHolders ? (
@@ -635,22 +636,24 @@ function ActionSidebar(
 								<ChannelLoadingSpinner/>
 							</div>
 						) : roleHolders.length > 0 ? (
-							<ul className="space-y-2 mt-2">
+							<div>
 								<h3 className="font-light">{t("actionSidebar.roleHolders")}</h3>
-								{roleHolders.map(user => (
-									<li key={user.id}
-									    className="bg-[#36393F] rounded pl-2 p-1.5 flex justify-between items-center pr-1.5">
-										{user.name}
-										<button onClick={() => handleRemoveRoleHolder(user.id)}>
-											<img
-												src={DeleteIcon}
-												alt={t("iconAltName.delete")}
-												className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"
-											/>
-										</button>
-									</li>
-								))}
-							</ul>
+								<ul className="space-y-2 mt-2 max-h-44 overflow-y-auto">
+									{roleHolders.map(user => (
+										<li key={user.id}
+										    className="bg-[#36393F] rounded pl-2 p-1.5 flex justify-between items-center pr-1.5">
+											{user.name}
+											<button onClick={() => handleRemoveRoleHolder(user.id)}>
+												<img
+													src={DeleteIcon}
+													alt={t("iconAltName.delete")}
+													className="w-5 h-5 cursor-pointer hover:brightness-200 transition-all duration-300"
+												/>
+											</button>
+										</li>
+									))}
+								</ul>
+							</div>
 						) : (
 							<div className="font-light mt-2 mb-2">{t("warnings.noRoleHolders")}</div>
 						)}
@@ -784,7 +787,7 @@ function ActionSidebar(
 									</li>
 								))
 							) : (
-								<li className="text-gray-400 p-2">{t("actionSidebar.noRoles")}</li>
+								<li className="text-gray-400 pt-1">{t("warnings.noRoles")}</li>
 							)}
 						</ul>
 					</div>
@@ -817,7 +820,7 @@ function ActionSidebar(
 									</li>
 								))
 							) : (
-								<li className="text-gray-400 p-2">{t("warnings.noUsers")}</li>
+								<li className="text-gray-400 pt-1">{t("warnings.noUsers")}</li>
 							)}
 						</ul>
 					</div>
