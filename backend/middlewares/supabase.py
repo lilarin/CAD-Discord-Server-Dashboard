@@ -21,7 +21,6 @@ def logs_table_exists(func):
                 CREATE TABLE IF NOT EXISTS logs (
                     id SERIAL PRIMARY KEY,
                     user_name TEXT,
-                    user_avatar TEXT,
                     action TEXT,
                     event_time TIMESTAMPTZ
                 );

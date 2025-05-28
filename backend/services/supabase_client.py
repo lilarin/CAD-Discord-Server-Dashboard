@@ -16,12 +16,10 @@ supabase: Client = create_client(config.supabase_url, config.supabase_key)
 async def save_log_to_supabase(user: Member, action: str) -> None:
     try:
         name = user.display_name
-        avatar = user.avatar.url
         timestamp = datetime.datetime.now(datetime.timezone.utc).isoformat()
 
         log_data = {
             "user_name": name,
-            "user_avatar": avatar,
             "action": action,
             "event_time": timestamp,
         }
