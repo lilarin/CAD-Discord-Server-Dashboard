@@ -122,12 +122,12 @@ export default function Categories() {
 	const handleCreateChannel = useCallback(
 		async (channelName: string, channelType: 'text' | 'voice') => {
 			const tempId = Date.now();
-			const newChannel: Channel = {id: tempId, name: channelName, type: channelType, position: 100};
+			const newChannel: Channel = {id: tempId, name: channelName.toLowerCase(), type: channelType, position: 100};
 			setChannels((prevChannels) => [...prevChannels, newChannel]);
 			setActionSidebar({action: null, target: null, item: null});
 
 			try {
-				const channels = await createChannel(openCategoryId.toString(), channelName, channelType);
+				const channels = await createChannel(openCategoryId.toString(), channelName.toLowerCase(), channelType);
 				setChannels(channels);
 			} catch (error) {
 				toast.error(t('error.createChannelError'), {

@@ -17,7 +17,7 @@ import {useTranslation} from "react-i18next";
 registerLocale("uk", uk);
 registerLocale("en", enUS);
 
-const ITEMS_PER_PAGE = 7;
+const ITEMS_PER_PAGE = 9;
 
 const formatDate = (dateString: string, locale: string): string => {
 	const date = new Date(dateString);
@@ -246,20 +246,13 @@ export default function Logs() {
 										{logsOnPage.map((log, index) => (
 											<tr key={index}>
 												<td className="px-6 py-4 whitespace-nowrap w-1/3">
-													<div className="flex items-center">
-														<div className="flex-shrink-0 h-10 w-10">
-															<img className="h-10 w-10 rounded-full" src={log.user_avatar}
-															     alt={`Аватар ${log.user_name}`}/>
-														</div>
-														<div className="ml-4">
-															<div className="text-sm font-medium text-white">
-																{log.user_name}
-															</div>
-														</div>
+													<div className="text-sm text-center font-medium text-white">
+														{log.user_name}
 													</div>
 												</td>
 												<td
-													className="px-6 py-4 whitespace-normal text-sm text-gray-200 w-1/3 text-center">{t(`logActions.${log.action}`)}</td>
+													className="px-6 py-4 whitespace-normal text-sm text-gray-200 w-1/3 text-center">{t(`logActions.${log.action}`)}
+												</td>
 												<td
 													className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 w-1/3 text-center">
 													{formatDate(log.event_time, currentLocale)}

@@ -46,7 +46,7 @@ function DraggableChannel({
         {channel.type === 'voice' && (
           <img src={VoiceIcon} alt={t("iconAltName.voiceChannel")} className="w-4 h-4 mr-1" />
         )}
-        <span className="pl-0.5">{channel.name.charAt(0).toUpperCase() + channel.name.slice(1)}</span>
+        <span className="pl-0.5">{channel.name.toLowerCase()}</span>
       </div>
       <div className={`flex justify-end space-x-2 pr-1 ${isHovered ? '' : 'opacity-0'}`}>
         <div className="relative group" onClick={() => onActionTriggered('rename', 'channel', channel)}>
