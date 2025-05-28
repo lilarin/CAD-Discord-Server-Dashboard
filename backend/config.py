@@ -19,6 +19,8 @@ class Config:
         self.supabase_key = self._get_env_variable("VITE_SUPABASE_SERVICE_ROLE_KEY")
         self.redis_url = self._get_env_variable("REDIS_URL")
 
+        self.redis_logs_key = "discord_admin_panel:logs"
+
     @staticmethod
     def _get_env_variable(var_name: str) -> str | None:
         value = os.environ.get(var_name)

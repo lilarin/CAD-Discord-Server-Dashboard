@@ -8,22 +8,20 @@ from backend.schemas import LogSchema
 from backend.services.supabase_client import read_logs_from_supabase
 from backend.utils.logger import logger
 
-REDIS_LOGS_KEY = "discord_admin_panel:logs"
-
 redis_client = redis.Redis.from_url(config.redis_url)
 
 
 async def set_logs_to_cache(logs: list[LogSchema]):
     try:
         serialized_logs = [log.model_dump() for log in logs]
-        await redis_client.set(REDIS_LOGS_KEY, json.dumps(serialized_logs))
+        await redis_client.set(config.redis_logs_key, json.dumps(serialized_logs))
     except exceptions.ConnectionError as error:
         logger.error(f"Redis connection error: {error}")
 
 
 async def get_logs_from_cache() -> list[LogSchema]:
     try:
-        cached_logs = await redis_client.get(REDIS_LOGS_KEY)
+        cached_logs = await redis_client.get(config.redis_logs_key)
         if cached_logs:
             deserialized_logs = json.loads(cached_logs)
             return [LogSchema(**log) for log in deserialized_logs]
