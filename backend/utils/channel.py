@@ -16,17 +16,34 @@ from backend.services.fetch import (
 async def create_template_category(category_name) -> CategoryChannel:
     guild = await fetch_guild()
     everyone_role = await fetch_guild_default_role()
-    teacher_role = await fetch_role(config.teacher_role_id)
     administrator_role = await fetch_role(config.administrator_role_id)
 
     default_overwrites = {
         everyone_role: PermissionOverwrite(view_channel=False),
+        administrator_role: PermissionOverwrite(view_channel=True)
+    }
+
+    category = await guild.create_category(name=category_name, overwrites=default_overwrites)
+    return category
+
+
+async def create_staff_category(category_name) -> CategoryChannel:
+    guild = await fetch_guild()
+    teacher_role = await fetch_role(config.teacher_role_id)
+    administrator_role = await fetch_role(config.administrator_role_id)
+
+    default_overwrites = {
         teacher_role: PermissionOverwrite(view_channel=True),
         administrator_role: PermissionOverwrite(view_channel=True)
     }
 
     category = await guild.create_category(name=category_name, overwrites=default_overwrites)
     return category
+
+
+async def create_text_registration_channel(name: str) -> TextChannel:
+    guild = await fetch_guild()
+    return await guild.create_text_channel(name=name, position=0)
 
 
 async def create_text_target_channel(category: CategoryChannel, name: str) -> TextChannel:

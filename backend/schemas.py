@@ -9,7 +9,6 @@ class ResponseWrapper(BaseModel):
     error: Optional[str] = None
 
 
-
 class BaseChannel(BaseModel):
     id: str
     position: int
@@ -49,7 +48,6 @@ class PositionRequestBody(BaseModel):
 
 class LogSchema(BaseModel):
     user_name: str
-    user_avatar: str
     action: str
     event_time: str
 
@@ -60,5 +58,22 @@ class QueueRequestBody(BaseModel):
     event_time: str
 
 
+class ServerLanguageRequestBody(BaseModel):
+    language: str
+
+
 class RegistrationRequestBody(BaseModel):
-    channel_id: str
+    channel_id: Optional[str] = None
+    channel_name: Optional[str] = None
+
+
+class StaffCategoryRequestBody(BaseModel):
+    category_id: Optional[str] = None
+    category_name: Optional[str] = None
+
+
+class ServerConfig(BaseModel):
+    language: Optional[str] = None
+    registration_channel_id: Optional[str] = None
+    staff_category_id: Optional[str] = None
+    staff_info_channel_id: Optional[str] = None

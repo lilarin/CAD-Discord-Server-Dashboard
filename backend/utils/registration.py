@@ -2,7 +2,7 @@ from backend.services.bot_ui import create_registration_embed, init_register_but
 from backend.services.fetch import fetch_channel
 
 
-async def create_registration_message(
+async def send_registration_message(
         channel_id: str,
 ) -> None:
     channel = await fetch_channel(int(channel_id))

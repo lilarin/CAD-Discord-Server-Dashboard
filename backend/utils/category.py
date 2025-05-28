@@ -13,3 +13,7 @@ async def sync_permissions_with_category(channel_id: id) -> VoiceChannel | TextC
     channel = await fetch_channel(channel_id)
     await channel.edit(sync_permissions=True)
     return channel
+
+
+async def check_if_category_exists(category_id) -> bool:
+    return await fetch_channel(category_id) is not None

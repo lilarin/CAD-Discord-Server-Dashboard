@@ -3,8 +3,8 @@ from fastapi.security import HTTPBearer
 
 from backend.api.v1.categories import router as categories_router
 from backend.api.v1.channels import router as channels_router
-from backend.api.v1.queues import router as events_router
-from backend.api.v1.registrations import router as registrations_router
+from backend.api.v1.queues import router as queues_router
+from backend.api.v1.settings import router as settings_router
 from backend.api.v1.logs import router as logs_router
 from backend.api.v1.roles import router as roles_router
 from backend.api.v1.users import router as users_router
@@ -16,5 +16,5 @@ router.include_router(channels_router, tags=["Channels"])
 router.include_router(users_router, tags=["Users"])
 router.include_router(roles_router, tags=["Roles"])
 router.include_router(logs_router, tags=["Logs"])
-router.include_router(events_router, tags=["Events"])
-router.include_router(registrations_router, tags=["Registration"])
+router.include_router(queues_router, tags=["Queues"])
+router.include_router(settings_router, tags=["Settings"])
