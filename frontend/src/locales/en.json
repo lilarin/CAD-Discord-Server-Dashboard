@@ -121,8 +121,8 @@
 		"role": "A role is a specific group that a user can have on the server. It can be used to classify students by grade level, discipline, or other characteristics and will be sorted on the page after creation"
 	  },
 	  "rename": {
-		"category": "Case is not taken into account for the channel name and is processed automatically",
-		"channel": "Case is not taken into account for the category name and is processed automatically"
+		"category": "Case is not taken into account for the category name and is processed automatically",
+		"channel": "Case is not taken into account for the channel name and is processed automatically"
 	  },
 	  "edit": {
 		"category": "Select roles for access to the category and all its channels"
