@@ -3,3 +3,4 @@
 node_modules
 qodana.yaml
 .flake8
+server_config.json
