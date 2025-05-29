@@ -6,7 +6,8 @@ from backend.schemas import Channel, NameRequestBody, PositionRequestBody
 from backend.services.fetch import fetch_channel, fetch_channels_by_type
 from backend.services.format import (
     format_channels_by_category_response,
-    format_base_channel_response
+    format_base_channel_response,
+    format_text_channels_without_category_response
 )
 from backend.utils.reorder_request import update_channel_order
 from backend.utils.channels import (
@@ -17,6 +18,19 @@ from backend.utils.channels import (
 )
 
 router = APIRouter()
+
+
+@router.get("/channels/text", response_model=list[Channel])
+@uniform_response_middleware
+async def get_channels_without_category():
+    try:
+        return await format_text_channels_without_category_response()
+    except disnake.errors.HTTPException as exception:
+        raise HTTPException(status_code=exception.status, detail=str(exception.text))
+    except ValueError as exception:
+        raise HTTPException(status_code=400, detail=str(exception))
+    except Exception as exception:
+        raise HTTPException(status_code=500, detail=str(exception))
 
 
 @router.get("/channels/{category_id}", response_model=list[Channel])

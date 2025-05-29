@@ -82,6 +82,10 @@ export async function getChannels(categoryId: string): Promise<Channel[]> {
 	return handleRequest(api.get<ApiResponse<Channel[]>>(`/api/v1/channels/${categoryId}`));
 }
 
+export async function getNonCategorizedTextChannels(): Promise<Channel[]> {
+	return handleRequest(api.get<ApiResponse<Channel[]>>(`/api/v1/channels/text`));
+}
+
 export async function deleteCategory(categoryId: string): Promise<Category[]> {
 	return handleRequest(api.delete<ApiResponse<Category[]>>(`/api/v1/categories/${categoryId}`, {
 		headers: {
@@ -273,7 +277,6 @@ export async function createQueueMessage(channelId: string, title: string, event
 	}));
 }
 
-// Settings API
 export async function getServerConfig(): Promise<ServerConfig> {
   return handleRequest(api.get<ApiResponse<ServerConfig>>('/api/v1/settings/config'));
 };

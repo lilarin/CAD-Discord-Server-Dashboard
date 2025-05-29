@@ -42,6 +42,20 @@ async def format_channels_by_category_response(category: CategoryChannel) -> lis
     return channels
 
 
+async def format_text_channels_without_category_response() -> list[Channel]:
+    channels = [
+        Channel(
+            id=str(channel.id),
+            name=channel.name,
+            position=channel.position,
+            type=channel.type.name,
+        )
+        for channel in await fetch_channels()
+        if channel.category_id is None and channel.type == disnake.ChannelType.text
+    ]
+    return channels
+
+
 async def format_roles_with_access_response(category: CategoryChannel) -> list[Role]:
     return [
         Role(
