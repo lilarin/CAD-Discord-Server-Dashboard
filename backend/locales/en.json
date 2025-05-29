@@ -1,9 +1,54 @@
 {
   "staff": {
     "category_name": "Teachers",
-    "channel_name": "dashboard-guidelines"
+    "channel_name": "web-panel-guide",
+    "info_message_button": "\uD83D\uDCBB Go to Web Panel",
+    "title": "Web Panel Usage Information",
+    "description": "To facilitate the management of the educational process, there is a web panel for teachers.\n Information on its use can be found on the main page.\nTo open the web panel in your browser - click the link button below this \nmessage and authorize using your Discord account."
   },
   "registration": {
-    "channel_name": "registration on the server"
+    "channel_name": "server-registration",
+    "register_button": "\uD83D\uDCD1 Register",
+    "inactive_button": "\uD83D\uDC68\u200D\uD83C\uDF93 To get identified on the server",
+    "description": "To gain access to the server, you need to register. \nClick the button below this message to proceed.\n-# For teachers, only the first step is required: provide your last name and first name.",
+    "name_confirm_button": "✔\uFE0F Yes, continue",
+    "accept_button": "✔\uFE0F Approve Request",
+    "accepted_button": "Request Approved",
+    "accepted_embed_description": "Your request to swap places in the queue {jump_url} has been approved",
+    "group_confirm_button": "✔\uFE0F Yes, complete registration",
+    "modal_label": "Enter your full name in English",
+    "modal_placeholder": "Krakovych Pavlo",
+    "registration_confirm": "You entered: \n### {name} \n Do you confirm the correctness of the input?\n-# Your nickname will be changed to the entered name.",
+    "role_selection": "You selected the group: \n### {role_name} \n Do you confirm the correctness of your selection?",
+    "chose_academic_group": "Choose your academic group\n-# If it's not listed here, please inform your group representative.",
+    "registration_form_outdated_message": "Please restart the registration, the old form is no longer valid.",
+    "incorrect_symbols_in_name_message": "The entered data contains prohibited special characters."
+  },
+  "queue": {
+    "join_queue_button": "\uD83D\uDE80 Join Queue",
+    "leave_queue_button": "\uD83D\uDC4B Leave Queue",
+    "switch_queue_places_button": "\uD83D\uDD04 Swap Places",
+    "empty_field": "-# Queue is empty",
+    "footer_text": "Start",
+    "places_switch_sent": "Swap request sent to {user_mention}.\nExpect a notification from the bot in your private messages",
+    "places_switch_errored": "Failed to send swap request due to user's privacy settings",
+    "switch_request_title": "Queue Swap Request {jump_url}",
+    "switch_request_description": "From user {user_mention}\n",
+    "join_queue_message": "You have joined the queue",
+    "already_in_queue_message": "You are already in the queue",
+    "not_in_queue_message": "You are not in the queue",
+    "left_queue_message": "You have left the queue",
+    "select_user_to_switch_message": "Select the user you want to swap places with:",
+    "no_user_to_switch_message": "No users available to swap places with",
+    "user_cannot_switch_not_in_queue_message": "You cannot swap places because you are not in the queue",
+    "target_user_not_in_queue_message": "You cannot swap places because the user is not in the queue",
+    "switched_places_in_queue_message": "You have successfully swapped places in the queue!"
+  },
+  "utils": {
+    "wait_message": "Please wait...",
+    "registration_completed": "Thank you for completing the registration",
+    "log_add_group_role": "Issuing group role",
+    "log_add_student_role": "Issuing student role",
+    "log_change_student_nickname": "Nickname change initiated by the user"
   }
 }

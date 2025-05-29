@@ -1,9 +1,54 @@
 {
   "staff": {
     "category_name": "Викладачі",
-    "channel_name": "гайд-по-веб-панелі"
+    "channel_name": "гайд-по-веб-панелі",
+    "info_message_button": "\uD83D\uDCBB Перейти до веб-панелі",
+    "title": "Інформація по використанню веб-панелі",
+    "description": "Для полегшення керування навчальним процесом існує веб-панель для викладачів.\n Інформація щодо її використання знаходиться на головній сторінці.\nЩоб відкрити веб-панель у браузері - натисніть на кнопку-посилання під цим \nповідомленням та авторизуйтесь використовуючи свій Discord акаунт."
   },
   "registration": {
-    "channel_name": "реєстрація на сервері"
+    "channel_name": "реєстрація на сервері",
+    "register_button": "\uD83D\uDCD1 Зареєструватись",
+    "inactive_button": "\uD83D\uDC68\u200D\uD83C\uDF93 Щоб пройти ідентифікацію на сервері",
+    "description": "Щоб отримати доступ до серверу необхідно пройти реєстрацію. \nДля цього натисніть на кнопку під повідомленням.\n-# Викладачам достатньо першого пункту, вказати прізвище та ім'я",
+    "name_confirm_button": "✔\uFE0F Так, продовжити далі",
+    "accept_button": "✔\uFE0F Схвалити запит",
+    "accepted_button": "Запит схвалено",
+    "accepted_embed_description": "Ваш запит на обмін місцями у черзі {jump_url} схвалено",
+    "group_confirm_button": "✔\uFE0F Так, завершити реєстрацію",
+    "modal_label": "Введіть ваше прізвище та ім'я українською",
+    "modal_placeholder": "Кракович Павло",
+    "registration_confirm": "Ви ввели: \n### {name} \n Чи підтверджуєте правильність вводу?\n-# Ваше ім'я буде змінено на введене",
+    "role_selection": "Ви обрали групу: \n### {role_name} \n Чи підтверджуєте правильність вибору?",
+    "chose_academic_group": "Оберіть вашу навчальну групу\n-# Якщо її тут немає – повідомте вашого старосту",
+    "registration_form_outdated_message": "Будь ласка, розпочніть реєстрацію заново, стара форма вже не дійсна",
+    "incorrect_symbols_in_name_message": "Введені дані мають заборонені спецсимволи"
+  },
+  "queue": {
+    "join_queue_button": "\uD83D\uDE80 Доєднатись",
+    "leave_queue_button": "\uD83D\uDC4B Вийти",
+    "switch_queue_places_button": "\uD83D\uDD04 Помінятись місцями",
+    "empty_field": "-# Черга порожня",
+    "footer_text": "Початок",
+    "places_switch_sent": "Запит на обмін місцями надіслано користувачу {user_mention}.\nОчікуйте сповіщення з відповіддю від бота в особисті повідомлення",
+    "places_switch_errored": "Не вдалось надіслати запит на обмін місцями через налаштування приватності користувача",
+    "switch_request_title": "Запит на обмін місцями у черзі {jump_url}",
+    "switch_request_description": "Від користувача {user_mention}\n",
+    "join_queue_message": "Ви доєднались до черги",
+    "already_in_queue_message": "Ви вже у черзі",
+    "not_in_queue_message": "Ви не в черзі",
+    "left_queue_message": "Ви вийшли з черги",
+    "select_user_to_switch_message": "Оберіть користувача, з яким хочете обмінятись місцями:",
+    "no_user_to_switch_message": "Немає користувачів, з якими можна помінятись місцями",
+    "user_cannot_switch_not_in_queue_message": "Ви не можете обмінятись місцями оскільки вас немає в черзі",
+    "target_user_not_in_queue_message": "Ви не можете обмінятись місцями оскільки користувача немає в черзі",
+    "switched_places_in_queue_message": "Ви успішно обмінялись місцями у черзі!"
+  },
+  "utils": {
+    "wait_message": "Очікуйте...",
+    "registration_completed": "Дякуємо за проходження реєстрації",
+    "log_add_group_role": "Видача ролі групи",
+    "log_add_student_role": "Видача ролі студента",
+    "log_change_student_nickname": "Зміна нікнейму, викликана самим користувачем"
   }
 }
