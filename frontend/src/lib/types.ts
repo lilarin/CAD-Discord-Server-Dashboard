@@ -49,11 +49,14 @@ export interface ServerConfig {
     registration: {
         channel_id: string | null;
         message_id: string | null;
+        channel_name: string | null;
     };
     staff: {
         category_id: string | null;
         channel_id: string | null;
         message_id: string | null;
+        channel_name: string | null;
+        category_name: string | null;
     };
 }
 

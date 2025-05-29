@@ -71,17 +71,32 @@ class StaffCategoryRequestBody(BaseModel):
 
 
 class RegistrationConfigInfo(BaseModel):
-    channel_id: Optional[str] = None
     message_id: Optional[str] = None
+    channel_id: Optional[str] = None
 
 
 class StaffConfigInfo(BaseModel):
-    category_id: Optional[str] = None
-    channel_id: Optional[str] = None
     message_id: Optional[str] = None
+    channel_id: Optional[str] = None
+    category_id: Optional[str] = None
 
 
 class ServerConfig(BaseModel):
     language: Optional[str] = None
     registration: RegistrationConfigInfo
     staff: StaffConfigInfo
+
+
+class RegistrationConfigInfoExtended(RegistrationConfigInfo):
+    channel_name: Optional[str] = None
+
+
+class StaffConfigInfoExtended(StaffConfigInfo):
+    channel_name: Optional[str] = None
+    category_name: Optional[str] = None
+
+
+class ServerConfigExtended(BaseModel):
+    language: Optional[str] = None
+    registration: RegistrationConfigInfoExtended
+    staff: StaffConfigInfoExtended
