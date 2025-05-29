@@ -1,7 +1,7 @@
 import disnake
 from disnake.ext import commands
 
-from backend.config import config
+from backend.config import config, logger
 from backend.services.bot_ui import (
     init_register_buttons,
     create_registration_embed
@@ -18,7 +18,6 @@ from backend.services.bot_utils import (
     handle_accept_switch_button_click
 )
 from backend.utils.response import send_ephemeral_response
-from backend.utils.logger import logger
 
 bot = commands.InteractionBot(intents=disnake.Intents.all())
 

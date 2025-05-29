@@ -3,10 +3,9 @@ import json
 import redis.asyncio as redis
 import redis.exceptions as exceptions
 
-from backend.config import config
+from backend.config import config, logger
 from backend.schemas import LogSchema
 from backend.services.supabase_client import read_logs_from_supabase
-from backend.utils.logger import logger
 
 redis_client = redis.Redis.from_url(config.redis_url)
 

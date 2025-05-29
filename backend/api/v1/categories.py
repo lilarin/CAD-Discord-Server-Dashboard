@@ -15,12 +15,9 @@ from backend.services.format import (
     format_roles_with_access_response,
     format_roles_response
 )
+from backend.utils.categories import delete_target_category, create_template_category
+from backend.utils.channels import rename_target_channel
 from backend.utils.reorder_request import update_channel_order
-from backend.utils.category import delete_target_category
-from backend.utils.channel import (
-    create_template_category,
-    rename_target_channel
-)
 
 router = APIRouter()
 

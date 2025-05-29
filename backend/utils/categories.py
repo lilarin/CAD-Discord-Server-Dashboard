@@ -6,14 +6,16 @@ from disnake import (
 )
 
 from backend.config import config
+from backend.services.fetch import fetch_channels_by_category
 from backend.services.fetch import (
     fetch_guild,
     fetch_guild_default_role,
     fetch_role,
+    fetch_channel
 )
 
 
-async def create_template_category(category_name) -> CategoryChannel:
+async def create_template_category(category_name: str) -> CategoryChannel:
     guild = await fetch_guild()
     everyone_role = await fetch_guild_default_role()
     administrator_role = await fetch_role(config.administrator_role_id)
@@ -27,12 +29,14 @@ async def create_template_category(category_name) -> CategoryChannel:
     return category
 
 
-async def create_staff_category(category_name) -> CategoryChannel:
+async def create_staff_category(category_name: str) -> CategoryChannel:
     guild = await fetch_guild()
+    everyone_role = await fetch_guild_default_role()
     teacher_role = await fetch_role(config.teacher_role_id)
     administrator_role = await fetch_role(config.administrator_role_id)
 
     default_overwrites = {
+        everyone_role: PermissionOverwrite(view_channel=False),
         teacher_role: PermissionOverwrite(view_channel=True),
         administrator_role: PermissionOverwrite(view_channel=True)
     }
@@ -41,26 +45,17 @@ async def create_staff_category(category_name) -> CategoryChannel:
     return category
 
 
-async def create_text_registration_channel(name: str) -> TextChannel:
-    guild = await fetch_guild()
-    return await guild.create_text_channel(name=name, position=0)
+async def delete_target_category(category: CategoryChannel) -> None:
+    for channel in await fetch_channels_by_category(category):
+        await channel.delete()
+    await category.delete()
 
 
-async def create_text_target_channel(category: CategoryChannel, name: str) -> TextChannel:
-    guild = await fetch_guild()
-    return await guild.create_text_channel(name=name, category=category)
+async def sync_permissions_with_category(channel_id: int) -> VoiceChannel | TextChannel:
+    channel = await fetch_channel(channel_id)
+    await channel.edit(sync_permissions=True)
+    return channel
 
 
-async def create_voice_target_channel(category: CategoryChannel, name: str) -> VoiceChannel:
-    guild = await fetch_guild()
-    return await guild.create_voice_channel(name=name, category=category)
-
-
-async def rename_target_channel(
-        channel: VoiceChannel | TextChannel | CategoryChannel, name: str
-) -> VoiceChannel | TextChannel | CategoryChannel:
-    return await channel.edit(name=name)
-
-
-async def delete_target_channel(channel: VoiceChannel | TextChannel) -> None:
-    await channel.delete()
+async def check_category_exists(category_id: int) -> bool:
+    return await fetch_channel(category_id) is not None

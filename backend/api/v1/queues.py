@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException, Body
 
 from backend.middlewares.uniform_response import uniform_response_middleware
 from backend.schemas import QueueRequestBody
-from backend.utils.queue import create_queue_message
+from backend.utils.messages import create_queue_message
 
 router = APIRouter()
 
