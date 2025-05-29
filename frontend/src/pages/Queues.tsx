@@ -314,13 +314,13 @@ export default function Queues() {
 									{filteredCategories.length > 0 ? (
 										filteredCategories.map((category) => (
 											<div className="mt-2">
-											<button
-												key={category.id}
-												onClick={() => handleCategorySelect(String(category.id))}
-												className={`w-full p-2 rounded text-white transition-all duration-300 bg-[#36393F] hover:bg-[#3e4147] text-left`}
-											>
-												{category.name.charAt(0).toUpperCase() + category.name.slice(1)}
-											</button>
+												<button
+													key={category.id}
+													onClick={() => handleCategorySelect(String(category.id))}
+													className={`w-full p-2 rounded text-white transition-all duration-300 bg-[#36393F] hover:bg-[#3e4147] text-left`}
+												>
+													{category.name.charAt(0).toUpperCase() + category.name.slice(1)}
+												</button>
 											</div>
 										))
 									) : (
@@ -329,7 +329,7 @@ export default function Queues() {
 								</div>
 								<button
 									onClick={() => setIsCategoryActionOpen(false)}
-									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300 w-full"
+									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
 								>
 									{t('button.closeButton')}
 								</button>
@@ -380,7 +380,7 @@ export default function Queues() {
 								</div>
 								<button
 									onClick={() => setIsChannelActionOpen(false)}
-									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300 w-full"
+									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
 								>
 									{t('button.closeButton')}
 								</button>
@@ -411,7 +411,7 @@ export default function Queues() {
 								</div>
 								<button
 									onClick={() => setIsDateTimeActionOpen(false)}
-									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-3 mb-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300 w-full"
+									className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 mt-3 mb-1 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
 								>
 									{t('button.closeButton')}
 								</button>

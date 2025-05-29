@@ -223,7 +223,6 @@ function ActionSidebar(
 			}
 		}
 
-
 		if (isRoleListOpen) {
 			document.addEventListener("mousedown", handleClickOutsideRoleDropdown);
 		} else {
@@ -235,13 +234,11 @@ function ActionSidebar(
 			document.removeEventListener("mousedown", handleClickOutsideUserDropdown);
 		}
 
-
 		return () => {
 			document.removeEventListener("mousedown", handleClickOutsideRoleDropdown);
 			document.removeEventListener("mousedown", handleClickOutsideUserDropdown);
 		};
 	}, [isRoleListOpen, isUserListOpen]);
-
 
 	const actionTextMap = {
 		create: {
@@ -291,7 +288,6 @@ function ActionSidebar(
 
 	const text = action && target ? actionTextMap[action][target] : '';
 	const actionHintText = action && target && actionHintTextMap[action] ? actionHintTextMap[action][target] : '';
-
 
 	const handleDeleteAction = () => {
 		if (target === 'category' && item) {
@@ -450,7 +446,6 @@ function ActionSidebar(
 			initialRoleHolders.map(u => u.id).sort().every((id, index) => id === roleHolders.map(u => u.id).sort()[index])
 		);
 
-
 	const handleSaveRoleHolders = async () => {
 		if (action === 'edit' && target === 'role' && item) {
 			onCancel?.();
@@ -472,7 +467,6 @@ function ActionSidebar(
 			}
 		}
 	};
-
 
 	return (
 		<div className="sticky top-5">
@@ -759,7 +753,7 @@ function ActionSidebar(
 						</div>
 					</div>
 				)}
-      </div>}
+			</div>}
 			{isRoleListOpen && availableRoles.length > 0 && (
 				<div ref={dropdownRef} className="w-full pt-5 relative">
 					<div className="bg-[#2F3136] rounded p-4">

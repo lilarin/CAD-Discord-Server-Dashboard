@@ -12,6 +12,10 @@ import {useTranslation} from "react-i18next";
 
 const baseNavigation = [
 	{name: "sidebar.dashboard", href: "/", icon: HomePageIcon},
+
+];
+
+const defaultNavigation = [
 	{name: "sidebar.categories", href: "/categories", icon: DisciplinesIcon},
 	{name: "sidebar.roles", href: "/roles", icon: RolesIcon},
 	{name: "sidebar.users", href: "/users", icon: UsersIcon},
@@ -31,7 +35,7 @@ export const Sidebar: React.FC<SidebarProps> = ({isAdmin}) => {
 	const location = useLocation();
 	const {t} = useTranslation();
 
-	const navigation = isAdmin ? [...baseNavigation, ...settingsNavigation] : baseNavigation;
+	const navigation = isAdmin ? [...baseNavigation, ...settingsNavigation, ...defaultNavigation] : [...baseNavigation, ...defaultNavigation];
 
 	return (
 		<div className="w-1/6 bg-[#2F3136]">
