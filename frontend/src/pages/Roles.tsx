@@ -13,7 +13,7 @@ import {useTranslation} from "react-i18next";
 import EditIcon from "@/assets/icons/edit.svg";
 
 
-const ITEMS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 11;
 
 const usePaginatedRoles = (roles: Role[], setRoles: React.Dispatch<React.SetStateAction<Role[]>>, itemsPerPage: number = ITEMS_PER_PAGE) => {
 	const [searchTerm, setSearchTerm] = useState('');

@@ -12,7 +12,7 @@ import KickUserIcon from "@/assets/icons/logout.svg";
 import ActionSidebar, {ActionTarget, ActionType} from "@/components/ActionSidebar.tsx";
 import {useTranslation} from "react-i18next";
 
-const ITEMS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 11;
 
 const usePaginatedUsers = (users: User[], searchTerm: string, filterGroup: string | null, itemsPerPage: number = ITEMS_PER_PAGE) => {
 	const [isLoading, setIsLoading] = useState(true);
