@@ -1,4 +1,4 @@
-from disnake import Role, Member, VoiceChannel, TextChannel, CategoryChannel, Guild
+from disnake import Role, Member, VoiceChannel, TextChannel, CategoryChannel, Guild, Message
 
 from backend.config import config
 from backend.bot import bot
@@ -48,6 +48,12 @@ async def fetch_channel(channel_id: int) -> VoiceChannel | TextChannel | Categor
     guild = await fetch_guild()
     channel = await guild.fetch_channel(channel_id)
     return channel
+
+async def fetch_message(channel_id: int, message_id: int) -> Message:
+    guild = await fetch_guild()
+    channel = await guild.fetch_channel(channel_id)
+    message = await channel.fetch_message(message_id)
+    return message
 
 
 async def fetch_roles_with_access(category: CategoryChannel) -> list[Role]:

@@ -1,4 +1,4 @@
-from typing import Optional, Any
+from typing import Optional, Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -59,21 +59,29 @@ class QueueRequestBody(BaseModel):
 
 
 class ServerLanguageRequestBody(BaseModel):
-    language: str
+    language: Literal["en", "uk"]
 
 
 class RegistrationRequestBody(BaseModel):
     channel_id: Optional[str] = None
-    channel_name: Optional[str] = None
 
 
 class StaffCategoryRequestBody(BaseModel):
     category_id: Optional[str] = None
-    category_name: Optional[str] = None
+
+
+class RegistrationConfigInfo(BaseModel):
+    channel_id: Optional[str] = None
+    message_id: Optional[str] = None
+
+
+class StaffConfigInfo(BaseModel):
+    category_id: Optional[str] = None
+    channel_id: Optional[str] = None
+    message_id: Optional[str] = None
 
 
 class ServerConfig(BaseModel):
     language: Optional[str] = None
-    registration_channel_id: Optional[str] = None
-    staff_category_id: Optional[str] = None
-    staff_info_channel_id: Optional[str] = None
+    registration: RegistrationConfigInfo
+    staff: StaffConfigInfo

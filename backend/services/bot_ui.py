@@ -2,6 +2,7 @@ from datetime import datetime
 
 import disnake
 
+from backend.config import config
 from backend.utils.response import send_ephemeral_response
 from backend.services.users_registration import add_registration_user, check_user_name
 
@@ -54,6 +55,30 @@ async def init_queue_buttons(leave_disabled: bool = True, switch_disabled: bool 
         disabled=switch_disabled,
     )
     return disnake.ui.ActionRow(join, leave, switch_places)
+
+
+async def init_staff_info_message_buttons() -> disnake.ui.ActionRow:
+    open_dashboard = disnake.ui.Button(
+        style=disnake.ButtonStyle.link,
+        label="💻 Перейти до веб-панелі",
+        url=config.frontend_url
+    )
+    return disnake.ui.ActionRow(open_dashboard)
+
+
+async def create_staff_info_message_embed():
+    embed = disnake.Embed(
+        title="Інформація",
+        description=(
+            "Для полегшення керування навчальним процесом існує Веб-панель для викладачів.\n"
+            "Інформація щодо використання панелі знаходиться на головній її сторінці.\n"
+            "Щоб відкрити панелі в браузері - натисніть на кнопку-посилання під цим \n"
+            "повідомленням та авторизуйтесь використовуючи свій Discord акаунт."
+        ),
+        color=0xFFFFFF
+    )
+    return embed
+
 
 
 async def create_queue_message_embed(title: str, timestamp: datetime):
