@@ -1,5 +1,6 @@
 import json
 import os
+from typing import Optional
 
 import disnake
 
@@ -22,12 +23,19 @@ class ServerConfigService:
                         self._server_config = ServerConfig(**json.loads(content))
                     else:
                         self._server_config = ServerConfig(
-                            language=None,
+                            language="en",
                             registration=RegistrationConfigInfo(),
                             staff=StaffConfigInfo()
                         )
 
         return self._server_config
+
+    async def get_language(self) -> Optional[str]:
+        config = await self.get_config()
+        if config.language is None:
+            raise ValueError("Language is not set")
+
+        return config.language
 
     async def get_validated_config(self) -> ServerConfig:
         original_config = await self.get_config()

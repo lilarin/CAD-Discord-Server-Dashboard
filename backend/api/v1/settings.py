@@ -1,3 +1,5 @@
+from typing import Optional
+
 import disnake
 from fastapi import APIRouter, HTTPException, Body
 
@@ -53,13 +55,13 @@ async def select_server_language(request_body: ServerLanguageRequestBody = Body(
 
 @router.post("/settings/registration")
 @uniform_response_middleware
-async def create_registration_message(request_body: RegistrationRequestBody = Body(...)):
+async def create_registration_message(request_body: Optional[RegistrationRequestBody] = Body(...)):
     try:
         config = await server_config.get_config()
         channel_id = request_body.channel_id
 
         if not channel_id:
-            name = translation.translate("registration.channel_name", config.language)
+            name = await translation.translate("registration.channel_name", config.language)
             channel = await create_text_registration_channel(name)
             channel_id = channel.id
 
@@ -77,7 +79,7 @@ async def create_registration_message(request_body: RegistrationRequestBody = Bo
 
 @router.post("/settings/staff/category")
 @uniform_response_middleware
-async def set_staff_category(request_body: StaffCategoryRequestBody = Body(...)):
+async def set_staff_category(request_body: Optional[StaffCategoryRequestBody] = Body(...)):
     try:
         config = await server_config.get_config()
         category_id = request_body.category_id
@@ -91,7 +93,7 @@ async def set_staff_category(request_body: StaffCategoryRequestBody = Body(...))
             config.staff.message_id = None
 
         else:
-            name = translation.translate("staff.category_name", config.language)
+            name = await translation.translate("staff.category_name", config.language)
             category = await create_staff_category(name)
             config.staff.category_id = str(category.id)
             config.staff.channel_id = None
@@ -109,18 +111,18 @@ async def set_staff_category(request_body: StaffCategoryRequestBody = Body(...))
 
 @router.post("/settings/staff/info")
 @uniform_response_middleware
-async def create_staff_info_message(request_body: RegistrationRequestBody = Body(...)):
+async def create_staff_info_message(request_body: Optional[RegistrationRequestBody] = Body(...)):
     try:
         config = await server_config.get_config()
         category_id = config.staff.category_id
         channel_id = request_body.channel_id
 
         if not channel_id:
-            name = translation.translate("staff.channel_name", config.language)
+            name = await translation.translate("staff.channel_name", config.language)
             channel = await create_staff_info_channel(name, int(category_id))
             channel_id = channel.id
         else:
-            if await check_channel_in_category(int(category_id), int(channel_id)):
+            if not await check_channel_in_category(int(category_id), int(channel_id)):
                 raise HTTPException(status_code=404, detail="Channel not found")
 
         message_id = await send_staff_info_message(int(channel_id))

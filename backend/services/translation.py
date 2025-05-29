@@ -14,7 +14,7 @@ class TranslationService:
             with open(f"{self.locales_path}/{locale}.json", "r", encoding="utf-8") as f:
                 self._translations[locale] = json.load(f)
 
-    def translate(self, key: str, locale: str = None) -> Optional[str]:
+    async def translate(self, key: str, locale: str = None) -> Optional[str]:
         result = self._translations[locale]
         for k in key.split("."):
             result = result[k]

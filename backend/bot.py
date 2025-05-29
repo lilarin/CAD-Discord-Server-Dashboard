@@ -2,10 +2,6 @@ import disnake
 from disnake.ext import commands
 
 from backend.config import config, logger
-from backend.services.bot_ui import (
-    init_register_buttons,
-    create_registration_embed
-)
 from backend.services.bot_utils import (
     handle_role_selection,
     handle_user_selection_for_queue_switch,
@@ -43,22 +39,6 @@ async def on_slash_command_error(interaction, error):
             interaction,
             "Ви можете використовувати цю команду тільки на сервері",
         )
-
-
-@bot.slash_command(
-    name="створити-повідомлення-реєстрації",
-    description="Створити повідомлення для реєстрації в поточному каналі"
-)
-@commands.has_any_role(config.administrator_role_id)
-@commands.guild_only()
-async def create_register_message(
-        interaction: disnake.ApplicationCommandInteraction
-) -> None:
-    embed = await create_registration_embed()
-    action_row = await init_register_buttons()
-    await interaction.channel.send(embed=embed, components=action_row)
-
-    await send_ephemeral_response(interaction, "Повідомлення створено")
 
 
 @bot.event
