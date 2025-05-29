@@ -1,0 +1,9 @@
+{
+  "staff": {
+    "category_name": "Teachers",
+    "channel_name": "dashboard-guidelines"
+  },
+  "registration": {
+    "channel_name": "registration on the server"
+  }
+}
