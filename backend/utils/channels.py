@@ -41,11 +41,13 @@ async def delete_target_channel(channel: VoiceChannel | TextChannel) -> None:
     await channel.delete()
 
 
-async def check_channel_in_category(category_id: int, channel_id: int) -> bool:
+async def check_channel_in_category(category_id: int, channel_id: int, channel: TextChannel | VoiceChannel = None) -> bool:
     if channel_id == category_id:
         return False
 
-    channel = await fetch_channel(channel_id)
+    if not channel:
+        channel = await fetch_channel(channel_id)
+
     return channel or channel.category_id == category_id
 
 

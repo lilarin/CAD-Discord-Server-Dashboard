@@ -7,9 +7,9 @@ from backend.config import translation
 from backend.middlewares.uniform_response import uniform_response_middleware
 from backend.schemas import (
     RegistrationRequestBody,
-    ServerConfig,
     StaffCategoryRequestBody,
-    ServerLanguageRequestBody
+    ServerLanguageRequestBody,
+    ServerConfigExtended
 )
 from backend.services.server_config import server_config
 from backend.utils.categories import create_staff_category
@@ -25,7 +25,7 @@ from backend.utils.validation import check_category_exists
 router = APIRouter()
 
 
-@router.get("/settings/config", response_model=ServerConfig)
+@router.get("/settings/config", response_model=ServerConfigExtended)
 @uniform_response_middleware
 async def get_server_config():
     try:
