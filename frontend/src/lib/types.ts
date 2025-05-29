@@ -43,3 +43,28 @@ export type Queue = {
 	title: string;
 	event_time: string;
 }
+
+export interface ServerConfig {
+    language: string | null;
+    registration: {
+        channel_id: string | null;
+        message_id: string | null;
+    };
+    staff: {
+        category_id: string | null;
+        channel_id: string | null;
+        message_id: string | null;
+    };
+}
+
+export interface LanguageRequest {
+    language: "en" | "uk";
+}
+
+export interface RegistrationRequest {
+    channel_id?: string;
+}
+
+export interface StaffCategoryRequest {
+    category_id?: string;
+}

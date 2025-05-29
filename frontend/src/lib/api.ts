@@ -1,5 +1,5 @@
 import axios, {AxiosError, AxiosResponse, InternalAxiosRequestConfig} from 'axios';
-import {Category, Channel, Log, Queue, NameRequest, ReorderRequest, Role, User} from "@/lib/types.ts";
+import {Category, Channel, Log, Queue, NameRequest, ReorderRequest, Role, User, ServerConfig} from "@/lib/types.ts";
 import {supabase} from "@/lib/supabaseClient";
 
 if (!import.meta.env.VITE_API_URL) {
@@ -272,3 +272,24 @@ export async function createQueueMessage(channelId: string, title: string, event
 		}
 	}));
 }
+
+// Settings API
+export async function getServerConfig(): Promise<ServerConfig> {
+  return handleRequest(api.get<ApiResponse<ServerConfig>>('/api/v1/settings/config'));
+};
+
+export async function updateServerLanguage(language: string): Promise<void> {
+  return handleRequest(api.put<ApiResponse<void>>('/api/v1/settings/language', { language }));
+};
+
+export async function createRegistrationMessage(channelId?: string): Promise<void> {
+  return handleRequest(api.post<ApiResponse<void>>('/api/v1/settings/registration', { channel_id: channelId }));
+};
+
+export async function setStaffCategory(categoryId?: string): Promise<void> {
+  return handleRequest(api.post<ApiResponse<void>>('/api/v1/settings/staff/category', { category_id: categoryId }));
+};
+
+export async function createStaffInfoMessage(channelId?: string): Promise<void> {
+  return handleRequest(api.post<ApiResponse<void>>('/api/v1/settings/staff/info', { channel_id: channelId }));
+};
