@@ -13,7 +13,6 @@ from backend.services.bot_utils import (
     handle_switch_queue_places_button_click,
     handle_accept_switch_button_click
 )
-from backend.utils.response import send_ephemeral_response
 
 bot = commands.InteractionBot(intents=disnake.Intents.all())
 
@@ -25,20 +24,6 @@ async def run_bot():
 @bot.event
 async def on_ready():
     logger.info(f"Bot is ready. Logged in as {bot.user}")
-
-
-@bot.event
-async def on_slash_command_error(interaction, error):
-    if isinstance(error, commands.MissingAnyRole):
-        await send_ephemeral_response(
-            interaction,
-            "Ви не можете використовувати цю команду",
-        )
-    if isinstance(error, commands.NoPrivateMessage):
-        await send_ephemeral_response(
-            interaction,
-            "Ви можете використовувати цю команду тільки на сервері",
-        )
 
 
 @bot.event
