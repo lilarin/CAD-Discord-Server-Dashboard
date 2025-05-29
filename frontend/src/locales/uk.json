@@ -183,7 +183,7 @@
     "updateChannelPositionError": "Не вдалося змінити порядок каналів",
     "fetchEditableRolesError": "Не вдалося завантажити список доступних ролей",
     "createRoleError": "Не вдалося створити роль",
-    "renameRoleError": "Не вдалося перейменувати роль" ,
+    "renameRoleError": "Не вдалося перейменувати роль",
     "createQueueMessageError": "Не вдалося створити чергу на сервері",
     "fetchLogsError": "Не вдалося завантажити логи",
     "fetchUsersError": "Не вдалося завантажити користувачів",
@@ -192,7 +192,12 @@
     "signInError": "Не вдалося увійти в систему",
     "signOutError": "Не вдалося вийти з системи",
     "fetchRoleHoldersError": "Не вдалося завантажити список користувачів з обраною роллю",
-    "saveRoleHoldersError": "Не вдалося зберегти оновлений список користувачів з роллю"
+    "saveRoleHoldersError": "Не вдалося зберегти оновлений список користувачів з роллю",
+    "fetchServerConfigError": "Не вдалося завантажити конфігурацію сервера",
+    "updateLanguageError": "Не вдалося оновити мову сервера",
+    "createRegistrationMessageError": "Не вдалося створити повідомлення про реєстрацію",
+    "setStaffCategoryError": "Не вдалося встановити категорію для викладачів",
+    "createStaffInfoMessageError": "Не вдалося створити інформаційне повідомлення для викладачів"
   },
   "search": {
     "searchByUsername": "Пошук за іменем користувача...",
@@ -226,9 +231,13 @@
     "noUserRoles": "Користувач не має ролей",
     "noRolesToAdd": "Немає ролей для додавання",
     "noCategory": "Категорій не знайдено",
-    "noChannels": "Каналів не знайдено" ,
+    "noChannels": "Каналів не знайдено",
     "noLogs": "Логів не знайдено",
-    "noRoleHolders": "Користувачів з цією роллю не знайдено"
+    "noRoleHolders": "Користувачів з цією роллю не знайдено",
+    "noLanguageWarning": "Мова серверу не встановлена",
+    "noRegistrationChannel": "Не вибрано канал реєстрації",
+    "noStaffCategory": "Не вибрано категорію для викладачів",
+    "noStaffChannel": "Не вибрано канал для інформації"
   },
   "eventsPage": {
     "title": "Створити чергу на захист для студентів",
@@ -289,11 +298,29 @@
     "channel.rename": "Перейменування каналу",
     "role.create": "Створення ролі",
     "role.delete": "Видалення ролі",
-	"role.edit.users": "Оновлення власників ролі",
+    "role.edit.users": "Оновлення власників ролі",
     "role.rename": "Перейменування ролі",
     "user.rename": "Перейменування користувача",
     "user.kick": "Вигон користувача з серверу",
     "user.roles.edit": "Зміна ролей користувача",
     "queue.create": "Створення черги на захист"
+  },
+  "settings": {
+    "serverSettings": "Налаштування сервера",
+    "languageSettings": "Налаштування мови",
+    "registrationSettings": "Налаштування реєстрації",
+    "staffInformationSettings": "Налаштування інформації для викладачів",
+    "currentLanguage": "Поточна мова",
+    "english": "Англійська",
+    "ukrainian": "Українська",
+    "selectLanguage": "Виберіть мову сервера",
+    "createRegistrationMessage": "Налаштувати повідомлення про реєстрацію",
+    "selectChannel": "Виберіть канал",
+    "selectCategory": "Виберіть категорію",
+    "createNewCategory": "Створити нову категорію",
+    "createNewChannel": "Створити новий канал",
+    "registrationChannel": "Канал з інструкцією для проходження реєстрації",
+    "staffCategory": "Категорія для викладачів",
+    "staffChannel": "Канал для повідомлення з інформацією про веб-панель для викладачів"
   }
 }
