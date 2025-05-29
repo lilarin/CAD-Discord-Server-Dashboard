@@ -4,6 +4,8 @@ import sys
 
 from dotenv import load_dotenv
 
+from backend.services.translation import TranslationService
+
 
 class Config:
     def __init__(self):
@@ -19,11 +21,11 @@ class Config:
         self.redis_url = self._get_env_variable("REDIS_URL")
 
         self.frontend_url = "http://localhost:8080"
+        self.registration_embed_image_url = "https://imgur.com/uG2M5wK.png"
 
         self.redis_logs_key = "discord_admin_panel:logs"
-        self.server_config_path = "backend/server_config.json"
-        self.locales_path = "backend/locales"
         self.locales = ["en", "uk"]
+        self.locales_path = "backend/locales"
 
     @staticmethod
     def _get_env_variable(var_name: str) -> str | None:
@@ -45,5 +47,7 @@ class Config:
 
         return logging.getLogger("uvicorn")
 
+
 config = Config()
 logger = config.setup_logging()
+translation = TranslationService(config.locales, config.locales_path)

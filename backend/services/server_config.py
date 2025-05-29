@@ -1,35 +1,33 @@
 import json
 import os
-from copy import copy
 
 import disnake
 
-from backend.config import config
 from backend.schemas import ServerConfig, RegistrationConfigInfo, StaffConfigInfo
-from backend.utils.categories import check_category_exists
 from backend.utils.channels import check_channel_exists, check_channel_in_category
-from backend.utils.messages import check_message_in_channel
+from backend.utils.validation import check_message_in_channel, check_category_exists
 
 
 class ServerConfigService:
-    def __init__(self):
-        self._config = None
+    def __init__(self, server_config_path: str):
+        self._server_config = None
+        self._server_config_path = server_config_path
 
     async def get_config(self) -> ServerConfig:
-        if not self._config:
-            if os.path.exists(config.server_config_path):
-                with open(config.server_config_path, "r", encoding="utf-8") as f:
+        if not self._server_config:
+            if os.path.exists(self._server_config_path):
+                with open(self._server_config_path, "r", encoding="utf-8") as f:
                     content = f.read().strip()
                     if content:
-                        self._config = ServerConfig(**json.loads(content))
+                        self._server_config = ServerConfig(**json.loads(content))
                     else:
-                        self._config = ServerConfig(
+                        self._server_config = ServerConfig(
                             language=None,
                             registration=RegistrationConfigInfo(),
                             staff=StaffConfigInfo()
                         )
 
-        return self._config
+        return self._server_config
 
     async def get_validated_config(self) -> ServerConfig:
         original_config = await self.get_config()
@@ -86,7 +84,8 @@ class ServerConfigService:
                     registration_message_id = int(validated_config.registration.message_id)
 
                     try:
-                        if not await check_message_in_channel(int(registration_channel_id), int(registration_message_id)):
+                        if not await check_message_in_channel(int(registration_channel_id),
+                                                              int(registration_message_id)):
                             validated_config.registration.message_id = None
                     except (disnake.errors.HTTPException, AttributeError):
                         validated_config.registration.message_id = None
@@ -98,7 +97,10 @@ class ServerConfigService:
         return original_config
 
     async def update_config(self, new_config: ServerConfig):
-        os.makedirs(os.path.dirname(config.server_config_path), exist_ok=True)
-        with open(config.server_config_path, "w", encoding="utf-8") as f:
+        os.makedirs(os.path.dirname(self._server_config_path), exist_ok=True)
+        with open(self._server_config_path, "w", encoding="utf-8") as f:
             json.dump(new_config.model_dump(), f, indent=2)
-        self._config = new_config
+        self._server_config = new_config
+
+
+server_config = ServerConfigService("backend/server_config.json")

@@ -1,6 +1,7 @@
 import disnake
 from fastapi import APIRouter, HTTPException, Body
 
+from backend.config import translation
 from backend.middlewares.uniform_response import uniform_response_middleware
 from backend.schemas import (
     RegistrationRequestBody,
@@ -8,9 +9,8 @@ from backend.schemas import (
     StaffCategoryRequestBody,
     ServerLanguageRequestBody
 )
-from backend.services.server_config import ServerConfigService
-from backend.services.translation import TranslationService
-from backend.utils.categories import create_staff_category, check_category_exists
+from backend.services.server_config import server_config
+from backend.utils.categories import create_staff_category
 from backend.utils.channels import (
     create_text_registration_channel,
     check_channel_in_category,
@@ -18,10 +18,9 @@ from backend.utils.channels import (
 )
 from backend.utils.messages import send_staff_info_message
 from backend.utils.registration import send_registration_message
+from backend.utils.validation import check_category_exists
 
 router = APIRouter()
-server_config = ServerConfigService()
-translation = TranslationService()
 
 
 @router.get("/settings/config", response_model=ServerConfig)

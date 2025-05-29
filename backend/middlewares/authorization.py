@@ -13,6 +13,8 @@ from backend.services.fetch import fetch_user
 from backend.services.supabase_client import supabase, save_log_to_supabase
 from backend.utils.user import get_user_group
 
+from gotrue.errors import AuthApiError
+
 
 class AuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
@@ -48,6 +50,6 @@ class AuthMiddleware(BaseHTTPMiddleware):
             response = ResponseWrapper(data=None, success=False, error=str(exception))
             if isinstance(exception, HTTPException):
                 return JSONResponse(content=response.model_dump(), status_code=exception.status_code)
-            elif isinstance(exception, disnake.errors.HTTPException):
+            elif isinstance(exception, disnake.errors.HTTPException) or isinstance(exception, AuthApiError):
                 return JSONResponse(content=response.model_dump(), status_code=exception.status)
             return JSONResponse(content=response.model_dump(), status_code=500)

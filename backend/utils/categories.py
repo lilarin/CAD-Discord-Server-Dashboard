@@ -6,12 +6,12 @@ from disnake import (
 )
 
 from backend.config import config
-from backend.services.fetch import fetch_channels_by_category
 from backend.services.fetch import (
     fetch_guild,
     fetch_guild_default_role,
     fetch_role,
-    fetch_channel
+    fetch_channel,
+    fetch_channels_by_category
 )
 
 
@@ -55,7 +55,3 @@ async def sync_permissions_with_category(channel_id: int) -> VoiceChannel | Text
     channel = await fetch_channel(channel_id)
     await channel.edit(sync_permissions=True)
     return channel
-
-
-async def check_category_exists(category_id: int) -> bool:
-    return await fetch_channel(category_id) is not None
