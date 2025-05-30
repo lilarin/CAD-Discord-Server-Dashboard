@@ -125,7 +125,7 @@
         "channel": "Case is not taken into account for the channel name and is processed automatically"
       },
       "edit": {
-        "category": "Select roles for access to the category and all its channels"
+        "category": "Select roles for access to the category and all its channels. It is advisable not to add the student and teacher roles to the category, as this will make it visible to everyone with these roles, even if they do not need it. Consider the comfort of others!"
       },
       "delete": {
         "category": "When deleting a category, all channels in it will also be deleted"
