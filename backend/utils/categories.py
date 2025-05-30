@@ -21,7 +21,11 @@ async def create_template_category(category_name: str) -> CategoryChannel:
     administrator_role = await fetch_role(config.administrator_role_id)
 
     default_overwrites = {
-        everyone_role: PermissionOverwrite(view_channel=False),
+        everyone_role: PermissionOverwrite(
+            view_channel=False,
+            create_instant_invite=False,
+            read_message_history=True,
+        ),
         administrator_role: PermissionOverwrite(view_channel=True)
     }
 

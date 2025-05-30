@@ -1,18 +1,39 @@
 from disnake import (
     CategoryChannel,
     VoiceChannel,
-    TextChannel
+    TextChannel, PermissionOverwrite
 )
 
+from backend.config import config
 from backend.services.fetch import (
     fetch_guild,
     fetch_channel,
+    fetch_guild_default_role,
+    fetch_role,
 )
 
 
 async def create_text_registration_channel(name: str) -> TextChannel:
     guild = await fetch_guild()
-    return await guild.create_text_channel(name=name, position=0)
+    everyone_role = await fetch_guild_default_role()
+    teacher_role = await fetch_role(config.teacher_role_id)
+    student_role = await fetch_role(config.student_role_id)
+
+    default_overwrites = {
+        everyone_role: PermissionOverwrite(
+            view_channel=True,
+            read_message_history=True,
+            send_messages=False,
+            add_reactions=False,
+            create_instant_invite=False,
+            create_private_threads=False,
+            create_public_threads=False,
+        ),
+        teacher_role: PermissionOverwrite(view_channel=False),
+        student_role: PermissionOverwrite(view_channel=False),
+    }
+
+    return await guild.create_text_channel(name=name, overwrites=default_overwrites)
 
 
 async def create_staff_info_channel(name: str, category_id: int) -> TextChannel:
@@ -23,12 +44,14 @@ async def create_staff_info_channel(name: str, category_id: int) -> TextChannel:
 
 async def create_text_target_channel(category: CategoryChannel, name: str) -> TextChannel:
     guild = await fetch_guild()
-    return await guild.create_text_channel(name=name, category=category)
+    channel = await guild.create_text_channel(name=name, category=category)
+    return channel
 
 
 async def create_voice_target_channel(category: CategoryChannel, name: str) -> VoiceChannel:
     guild = await fetch_guild()
-    return await guild.create_voice_channel(name=name, category=category)
+    channel = await guild.create_voice_channel(name=name, category=category)
+    return channel
 
 
 async def rename_target_channel(

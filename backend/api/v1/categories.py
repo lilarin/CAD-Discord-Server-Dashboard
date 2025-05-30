@@ -1,4 +1,5 @@
 import disnake
+from disnake import PermissionOverwrite
 from fastapi import APIRouter, HTTPException, Body
 
 from backend.middlewares.uniform_response import uniform_response_middleware
@@ -7,7 +8,7 @@ from backend.services.fetch import (
     fetch_channel,
     fetch_channels_by_type,
     fetch_roles_with_access,
-    fetch_roles_by_ids
+    fetch_roles_by_ids, fetch_guild_default_role
 )
 from backend.services.format import (
     format_categories_response,
@@ -149,16 +150,24 @@ async def edit_category_permissions(category_id: int, roles_with_access: list[st
 
         actual_roles_with_access = fetch_roles_with_access(category)
 
+        everyone_role = await fetch_guild_default_role()
+
         permissions_overwrites_to_remove = {}
-        permissions_overwrites_to_add = {}
+        permissions_overwrites_to_add = {
+            everyone_role: PermissionOverwrite(
+                view_channel=False,
+                create_instant_invite=False,
+                read_message_history=True,
+            ),
+        }
 
         for role in await actual_roles_with_access:
             if role not in fetched_roles_with_access:
-                permissions_overwrites_to_remove[role] = disnake.PermissionOverwrite()
+                permissions_overwrites_to_remove[role] = PermissionOverwrite()
         await category.edit(overwrites=permissions_overwrites_to_remove)
 
         for role in fetched_roles_with_access:
-            permissions_overwrites_to_add[role] = disnake.PermissionOverwrite(view_channel=True)
+            permissions_overwrites_to_add[role] = PermissionOverwrite(view_channel=True)
         await category.edit(overwrites=permissions_overwrites_to_add)
 
         return await format_roles_response(fetched_roles_with_access)
