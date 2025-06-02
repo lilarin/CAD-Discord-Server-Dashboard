@@ -15,6 +15,8 @@ import {ChannelLoadingSpinner, ComponentLoadingSpinner} from '@/components/Loadi
 import toast from 'react-hot-toast';
 import DropdownIcon from "@/assets/icons/dropdown.svg";
 import SearchIcon from "@/assets/icons/search.svg";
+import WarningIcon from "@/assets/icons/warning.svg";
+import AttentionIcon from "@/assets/icons/attention.svg";
 
 type SettingsState = {
 	isLoading: boolean;
@@ -553,8 +555,13 @@ const Settings = () => {
 			) : (
 				<>
 					<div className="w-2/3 h-full flex flex-col">
-						<div className="bg-[#2F3136] rounded p-4 mb-5">
+						<div className="bg-[#2F3136] rounded p-4 mb-5 flex items-center justify-between">
 							<h2 className="text-2xl font-bold text-white">{t('settings.serverSettings')}</h2>
+							{!state.serverConfig?.language ? (
+								<img src={WarningIcon} alt="Warning" className="w-6 h-6" />
+							) : (!state.serverConfig?.registration.channel_id || !state.serverConfig?.staff.category_id || (state.serverConfig?.staff.category_id && !state.serverConfig?.staff.channel_id)) ? (
+								<img src={AttentionIcon} alt="Attention" className="w-6 h-6" />
+							) : null}
 						</div>
 
 						<div className="bg-[#2F3136] rounded p-4">
