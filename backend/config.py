@@ -25,7 +25,8 @@ class Config:
 
         self.redis_logs_key = "discord_admin_panel:logs"
         self.locales = ["en", "uk"]
-        self.locales_path = "backend/locales"
+
+        self.locales_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "locales")
 
     @staticmethod
     def _get_env_variable(var_name: str) -> str | None:
