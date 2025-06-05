@@ -22,6 +22,11 @@ aspects of the academic Discord server for both students and teachers, including
     - View a list of server roles
     - Create and rename server roles
     - Delete editable roles
+- **Server Configuration:**
+    - Specify the server's primary language for bot communications and messages
+    - Designate a registration channel for new users to receive onboarding information
+    - Configure dedicated categories for teacher-specific channels and resources
+    - Set up a channel to provide a direct link to the web control panel for teachers
 - **User Management:**
     - View a list of server users
     - Change users' server nicknames
@@ -49,13 +54,14 @@ a template
 - `TEACHER_ROLE_ID`: Staff role id for the teacher
 - `STUDENT_ROLE_ID`: General role id for all students
 - `GUILD_ID`: Discord server id of the Discord server on which the system is used
-- `SUPABASE_DIRECT_URL`: Supabase Direct Connection URL. This is used for direct database operations, specifically for
-  checking and creating the logs table
+- `FRONTEND_URL`: The URL where your frontend application is running. If you are running locally with Docker Compose, this will be `http://127.0.0.1:8080`.
+- `VITE_API_URL`: The URL where your backend API is running. If you are running locally with Docker Compose,
+  this will be `http://127.0.0.1:8000`
 - `VITE_SUPABASE_URL`: Supabase API URL. Used by both frontend and backend to connect to your Supabase project
 - `VITE_SUPABASE_SERVICE_ROLE_KEY`: Supabase API Key. Used by both frontend and backend for secure access to
   Supabase
-- `VITE_API_URL`: The URL where your backend API is running. If you are running locally with Docker Compose,
-  this will be `http://127.0.0.1:8000`
+- `SUPABASE_DIRECT_URL`: Supabase Direct Connection URL. This is used for direct database operations, specifically for
+  checking and creating the logs table
 - `REDIS_URL`: The URL where Redis is running for caching purpose
 
 > **Important:** See [Supabase Setup](#supabase-setup) for instructions how to obtain Supabase environment variables
