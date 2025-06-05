@@ -306,8 +306,8 @@
     "queue.create": "Створення черги на захист"
   },
   "settings": {
-    "serverSettings": "Налаштування сервера",
-    "languageSettings": "Налаштування мови",
+    "serverSettings": "Налаштування серверу",
+    "languageSettings": "Вибір мови",
     "registrationSettings": "Налаштування реєстрації",
     "staffInformationSettings": "Налаштування інформації для викладачів",
     "currentLanguage": "Поточна мова",
