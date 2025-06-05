@@ -20,7 +20,7 @@ class Config:
         self.supabase_key = self._get_env_variable("VITE_SUPABASE_SERVICE_ROLE_KEY")
         self.redis_url = self._get_env_variable("REDIS_URL")
 
-        self.frontend_url = "http://localhost:8080"
+        self.frontend_url = self._get_env_variable("FRONTEND_URL")
         self.registration_embed_image_url = "https://imgur.com/uG2M5wK.png"
 
         self.redis_logs_key = "discord_admin_panel:logs"
