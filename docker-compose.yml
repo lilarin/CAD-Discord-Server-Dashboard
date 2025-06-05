@@ -17,6 +17,7 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app
+      - backend_data:/backend/data
     depends_on:
       - redis
 
@@ -39,3 +40,7 @@ services:
     restart: always
     ports:
       - "6379:6379"
+
+volumes:
+  redis_data:
+  backend_data:

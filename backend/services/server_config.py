@@ -4,6 +4,7 @@ from typing import Optional
 
 import disnake
 
+from backend.config import config
 from backend.schemas import (
     ServerConfig,
     RegistrationConfigInfo,
@@ -149,4 +150,5 @@ class ServerConfigService:
         self._server_config = new_config
 
 
-server_config = ServerConfigService("backend/server_config.json")
+print(config.data_path)
+server_config = ServerConfigService(config.data_path + "/server_config.json")

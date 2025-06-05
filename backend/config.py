@@ -29,7 +29,11 @@ class Config:
         self.redis_logs_key = "discord_admin_panel:logs"
         self.locales = ["en", "uk"]
 
-        self.locales_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "locales")
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        self.locales_path = os.path.join(current_dir, "locales")
+        
+        self.data_path = os.path.join(current_dir, "data")
 
     @staticmethod
     def _setup_logging():
