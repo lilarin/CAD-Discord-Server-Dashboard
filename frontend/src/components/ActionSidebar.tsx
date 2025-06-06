@@ -405,7 +405,12 @@ function ActionSidebar(
 		return t("warnings.noCategoryRoles");
 	}, [action, target, sortedRoles]);
 
-	const handleMouseEnterHint = useCallback(openHint, [openHint]);
+	const handleMouseEnterHint = useCallback(() => { 
+		openHint(); 
+		if (action === 'edit' && target === 'category' && isRoleListOpen) {
+			setIsRoleListOpen(false);
+		}
+	}, [openHint, action, target, isRoleListOpen, setIsRoleListOpen]);
 	const handleMouseLeaveHint = useCallback(closeHint, [closeHint]);
 
 	const handleFilterGroupChange = (group: string | null) => {
