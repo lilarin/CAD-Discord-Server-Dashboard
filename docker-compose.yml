@@ -17,7 +17,7 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app
-      - backend_data:/backend/data
+      - config_data:/backend/data
     depends_on:
       - redis
 
@@ -43,4 +43,4 @@ services:
 
 volumes:
   redis_data:
-  backend_data:
+  config_data:
