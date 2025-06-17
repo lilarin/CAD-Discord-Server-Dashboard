@@ -72,7 +72,8 @@ export default function Queues() {
 			setIsChannelsLoading(true);
 			try {
 				const fetchedChannels = await getChannels(categoryId);
-				setChannels(fetchedChannels);
+				const textChannels = fetchedChannels.filter(channel => channel.type === "text");
+				setChannels(textChannels);
 			} catch (error) {
 				toast.error(t('error.fetchChannelsError'), {
 					position: "bottom-right",
