@@ -10,7 +10,7 @@
     "channel_name": "server-registration",
     "register_button": "\uD83D\uDCD1 Register",
     "inactive_button": "\uD83D\uDC68\u200D\uD83C\uDF93 To get identified on the server",
-    "description": "To gain access to the server, you need to register. \nClick the button below this message to proceed.\n-# For teachers, only the first step is required: provide your last name and first name.",
+    "description": "To gain access to the server, you need to register. \nClick the button below this message to proceed.",
     "name_confirm_button": "✔\uFE0F Yes, continue",
     "accept_button": "✔\uFE0F Approve Request",
     "accepted_button": "Request Approved",
